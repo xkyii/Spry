@@ -22,6 +22,7 @@
 
     <modules>
         <module>spry-admin</module>
+        <module>spry-common</module>
     </modules>
 
     <dependencyManagement>
@@ -32,6 +33,16 @@
                 <version>${quarkus.platform.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.xkyii.java</groupId>
+                <artifactId>spry-admin</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.xkyii.java</groupId>
+                <artifactId>spry-common</artifactId>
+                <version>${project.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
