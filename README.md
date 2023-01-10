@@ -1,6 +1,20 @@
 # SpryAdmin
 BackEnd with Quarkus matches AgileBoot(Ruoyi)'s FrontEnd
 
+## 数据库
+
+### 数据库(MySql8)
+```sql
+-- 登录为root
+use mysql;
+
+-- 创建数据库
+create database spry DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+
+-- 提权(给xkyii)
+grant all privileges on spry.* to 'xkyii'@'%';
+flush privileges;
+```
 
 ## 命令
 
