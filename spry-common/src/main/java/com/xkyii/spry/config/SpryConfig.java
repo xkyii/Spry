@@ -1,4 +1,4 @@
-package com.xkyii.java.spry.config;
+package com.xkyii.spry.config;
 
 import io.smallrye.config.ConfigMapping;
 

@@ -8,7 +8,7 @@
     <artifactId>spry-common</artifactId>
 
     <parent>
-        <groupId>com.xkyii.java</groupId>
+        <groupId>com.xkyii</groupId>
         <artifactId>spry</artifactId>
         <version>0.0.1</version>
     </parent>

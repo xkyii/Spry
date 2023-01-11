@@ -1,6 +1,6 @@
-package com.xkyii.java.spry.resource;
+package com.xkyii.spry.resource;
 
-import com.xkyii.java.spry.config.SpryConfig;
+import com.xkyii.spry.config.SpryConfig;
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;

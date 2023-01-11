@@ -8,14 +8,14 @@
     <artifactId>spry-admin</artifactId>
 
     <parent>
-        <groupId>com.xkyii.java</groupId>
+        <groupId>com.xkyii</groupId>
         <artifactId>spry</artifactId>
         <version>0.0.1</version>
     </parent>
 
     <dependencies>
         <dependency>
-            <groupId>com.xkyii.java</groupId>
+            <groupId>com.xkyii</groupId>
             <artifactId>spry-common</artifactId>
         </dependency>
         <dependency>
