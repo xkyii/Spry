@@ -1,4 +1,4 @@
-package com.xkyii.spry.entity;
+package com.xkyii.spry.admin.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
