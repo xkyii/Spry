@@ -21,6 +21,6 @@ public class SpryAdminApplication {
     }
 
     void onStop(@Observes ShutdownEvent ev) {
-        System.out.println(String.format("\t%s已关闭.", config.name()));
+        System.out.printf("\t%s已关闭.%n", config.name());
     }
 }
