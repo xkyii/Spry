@@ -15,12 +15,11 @@ public class SpryAdminApplication {
     SpryConfig config;
 
     void onStart(@Observes StartupEvent ev) {
-        System.out.println(String.format("\t%s启动成功, 当前版本v%s, @%s",
+        System.out.println(String.format("\n\t%s启动成功, 当前版本v%s, @%s\n",
             config.name(), config.version(), config.copyrightYear()));
-        System.out.println();
     }
 
     void onStop(@Observes ShutdownEvent ev) {
-        System.out.printf("\t%s已关闭.%n", config.name());
+        System.out.printf(String.format("\n\t%s已关闭.\n\n", config.name()));
     }
 }

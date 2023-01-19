@@ -4,6 +4,7 @@ package com.xkyii.spry.admin.resource;
 import com.xkyii.spry.admin.dto.login.RegisterInput;
 import com.xkyii.spry.admin.service.SysUserService;
 import com.xkyii.spry.common.config.SpryConfig;
+import org.jboss.logging.Logger;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
@@ -11,6 +12,9 @@ import javax.ws.rs.core.MediaType;
 
 @Path("")
 public class LoginResource {
+
+    @Inject
+    Logger logger;
 
     @Inject
     SpryConfig config;
@@ -28,6 +32,7 @@ public class LoginResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     public String register(RegisterInput input) {
+        logger.info(input);
         return "register";
     }
 
