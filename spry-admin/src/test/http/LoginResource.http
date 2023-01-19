@@ -1,5 +1,5 @@
 ### register-注册
-POST {{url}}/register
+POST {{url}}/user/register
 Content-Type: application/json
 
 {
