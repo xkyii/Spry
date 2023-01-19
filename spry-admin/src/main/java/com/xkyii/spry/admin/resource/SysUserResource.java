@@ -7,6 +7,7 @@ import io.vertx.core.json.Json;
 import org.jboss.logging.Logger;
 
 import javax.inject.Inject;
+import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
@@ -24,7 +25,7 @@ public class SysUserResource {
     @Path("register")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
-    public String register(RegisterInput input) {
+    public String register(@Valid RegisterInput input) {
         logger.infof("注册用户,入参: \n%s", Json.encodePrettily(input));
         return userService.register(input);
     }
