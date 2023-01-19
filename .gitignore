@@ -24,3 +24,4 @@ hs_err_pid*
 spry-admin/src/main/resources/application-xk.properties
 target
 spry-admin/src/main/resources/application-dev.properties
+spry-migration/src/main/resources/application-dev.properties

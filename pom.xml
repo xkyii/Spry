@@ -23,6 +23,7 @@
     <modules>
         <module>spry-admin</module>
         <module>spry-common</module>
+        <module>spry-migration</module>
     </modules>
 
     <dependencyManagement>
@@ -42,6 +43,11 @@
             <dependency>
                 <groupId>com.xkyii</groupId>
                 <artifactId>spry-common</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.xkyii</groupId>
+                <artifactId>spry-migration</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>
