@@ -11,6 +11,7 @@ package com.xkyii.spry.common.error;
 public enum ErrorCode implements IErrorCode {
     SUCCESS(0, "操作成功"),
     FAIL(99, "操作失败"),
+    EXCEPTION(999, "操作异常"),
     UNKNOWN_ERROR(9999, "未知错误");
 
     private final int code;

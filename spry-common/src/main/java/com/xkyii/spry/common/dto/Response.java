@@ -1,5 +1,6 @@
 package com.xkyii.spry.common.dto;
 
+import com.xkyii.spry.common.error.ApiException;
 import com.xkyii.spry.common.error.ErrorCode;
 import com.xkyii.spry.common.error.IErrorCode;
 import com.xkyii.spry.common.util.Strings;
@@ -42,9 +43,9 @@ public class Response<T> {
         return build(null, code, args);
     }
 
-//    public static <T> Response<T> fail(ApiException exception) {
-//        return build(exception.getErrorCode().code(), exception.getMessage());
-//    }
+    public static <T> Response<T> fail(ApiException exception) {
+        return build(exception.getErrorCode().code(), exception.getMessage());
+    }
 
     public static <T> Response<T> build(T data, IErrorCode code, Object... args) {
         return new Response<>(code.code(), Strings.format(code.message(), args), data);
