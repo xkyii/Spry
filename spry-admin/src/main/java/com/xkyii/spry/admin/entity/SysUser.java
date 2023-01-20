@@ -15,67 +15,212 @@ public class SysUser extends BaseEntity {
     /** 用户ID */
     @Id
     @GeneratedValue
-    public Long userId;
+    private Long userId;
 
     /** 部门ID */
-    public Long deptId;
+    private Long deptId;
 
     /** 部门父ID */
-    public Long parentId;
+    private Long parentId;
 
     /** 角色ID */
-    public Long roleId;
+    private Long roleId;
 
     /** 登录名称 */
-    public String loginName;
+    private String loginName;
 
     /** 用户名称 */
-    public String userName;
+    private String userName;
 
     /** 用户类型 */
-    public String userType;
+    private String userType;
 
     /** 用户邮箱 */
-    public String email;
+    private String email;
 
     /** 手机号码 */
-    public String phonenumber;
+    private String phonenumber;
 
     /** 用户性别 */
-    public String sex;
+    private String sex;
 
     /** 用户头像 */
-    public String avatar;
+    private String avatar;
 
     /** 密码 */
-    public String password;
+    private String password;
 
     /** 盐加密 */
-    public String salt;
+    private String salt;
 
     /** 帐号状态（0正常 1停用） */
-    public String status;
+    private String status;
 
     /** 删除标志（0代表存在 2代表删除） */
-    public String delFlag;
+    private String delFlag;
 
     /** 最后登录IP */
-    public String loginIp;
+    private String loginIp;
 
     /** 最后登录时间 */
-    public Date loginDate;
+    private Date loginDate;
 
     /** 密码最后更新时间 */
-    public Date pwdUpdateDate;
+    private Date pwdUpdateDate;
 
     /** 部门对象 */
-//    public SysDept dept;
+//    private SysDept dept;
 
-//    public List<SysRole> roles;
+//    private List<SysRole> roles;
 
     /** 角色组 */
-//    public Long[] roleIds;
+//    private Long[] roleIds;
 
     /** 岗位组 */
-//    public Long[] postIds;
+//    private Long[] postIds;
+
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public Long getDeptId() {
+        return deptId;
+    }
+
+    public void setDeptId(Long deptId) {
+        this.deptId = deptId;
+    }
+
+    public Long getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(Long parentId) {
+        this.parentId = parentId;
+    }
+
+    public Long getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(Long roleId) {
+        this.roleId = roleId;
+    }
+
+    public String getLoginName() {
+        return loginName;
+    }
+
+    public void setLoginName(String loginName) {
+        this.loginName = loginName;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getUserType() {
+        return userType;
+    }
+
+    public void setUserType(String userType) {
+        this.userType = userType;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhonenumber() {
+        return phonenumber;
+    }
+
+    public void setPhonenumber(String phonenumber) {
+        this.phonenumber = phonenumber;
+    }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getDelFlag() {
+        return delFlag;
+    }
+
+    public void setDelFlag(String delFlag) {
+        this.delFlag = delFlag;
+    }
+
+    public String getLoginIp() {
+        return loginIp;
+    }
+
+    public void setLoginIp(String loginIp) {
+        this.loginIp = loginIp;
+    }
+
+    public Date getLoginDate() {
+        return loginDate;
+    }
+
+    public void setLoginDate(Date loginDate) {
+        this.loginDate = loginDate;
+    }
+
+    public Date getPwdUpdateDate() {
+        return pwdUpdateDate;
+    }
+
+    public void setPwdUpdateDate(Date pwdUpdateDate) {
+        this.pwdUpdateDate = pwdUpdateDate;
+    }
 }

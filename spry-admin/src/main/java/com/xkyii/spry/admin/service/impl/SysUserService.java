@@ -6,6 +6,7 @@ import com.xkyii.spry.admin.repository.SysUserRepository;
 import com.xkyii.spry.admin.service.ISysUserService;
 import com.xkyii.spry.common.error.ApiException;
 import io.smallrye.mutiny.Uni;
+import org.jboss.logging.Logger;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -16,7 +17,10 @@ import static com.xkyii.spry.admin.constant.AdminError.USERNAME_DUPLICATED;
 public class SysUserService implements ISysUserService {
 
     @Inject
-    private SysUserRepository userRepository;
+    Logger logger;
+
+    @Inject
+    SysUserRepository userRepository;
 
     public Uni<SysUser> register(RegisterInput input) {
         String username = input.getUsername();
@@ -27,9 +31,11 @@ public class SysUserService implements ISysUserService {
         String password = input.getPassword();
 
         SysUser user = new SysUser();
-        user.userName = username;
-        user.password = password;
-        return userRepository.persist(user);
+        user.setUserName(username);
+        user.setPassword(password);
+        Uni<SysUser> persist = userRepository.persist(user);
+        logger.infof("保存状态: %b", userRepository.isPersistent(user));
+        return persist;
     }
 
     public boolean isUsernameDuplicated(String username) {

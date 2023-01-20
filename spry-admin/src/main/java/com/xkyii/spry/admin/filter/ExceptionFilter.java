@@ -14,7 +14,7 @@ import javax.ws.rs.ext.Provider;
 public class ExceptionFilter implements ExceptionMapper<Exception> {
 
     @Inject
-    private Logger logger;
+    Logger logger;
 
     @Override
     public Response toResponse(Exception exception) {

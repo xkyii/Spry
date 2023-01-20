@@ -5,6 +5,7 @@ import com.xkyii.spry.admin.dto.login.RegisterInput;
 import com.xkyii.spry.admin.entity.SysUser;
 import com.xkyii.spry.admin.service.ISysUserService;
 import com.xkyii.spry.common.dto.Response;
+import io.quarkus.hibernate.reactive.panache.common.runtime.ReactiveTransactional;
 import io.smallrye.mutiny.Uni;
 import io.vertx.core.json.Json;
 import org.jboss.logging.Logger;
@@ -27,6 +28,7 @@ public class SysUserResource {
 
     @POST
     @Path("register")
+    @ReactiveTransactional
     public Uni<Response<SysUser>> register(@Valid RegisterInput input) {
         logger.infof("注册用户,入参: \n%s", Json.encodePrettily(input));
 
