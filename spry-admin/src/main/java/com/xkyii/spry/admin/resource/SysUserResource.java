@@ -3,6 +3,7 @@ package com.xkyii.spry.admin.resource;
 
 import com.xkyii.spry.admin.dto.login.RegisterInput;
 import com.xkyii.spry.admin.service.ISysUserService;
+import com.xkyii.spry.common.dto.Response;
 import io.vertx.core.json.Json;
 import org.jboss.logging.Logger;
 
@@ -12,6 +13,8 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
 @Path("/user")
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
 public class SysUserResource {
 
     @Inject
@@ -23,11 +26,9 @@ public class SysUserResource {
 
     @POST
     @Path("register")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.TEXT_PLAIN)
-    public String register(@Valid RegisterInput input) {
+    public Response<String> register(@Valid RegisterInput input) {
         logger.infof("注册用户,入参: \n%s", Json.encodePrettily(input));
-        return userService.register(input);
+        return Response.ok(userService.register(input));
     }
 
 }
