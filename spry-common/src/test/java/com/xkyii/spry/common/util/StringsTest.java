@@ -11,4 +11,24 @@ public class StringsTest {
         Assertions.assertEquals("Hello 1", Strings.format("Hello {}", 1));
         Assertions.assertEquals("Hello 1.1", Strings.format("Hello {}", 1.1));
     }
+
+    /**
+     * {}内指定数字无效
+     */
+    @Test
+    public void stringFormatTest2() {
+        Assertions.assertEquals("Hello {1}", Strings.format("Hello {1}", "World"));
+        Assertions.assertEquals("Hello {1}", Strings.format("Hello {1}", 1));
+        Assertions.assertEquals("Hello {1}", Strings.format("Hello {1}", 1.1));
+    }
+
+    /**
+     * {}内指定字符无效
+     */
+    @Test
+    public void stringFormatTest3() {
+        Assertions.assertEquals("Hello {w}", Strings.format("Hello {w}", "World"));
+        Assertions.assertEquals("Hello {w}", Strings.format("Hello {w}", 1));
+        Assertions.assertEquals("Hello {w}", Strings.format("Hello {w}", 1.1));
+    }
 }

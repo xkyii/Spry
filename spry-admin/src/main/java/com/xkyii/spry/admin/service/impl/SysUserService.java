@@ -32,9 +32,8 @@ public class SysUserService implements ISysUserService {
         SysUser user = new SysUser();
         user.setUserName(username);
         user.setPassword(password);
-        Uni<SysUser> persist = userRepository.persist(user);
-        logger.infof("保存状态: %b", userRepository.isPersistent(user));
-        return persist;
+
+        return userRepository.persist(user);
     }
 
     public boolean isUsernameDuplicated(String username) {

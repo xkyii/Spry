@@ -7,3 +7,17 @@ Content-Type: application/json
 
 ### errorCode
 GET {{url}}/errorCode
+
+### validate
+POST {{url}}/validate
+Content-Type: application/json
+
+{
+  "username": "",
+  "password": "123456",
+  "code": "4",
+  "uuid": "aaaabbbb443423243"
+}
+
+### cheese
+GET {{url}}/cheese

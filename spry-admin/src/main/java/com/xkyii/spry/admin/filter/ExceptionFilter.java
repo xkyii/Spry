@@ -22,7 +22,7 @@ public class ExceptionFilter implements ExceptionMapper<Exception> {
 
     @Override
     public javax.ws.rs.core.Response toResponse(Exception exception) {
-        logger.error(AdminError.用户名已经被注册, exception);
+        logger.error(AdminError.操作异常, exception);
 
         if (exception instanceof ApiException) {
             return toApiExceptionResponse((ApiException) exception);
@@ -33,18 +33,21 @@ public class ExceptionFilter implements ExceptionMapper<Exception> {
 
     private javax.ws.rs.core.Response toApiExceptionResponse(ApiException exception) {
         Response<String> r = new Response<>(exception.getCode(), exception.getMessage());
-        return javax.ws.rs.core.Response
-            .status(400)
-            .entity(Json.encode(r))
-            .build();
+
+        return toResponse(r);
     }
 
     private javax.ws.rs.core.Response toExceptionResponse(Exception exception) {
         Response<String> r = new Response<>(AdminError.操作异常, config.getCodeMessage(AdminError.操作异常));
         r.setData(exception.getMessage());
+
+        return toResponse(r);
+    }
+
+    private <T> javax.ws.rs.core.Response toResponse(Response<T> r) {
         return javax.ws.rs.core.Response
             .status(400)
-            .entity(Json.encode(r))
+            .entity(Json.encodePrettily(r))
             .build();
     }
 
