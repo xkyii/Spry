@@ -8,15 +8,15 @@ public class RegisterInput {
     /**
      * 用户名
      */
-    @NotBlank(message = "用户名不能为空")
-    @Length(min=2, max=20, message = "用户名长度最小{min},最大{max}")
+    @NotBlank(message = "{spry.error-code.10001}")
+    @Length(min=2, max=20, message = "{spry.error-code.10002}")
     private String username;
 
     /**
      * 用户密码
      */
-    @NotBlank(message = "用户密码不能为空")
-    @Length(min=5, max=20, message = "用户密码长度最小{min},最大{max}")
+    @NotBlank(message = "{spry.error-code.10003}")
+    @Length(min=5, max=20, message = "{spry.error-code.10004}")
     private String password;
 
     /**

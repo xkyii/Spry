@@ -26,4 +26,12 @@ public interface SpryConfig {
      * 错误号
      */
     Map<Integer, String> errorCodes();
+
+    default String getCodeMessage(Integer code) {
+        if (errorCodes().containsKey(code)) {
+            return errorCodes().get(code);
+        }
+
+        return String.format("UnConfigured Error(%d)", code);
+    }
 }
