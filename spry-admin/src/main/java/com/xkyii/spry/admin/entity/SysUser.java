@@ -3,14 +3,18 @@ package com.xkyii.spry.admin.entity;
 import com.xkyii.spry.common.entity.BaseEntity;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.Date;
 
 @Entity
+@Table(name = "sys_user")
 public class SysUser extends BaseEntity {
 
     /** 用户ID */
     @Id
+    @GeneratedValue
     public Long userId;
 
     /** 部门ID */
