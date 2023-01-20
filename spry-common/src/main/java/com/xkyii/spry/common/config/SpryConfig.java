@@ -2,6 +2,8 @@ package com.xkyii.spry.common.config;
 
 import io.smallrye.config.ConfigMapping;
 
+import java.util.Map;
+
 @ConfigMapping(prefix = "spry")
 public interface SpryConfig {
 
@@ -19,4 +21,9 @@ public interface SpryConfig {
      * 版权年份
      */
     String copyrightYear();
+
+    /**
+     * 错误号
+     */
+    Map<Integer, String> errorCodes();
 }

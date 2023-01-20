@@ -4,3 +4,6 @@ GET {{url}}
 ### exception
 GET {{url}}/exception
 Content-Type: application/json
+
+### errorCode
+GET {{url}}/errorCode
