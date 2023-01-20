@@ -1,0 +1,10 @@
+### register-注册
+POST {{url}}/user/register
+Content-Type: application/json
+
+{
+  "username": "hello",
+  "password": "123456",
+  "code": "4",
+  "uuid": "aaaabbbb443423243"
+}

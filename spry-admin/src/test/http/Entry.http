@@ -1,0 +1,6 @@
+### register-注册
+GET {{url}}
+
+### exception
+GET {{url}}/exception
+Content-Type: application/json
