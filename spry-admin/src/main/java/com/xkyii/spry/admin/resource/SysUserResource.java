@@ -7,6 +7,7 @@ import com.xkyii.spry.admin.service.ISysUserService;
 import com.xkyii.spry.common.config.SpryConfig;
 import com.xkyii.spry.common.dto.Response;
 import com.xkyii.spry.common.error.ApiException;
+import com.xkyii.spry.common.error.ErrorMessageManager;
 import com.xkyii.spry.common.resource.AResource;
 import io.quarkus.hibernate.reactive.panache.common.runtime.ReactiveTransactional;
 import io.smallrye.mutiny.Uni;
@@ -29,8 +30,8 @@ public class SysUserResource extends AResource {
     @Inject
     ISysUserService userService;
 
-    protected SysUserResource(SpryConfig config) {
-        super(config);
+    protected SysUserResource(ErrorMessageManager emm) {
+        super(emm);
     }
 
     @POST
