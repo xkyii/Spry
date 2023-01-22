@@ -1,14 +1,13 @@
 package com.xkyii.spry.admin.resource;
 
-import com.xkyii.spry.admin.dto.login.RegisterInput;
+import com.xkyii.spry.admin.manager.ErrorMessageManager;
 import com.xkyii.spry.common.config.SpryConfig;
-import com.xkyii.spry.common.error.ApiException;
-import io.quarkus.runtime.util.StringUtil;
 import org.jboss.logging.Logger;
 
 import javax.inject.Inject;
-import javax.validation.Valid;
-import javax.ws.rs.*;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 @Path("")
@@ -20,41 +19,12 @@ public class EntryResource {
     @Inject
     Logger logger;
 
+    @Inject
+    ErrorMessageManager emm;
+
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     public String index() {
         return String.format("欢迎使用%s, 当前版本: v%s @%s", config.name(), config.version(), config.copyrightYear());
-    }
-
-    @GET
-    @Path("exception")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String exception() {
-        throw new IllegalArgumentException("entry exception");
-    }
-
-    @GET
-    @Path("errorCode")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String errorCode() {
-        logger.infof("errorCode: ", config.errorCodes().get(0));
-        return config.errorCodes().get(0);
-    }
-
-    @POST
-    @Path("validate")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public String validate(@Valid RegisterInput input) {
-        return "validate";
-    }
-
-    @GET
-    @Path("cheese")
-    public String cheese(String cheese) {
-        if(StringUtil.isNullOrEmpty(cheese))
-            // send a 400
-            throw new ApiException(0, "000");
-        return cheese;
     }
 }
