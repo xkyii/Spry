@@ -1,8 +1,6 @@
 package com.xkyii.spry.admin.resource;
 
-import com.xkyii.spry.admin.manager.ErrorMessageManager;
 import com.xkyii.spry.common.config.SpryConfig;
-import org.jboss.logging.Logger;
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;
@@ -15,12 +13,6 @@ public class EntryResource {
 
     @Inject
     SpryConfig config;
-
-    @Inject
-    Logger logger;
-
-    @Inject
-    ErrorMessageManager emm;
 
     @GET
     @Produces(MediaType.TEXT_PLAIN)

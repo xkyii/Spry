@@ -1,7 +1,6 @@
 package com.xkyii.spry.admin.resource;
 
 import com.xkyii.spry.admin.dto.login.RegisterInput;
-import com.xkyii.spry.admin.manager.ErrorMessageManager;
 import com.xkyii.spry.common.config.SpryConfig;
 import com.xkyii.spry.common.error.ApiException;
 import io.quarkus.runtime.util.StringUtil;
@@ -21,9 +20,6 @@ public class TestResource {
 
     @Inject
     Logger logger;
-
-    @Inject
-    ErrorMessageManager emm;
 
     @GET
     @Path("exception")
@@ -62,6 +58,7 @@ public class TestResource {
     @Produces(MediaType.TEXT_PLAIN)
     public String i18n(@RestQuery String key) {
         logger.infof("i18n key: %s", key);
-        return emm.getMessage(key);
+//        return emm.getMessage(key);
+        return "";
     }
 }

@@ -1,13 +1,10 @@
-package com.xkyii.spry.admin.manager;
+package com.xkyii.spry.common.error;
 
 
-import javax.enterprise.context.ApplicationScoped;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-@ApplicationScoped
 public class ErrorMessageManager {
-
     public String getMessage(Integer code) {
         return getMessage(String.valueOf(code));
     }
