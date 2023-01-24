@@ -54,6 +54,9 @@ class ExceptionMappers {
                             String message = Strings.arrayFormat(emm.getMessage(key), Arrays.copyOfRange(split, 1, split.length));
                             vo.setMessage(message);
                         }
+                        else {
+                            vo.setMessage(emm.getMessage(key));
+                        }
                         outputs.add(vo);
                     }
                 }

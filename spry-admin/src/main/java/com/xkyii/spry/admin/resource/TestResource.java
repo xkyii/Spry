@@ -59,6 +59,6 @@ public class TestResource {
     public String i18n(@RestQuery String key) {
         logger.infof("i18n key: %s", key);
 //        return emm.getMessage(key);
-        return "";
+        return "i18n";
     }
 }
