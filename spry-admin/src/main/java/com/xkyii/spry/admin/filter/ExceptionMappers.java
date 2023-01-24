@@ -45,7 +45,7 @@ class ExceptionMappers {
                 ViolationReport vr = (ViolationReport) entity;
                 for (ViolationReport.Violation violation: vr.getViolations()) {
                     if (violation.getMessage() != null && violation.getMessage().length() > 0) {
-                        String[] split = violation.getMessage().trim().split("\\s*,\\s*");;
+                        String[] split = violation.getMessage().trim().split("\\s*,\\s*");
                         String key = split[0].trim();
                         ValidateOutput vo = new ValidateOutput();
                         vo.setField(violation.getField());

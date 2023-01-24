@@ -4,6 +4,7 @@ import com.xkyii.spry.admin.constant.AdminError;
 import com.xkyii.spry.common.dto.Response;
 import com.xkyii.spry.common.error.ApiException;
 import com.xkyii.spry.common.error.ErrorMessageManager;
+import com.xkyii.spry.common.util.Strings;
 import io.vertx.core.json.Json;
 import org.jboss.logging.Logger;
 
@@ -32,7 +33,16 @@ public class ExceptionFilter implements ExceptionMapper<Exception> {
     }
 
     private javax.ws.rs.core.Response toApiExceptionResponse(ApiException exception) {
-        Response<String> r = new Response<>(exception.getCode(), exception.getMessage());
+        logger.infof("Filter ApiException: %d, %s", exception.getCode(), exception.getMessage());
+
+        Response<String> r = new Response<>(exception.getCode());
+        if (exception.getMessage() == null && exception.getMessage().equals("")) {
+            r.setMessage(emm.getMessage(r.getCode()));
+        }
+        else {
+            String[] split = exception.getMessage().trim().split("\\s*,\\s*");
+            r.setMessage(Strings.arrayFormat(emm.getMessage(r.getCode()), split));
+        }
 
         return toResponse(r);
     }
