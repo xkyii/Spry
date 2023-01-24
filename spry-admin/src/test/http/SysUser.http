@@ -3,7 +3,7 @@ POST {{url}}/user/register
 Content-Type: application/json
 
 {
-  "username": "",
+  "username": "heap",
   "password": "123456",
   "code": "4",
   "uuid": "aaaabbbb443423243"

@@ -23,20 +23,17 @@ public class SysUserService implements ISysUserService {
 
     public Uni<SysUser> register(RegisterInput input) {
         String username = input.getUsername();
-        if (isUsernameDuplicated(username)) {
-            throw new ApiException(AdminError.用户名已经被注册, username);
-        }
 
-        String password = input.getPassword();
+        return userRepository.find("username", username).firstResult()
+            .onItem().ifNotNull().failWith(new ApiException(AdminError.用户名已经被注册, username))
+            .onItem().ifNull().switchTo(() -> {
+                String password = input.getPassword();
 
-        SysUser user = new SysUser();
-        user.setUserName(username);
-        user.setPassword(password);
-
-        return userRepository.persist(user);
-    }
-
-    public boolean isUsernameDuplicated(String username) {
-        return false;
+                SysUser user = new SysUser();
+                user.setUserName(username);
+                user.setPassword(password);
+                return userRepository.persist(user);
+            })
+            ;
     }
 }
