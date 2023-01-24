@@ -1,12 +1,15 @@
 package com.xkyii.spry.admin;
 
 import com.xkyii.spry.common.config.SpryConfig;
+import com.xkyii.spry.common.error.ErrorMessageManager;
 import io.quarkus.runtime.ShutdownEvent;
 import io.quarkus.runtime.StartupEvent;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.Dependent;
 import javax.enterprise.event.Observes;
 import javax.inject.Inject;
+import javax.ws.rs.Produces;
 
 @ApplicationScoped
 public class SpryAdminApplication {
@@ -21,5 +24,11 @@ public class SpryAdminApplication {
 
     void onStop(@Observes ShutdownEvent ev) {
         System.out.printf(String.format("\n\t%s已关闭.\n\n", config.name()));
+    }
+
+    @Dependent
+    @Produces
+    ErrorMessageManager getErrorMessageManager() {
+        return new ErrorMessageManager();
     }
 }

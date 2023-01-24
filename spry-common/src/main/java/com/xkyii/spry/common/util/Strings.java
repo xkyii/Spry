@@ -6,6 +6,8 @@ import java.util.Map;
 
 /**
  * from: https://github.com/qos-ch/slf4j/blob/bae56f544b0c30cedb265729f3c6cce72fa79f10/slf4j-api/src/main/java/org/slf4j/helpers/MessageFormatter.java
+ *
+ * TODO: 移入core
  */
 public class Strings {
 

@@ -1,9 +1,9 @@
 package com.xkyii.spry.admin.filter;
 
 import com.xkyii.spry.admin.constant.AdminError;
-import com.xkyii.spry.common.config.SpryConfig;
 import com.xkyii.spry.common.dto.Response;
 import com.xkyii.spry.common.error.ApiException;
+import com.xkyii.spry.common.error.ErrorMessageManager;
 import io.vertx.core.json.Json;
 import org.jboss.logging.Logger;
 
@@ -18,7 +18,7 @@ public class ExceptionFilter implements ExceptionMapper<Exception> {
     Logger logger;
 
     @Inject
-    SpryConfig config;
+    ErrorMessageManager emm;
 
     @Override
     public javax.ws.rs.core.Response toResponse(Exception exception) {
@@ -38,7 +38,7 @@ public class ExceptionFilter implements ExceptionMapper<Exception> {
     }
 
     private javax.ws.rs.core.Response toExceptionResponse(Exception exception) {
-        Response<String> r = new Response<>(AdminError.操作异常, config.getCodeMessage(AdminError.操作异常));
+        Response<String> r = new Response<>(AdminError.操作异常, emm.getMessage(AdminError.操作异常));
         r.setData(exception.getMessage());
 
         return toResponse(r);
