@@ -2,6 +2,7 @@ package com.xkyii.spry.admin.resource;
 
 
 import com.xkyii.spry.admin.dto.login.RegisterInput;
+import com.xkyii.spry.admin.dto.login.RegisterOutput;
 import com.xkyii.spry.admin.entity.SysUser;
 import com.xkyii.spry.admin.service.ISysUserService;
 import com.xkyii.spry.common.dto.Response;
@@ -32,11 +33,11 @@ public class SysUserResource {
     @POST
     @Path("register")
     @ReactiveTransactional
-    public Uni<Response<SysUser>> register(@Valid RegisterInput input) {
+    public Uni<Response<RegisterOutput>> register(@Valid RegisterInput input) {
         logger.infof("注册用户,入参: \n%s", Json.encodePrettily(input));
 
         return userService.register(input)
+                .onItem().transform(RegisterOutput::from)
                 .onItem().transform(Response::ok);
     }
-
 }
