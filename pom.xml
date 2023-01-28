@@ -15,9 +15,10 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
         <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
-        <quarkus.platform.version>2.15.3.Final</quarkus.platform.version>
+        <quarkus.platform.version>2.16.0.Final</quarkus.platform.version>
         <skipITs>true</skipITs>
         <surefire-plugin.version>3.0.0-M7</surefire-plugin.version>
+        <xkyss.version>2023.1.1</xkyss.version>
     </properties>
 
     <modules>
@@ -28,6 +29,7 @@
 
     <dependencyManagement>
         <dependencies>
+            <!-- quarkus -->
             <dependency>
                 <groupId>${quarkus.platform.group-id}</groupId>
                 <artifactId>${quarkus.platform.artifact-id}</artifactId>
@@ -35,6 +37,12 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+<!--            <dependency>-->
+<!--                <groupId>io.quarkus</groupId>-->
+<!--                <artifactId>quarkus-elytron-security-common</artifactId>-->
+<!--                <version>${quarkus.platform.version}</version>-->
+<!--            </dependency>-->
+            <!-- xkyii -->
             <dependency>
                 <groupId>com.xkyii</groupId>
                 <artifactId>spry-admin</artifactId>
@@ -49,6 +57,11 @@
                 <groupId>com.xkyii</groupId>
                 <artifactId>spry-migration</artifactId>
                 <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.xkyss</groupId>
+                <artifactId>xkyss-mocky</artifactId>
+                <version>${xkyss.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
