@@ -6,11 +6,16 @@ import com.xkyii.spry.admin.entity.SysUser;
 import com.xkyii.spry.admin.repository.SysUserRepository;
 import com.xkyii.spry.admin.service.ISysUserService;
 import com.xkyii.spry.common.error.ApiException;
+import com.xkyss.mocky.unit.text.Strings;
+import com.xkyss.org.apache.commons.lang3.RandomStringUtils;
+import io.quarkus.elytron.security.common.BcryptUtil;
 import io.smallrye.mutiny.Uni;
 import org.jboss.logging.Logger;
+import org.wildfly.security.password.interfaces.BCryptPassword;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import java.util.concurrent.ThreadLocalRandom;
 
 @ApplicationScoped
 public class SysUserService implements ISysUserService {
@@ -25,13 +30,18 @@ public class SysUserService implements ISysUserService {
         String username = input.getUsername();
 
         return userRepository.find("username", username).firstResult()
+            // 如果查询到已有username的用户,报异常
             .onItem().ifNotNull().failWith(new ApiException(AdminError.用户名已经被注册, username))
+            // 否则添加这个用户
             .onItem().ifNull().switchTo(() -> {
                 String password = input.getPassword();
 
                 SysUser user = new SysUser();
                 user.setUserName(username);
-                user.setPassword(password);
+
+                Strings strings = new Strings(ThreadLocalRandom.current());
+                user.setSalt(strings.size(16).get());
+                user.setPassword(BcryptUtil.bcryptHash(password, 10, user.getSalt().getBytes()));
                 return userRepository.persist(user);
             })
             ;
