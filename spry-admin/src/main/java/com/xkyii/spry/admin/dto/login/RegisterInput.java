@@ -1,8 +1,8 @@
 package com.xkyii.spry.admin.dto.login;
 
+import jakarta.validation.constraints.NotBlank;
 import org.hibernate.validator.constraints.Length;
 
-import javax.validation.constraints.NotBlank;
 
 public class RegisterInput {
     /**

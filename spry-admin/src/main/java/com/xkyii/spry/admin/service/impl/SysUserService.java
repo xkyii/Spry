@@ -7,14 +7,12 @@ import com.xkyii.spry.admin.repository.SysUserRepository;
 import com.xkyii.spry.admin.service.ISysUserService;
 import com.xkyii.spry.common.error.ApiException;
 import com.xkyss.mocky.unit.text.Strings;
-import com.xkyss.org.apache.commons.lang3.RandomStringUtils;
 import io.quarkus.elytron.security.common.BcryptUtil;
 import io.smallrye.mutiny.Uni;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import org.jboss.logging.Logger;
-import org.wildfly.security.password.interfaces.BCryptPassword;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
 import java.util.concurrent.ThreadLocalRandom;
 
 @ApplicationScoped

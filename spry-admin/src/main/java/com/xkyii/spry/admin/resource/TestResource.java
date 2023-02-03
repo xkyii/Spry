@@ -4,13 +4,13 @@ import com.xkyii.spry.admin.dto.login.RegisterInput;
 import com.xkyii.spry.common.config.SpryConfig;
 import com.xkyii.spry.common.error.ApiException;
 import io.quarkus.runtime.util.StringUtil;
+import jakarta.inject.Inject;
+import jakarta.validation.Valid;
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.MediaType;
 import org.jboss.logging.Logger;
 import org.jboss.resteasy.reactive.RestQuery;
 
-import javax.inject.Inject;
-import javax.validation.Valid;
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
 
 @Path("test")
 public class TestResource {

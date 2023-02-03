@@ -6,11 +6,11 @@ import com.xkyii.spry.common.error.ApiException;
 import com.xkyii.spry.common.error.ErrorMessageManager;
 import com.xkyii.spry.common.util.Strings;
 import io.vertx.core.json.Json;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.ext.ExceptionMapper;
 import org.jboss.logging.Logger;
+import jakarta.ws.rs.ext.Provider;
 
-import javax.inject.Inject;
-import javax.ws.rs.ext.ExceptionMapper;
-import javax.ws.rs.ext.Provider;
 
 @Provider
 public class ExceptionFilter implements ExceptionMapper<Exception> {
@@ -22,7 +22,7 @@ public class ExceptionFilter implements ExceptionMapper<Exception> {
     ErrorMessageManager emm;
 
     @Override
-    public javax.ws.rs.core.Response toResponse(Exception exception) {
+    public jakarta.ws.rs.core.Response toResponse(Exception exception) {
         logger.error(AdminError.操作异常, exception);
 
         if (exception instanceof ApiException) {
@@ -32,7 +32,7 @@ public class ExceptionFilter implements ExceptionMapper<Exception> {
         return toExceptionResponse(exception);
     }
 
-    private javax.ws.rs.core.Response toApiExceptionResponse(ApiException exception) {
+    private jakarta.ws.rs.core.Response toApiExceptionResponse(ApiException exception) {
         logger.infof("Filter ApiException: %d, %s", exception.getCode(), exception.getMessage());
 
         Response<String> r = new Response<>(exception.getCode());
@@ -47,15 +47,15 @@ public class ExceptionFilter implements ExceptionMapper<Exception> {
         return toResponse(r);
     }
 
-    private javax.ws.rs.core.Response toExceptionResponse(Exception exception) {
+    private jakarta.ws.rs.core.Response toExceptionResponse(Exception exception) {
         Response<String> r = new Response<>(AdminError.操作异常, emm.getMessage(AdminError.操作异常));
         r.setData(exception.getMessage());
 
         return toResponse(r);
     }
 
-    private <T> javax.ws.rs.core.Response toResponse(Response<T> r) {
-        return javax.ws.rs.core.Response
+    private <T> jakarta.ws.rs.core.Response toResponse(Response<T> r) {
+        return jakarta.ws.rs.core.Response
             .status(400)
             .entity(Json.encodePrettily(r))
             .build();
