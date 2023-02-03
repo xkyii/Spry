@@ -5,20 +5,22 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.xkyii</groupId>
     <artifactId>spry</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.2</version>
     <packaging>pom</packaging>
 
     <properties>
-        <compiler-plugin.version>3.10.1</compiler-plugin.version>
+        <skipITs>true</skipITs>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
         <maven.compiler.release>11</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
         <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
-        <quarkus.platform.version>2.16.0.Final</quarkus.platform.version>
-        <skipITs>true</skipITs>
-        <surefire-plugin.version>3.0.0-M7</surefire-plugin.version>
-        <xkyss.version>2023.1.1</xkyss.version>
+        <quarkus.platform.version>3.0.0.Alpha3</quarkus.platform.version>
+        <compiler-plugin.version>3.10.1</compiler-plugin.version>
+        <surefire-plugin.version>3.0.0-M8</surefire-plugin.version>
+        <xkyss.version>2023.2.2</xkyss.version>
     </properties>
 
     <modules>
