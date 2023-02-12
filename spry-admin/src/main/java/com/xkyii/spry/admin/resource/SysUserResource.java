@@ -1,9 +1,10 @@
 package com.xkyii.spry.admin.resource;
 
 
+import com.xkyii.spry.admin.dto.login.LoginDto;
 import com.xkyii.spry.admin.dto.login.RegisterInput;
 import com.xkyii.spry.admin.dto.login.RegisterOutput;
-import com.xkyii.spry.admin.entity.SysUser;
+import com.xkyii.spry.admin.dto.login.TokenDto;
 import com.xkyii.spry.admin.service.ISysUserService;
 import com.xkyii.spry.common.dto.Response;
 import io.quarkus.hibernate.reactive.panache.common.runtime.ReactiveTransactional;
@@ -39,5 +40,12 @@ public class SysUserResource {
         return userService.register(input)
                 .onItem().transform(RegisterOutput::from)
                 .onItem().transform(Response::ok);
+    }
+
+    @POST
+    @Path("login")
+    public Uni<Response<TokenDto>> login(@Valid LoginDto loginDto) {
+        return Uni.createFrom().item(new TokenDto())
+            .onItem().transform(Response::ok);
     }
 }
