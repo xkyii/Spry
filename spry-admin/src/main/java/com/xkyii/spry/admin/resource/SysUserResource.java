@@ -1,15 +1,14 @@
 package com.xkyii.spry.admin.resource;
 
 
-import com.xkyii.spry.admin.dto.login.LoginDto;
+import com.xkyii.spry.admin.dto.login.LoginInput;
 import com.xkyii.spry.admin.dto.login.RegisterInput;
 import com.xkyii.spry.admin.dto.login.RegisterOutput;
-import com.xkyii.spry.admin.dto.login.TokenDto;
+import com.xkyii.spry.admin.dto.login.TokenOutput;
 import com.xkyii.spry.admin.service.ISysUserService;
 import com.xkyii.spry.common.dto.Response;
 import io.quarkus.hibernate.reactive.panache.common.runtime.ReactiveTransactional;
 import io.smallrye.mutiny.Uni;
-import io.vertx.core.json.Json;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.Consumes;
@@ -35,8 +34,6 @@ public class SysUserResource {
     @Path("register")
     @ReactiveTransactional
     public Uni<Response<RegisterOutput>> register(@Valid RegisterInput input) {
-        logger.infof("注册用户,入参: \n%s", Json.encodePrettily(input));
-
         return userService.register(input)
                 .onItem().transform(RegisterOutput::from)
                 .onItem().transform(Response::ok);
@@ -44,8 +41,8 @@ public class SysUserResource {
 
     @POST
     @Path("login")
-    public Uni<Response<TokenDto>> login(@Valid LoginDto loginDto) {
-        return Uni.createFrom().item(new TokenDto())
+    public Uni<Response<TokenOutput>> login(@Valid LoginInput loginInput) {
+        return Uni.createFrom().item(new TokenOutput())
             .onItem().transform(Response::ok);
     }
 }

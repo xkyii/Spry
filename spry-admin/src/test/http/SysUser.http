@@ -8,3 +8,15 @@ Content-Type: application/json
   "code": "4",
   "uuid": "aaaabbbb443423243"
 }
+
+
+### login-登录
+POST {{url}}/user/login
+Content-Type: application/json
+
+{
+  "username": "",
+  "password": "123456",
+  "code": "4",
+  "uuid": "aaaabbbb443423243"
+}

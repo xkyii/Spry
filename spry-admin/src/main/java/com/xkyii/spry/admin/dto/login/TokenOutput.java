@@ -1,6 +1,8 @@
 package com.xkyii.spry.admin.dto.login;
 
-public class TokenDto {
+
+public class TokenOutput {
+
     private String token;
 
     public String getToken() {
