@@ -1,71 +1,64 @@
 package com.xkyii.spry.admin.filter;
 
-
-import com.xkyii.spry.admin.dto.error.ValidateOutput;
-import com.xkyii.spry.common.constant.ErrorCode;
+import com.xkyii.spry.admin.constant.AdminError;
 import com.xkyii.spry.common.dto.Response;
+import com.xkyii.spry.common.error.ApiException;
 import com.xkyii.spry.common.error.ErrorMessageManager;
 import com.xkyss.core.util.Stringx;
-import io.quarkus.hibernate.validator.runtime.jaxrs.ViolationReport;
-import jakarta.enterprise.context.ApplicationScoped;
+import io.vertx.core.json.Json;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.container.ContainerResponseContext;
-import org.hibernate.reactive.exception.ConstraintViolationException;
+import jakarta.ws.rs.ext.ExceptionMapper;
 import org.jboss.logging.Logger;
-import org.jboss.resteasy.reactive.RestResponse;
-import org.jboss.resteasy.reactive.server.ServerExceptionMapper;
-import org.jboss.resteasy.reactive.server.ServerResponseFilter;
+import jakarta.ws.rs.ext.Provider;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
-@ApplicationScoped
-class ExceptionMappers {
+@Provider
+public class ExceptionMappers implements ExceptionMapper<Exception> {
+
+    @Inject
+    Logger logger;
+
     @Inject
     ErrorMessageManager emm;
 
-    @ServerResponseFilter
-    public void  mapResponse(ContainerResponseContext context) {
-        // 参数校验异常
-        // TODO: 优化此判断
-        if ("true".equals(context.getHeaderString("validation-exception"))) {
-            Object entity = context.getEntity();
-            if (entity instanceof ViolationReport) {
-                List<ValidateOutput> outputs = new ArrayList<>();
-                ViolationReport vr = (ViolationReport) entity;
-                for (ViolationReport.Violation violation: vr.getViolations()) {
-                    if (violation.getMessage() != null && violation.getMessage().length() > 0) {
-                        String[] split = violation.getMessage().trim().split("\\s*,\\s*");
-                        String key = split[0].trim();
-                        ValidateOutput vo = new ValidateOutput();
-                        vo.setField(violation.getField());
-                        vo.setCode(key);
-                        if (split.length > 1) {
-                            String message = Stringx.format(emm.getMessage(key), (Object[]) Arrays.copyOfRange(split, 1, split.length));
-                            vo.setMessage(message);
-                        }
-                        else {
-                            vo.setMessage(emm.getMessage(key));
-                        }
-                        outputs.add(vo);
-                    }
-                }
-                Response<List<ValidateOutput>> r = new Response<>(ErrorCode.参数校验失败, emm.getMessage(ErrorCode.参数校验失败), outputs);
-                context.setEntity(r);
-            }
-            return;
+    @Override
+    public jakarta.ws.rs.core.Response toResponse(Exception exception) {
+        logger.error(AdminError.操作异常, exception);
+
+        if (exception instanceof ApiException) {
+            return toApiExceptionResponse((ApiException) exception);
         }
 
-        if (context.hasEntity()) {
-            Object entity = context.getEntity();
-            // 对自定义Response填充message
-            if (entity instanceof Response) {
-                @SuppressWarnings("rawtypes") Response r = (Response) entity;
-                if (r.getMessage() == null) {
-                    r.setMessage(emm.getMessage(r.getCode()));
-                }
-            }
-        }
+        return toExceptionResponse(exception);
     }
+
+    private jakarta.ws.rs.core.Response toApiExceptionResponse(ApiException exception) {
+        logger.infof("Filter ApiException: %d, %s", exception.getCode(), exception.getMessage());
+
+        Response<String> r = new Response<>(exception.getCode());
+        if (exception.getMessage() == null && exception.getMessage().equals("")) {
+            r.setMessage(emm.getMessage(r.getCode()));
+        }
+        else {
+            String[] split = exception.getMessage().trim().split("\\s*,\\s*");
+            r.setMessage(Stringx.arrayFormat(emm.getMessage(r.getCode()), split));
+        }
+
+        return toResponse(r);
+    }
+
+    private jakarta.ws.rs.core.Response toExceptionResponse(Exception exception) {
+        Response<String> r = new Response<>(AdminError.操作异常, emm.getMessage(AdminError.操作异常));
+        r.setData(exception.getMessage());
+
+        return toResponse(r);
+    }
+
+    private <T> jakarta.ws.rs.core.Response toResponse(Response<T> r) {
+        return jakarta.ws.rs.core.Response
+            .status(400)
+            .entity(Json.encodePrettily(r))
+            .build();
+    }
+
 }

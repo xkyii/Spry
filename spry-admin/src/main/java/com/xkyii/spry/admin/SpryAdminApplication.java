@@ -5,6 +5,7 @@ import com.xkyii.spry.common.error.ErrorMessageManager;
 import io.quarkus.runtime.ShutdownEvent;
 import io.quarkus.runtime.StartupEvent;
 import io.quarkus.vertx.http.runtime.filters.QuarkusRequestWrapper;
+import io.vertx.core.http.HttpServerResponse;
 import io.vertx.ext.web.Router;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.context.Dependent;
@@ -31,5 +32,24 @@ public class SpryAdminApplication {
     @Produces
     ErrorMessageManager getErrorMessageManager() {
         return new ErrorMessageManager();
+    }
+
+    public void onRouter(@Observes Router router) {
+        System.out.println("onRouter");
+
+        router.route().handler(rc -> {
+            System.out.println("onRouter 0");
+            HttpServerResponse response = rc.response();
+            response.bodyEndHandler(v -> {
+                System.out.println("onRouter body end");
+            });
+            response.exceptionHandler(e -> {
+                System.out.println("onRouter exception " + e.getMessage());
+            });
+            response.endHandler(v -> {
+                System.out.println("onRouter end " + response.bytesWritten());
+            });
+            rc.next();
+        });
     }
 }

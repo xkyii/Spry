@@ -27,23 +27,23 @@ public class SysUserResource {
     @Inject
     ISysUserService userService;
 
-    @Inject
-    ITokenService tokenService;
-
     @POST
     @Path("register")
-    @ReactiveTransactional
-    public Uni<Response<RegisterOutput>> register(@Valid RegisterInput input) {
+    public Uni<Response<RegisterOutput>> register(RegisterInput input) {
         return userService.register(input)
-                .onItem().transform(RegisterOutput::from)
                 .onItem().transform(Response::ok);
     }
 
     @POST
     @Path("login")
-    public Uni<Response<TokenOutput>> login(@Valid LoginInput loginInput) {
-        return userService.findByUsername(loginInput.getUsername())
-                .onItem().transform(u -> new TokenOutput(tokenService.generateToken(u)))
-                .onItem().transform(Response::ok);
+    public Uni<Response<TokenOutput>> login(LoginInput loginInput) {
+//        try {
+            return userService.login(loginInput)
+                    .onItem().transform(Response::ok);
+//        }
+//        catch (Exception e) {
+//            e.printStackTrace();
+//            return Uni.createFrom().item(new TokenOutput("ooo")).onItem().transform(Response::ok);
+//        }
     }
 }

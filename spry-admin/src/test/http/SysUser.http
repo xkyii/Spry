@@ -4,7 +4,7 @@ Content-Type: application/json
 
 {
   "username": "hello",
-  "password": "123456",
+  "password": "12345",
   "code": "4",
   "uuid": "aaaabbbb443423243"
 }
@@ -16,7 +16,7 @@ Content-Type: application/json
 
 {
   "username": "hello",
-  "password": "123456",
+  "password": "1",
   "code": "4",
   "uuid": "aaaabbbb443423243"
 }

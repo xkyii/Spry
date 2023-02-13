@@ -34,7 +34,6 @@ public class HttpLogFilter {
     @ServerResponseFilter
     public void  mapResponse(ContainerRequestContext request, ContainerResponseContext response) {
         vertx.executeBlocking(future -> {
-
             StringBuilder sb = new StringBuilder();
 
             sb.append(request.getMethod());
