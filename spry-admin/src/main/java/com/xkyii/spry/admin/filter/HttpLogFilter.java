@@ -60,8 +60,16 @@ public class HttpLogFilter {
 
             sb.append("\n\n\n");
             sb.append(readAttribute(response.getStringHeaders()));
-            sb.append("\n\n");
-            sb.append(Json.encodePrettily(response.getEntity()));
+            if (response.hasEntity()) {
+                sb.append("\n\n");
+                Object entity = response.getEntity();
+                if (entity instanceof String) {
+                    sb.append(Json.encodePrettily(Json.decodeValue((String) entity)));
+                }
+                else {
+                    sb.append(Json.encodePrettily(entity));
+                }
+            }
 
             logger.info(sb.toString());
             future.complete();
@@ -70,7 +78,7 @@ public class HttpLogFilter {
 
     private String readAttribute(MultivaluedMap<String, String> headers) {
         if (headers.isEmpty()) {
-            return "No Headers";
+            return "-- No Headers";
         } else {
             final StringJoiner joiner = new StringJoiner(System.lineSeparator());
 
