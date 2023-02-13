@@ -16,7 +16,7 @@ Content-Type: application/json
 
 {
   "username": "hello",
-  "password": "1",
+  "password": "12345",
   "code": "4",
   "uuid": "aaaabbbb443423243"
 }

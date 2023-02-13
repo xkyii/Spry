@@ -1,5 +1,6 @@
 package com.xkyii.spry.admin.filter;
 
+import io.quarkus.runtime.util.StringUtil;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.Json;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -41,7 +42,10 @@ public class HttpLogFilter {
             sb.append(request.getUriInfo().getPath());
 
             sb.append("\n");
-            sb.append(readAttribute(request.getHeaders()));
+            {
+                String headsString = readAttribute(request.getHeaders());
+                sb.append(StringUtil.isNullOrEmpty(headsString) ? "<Request head is empty>" : headsString);
+            }
 
             if (request.hasEntity()) {
                 try {
@@ -56,11 +60,18 @@ public class HttpLogFilter {
                     // ignore
                 }
             }
+            else {
+                sb.append("<Request body is empty>");
+            }
 
             sb.append("\n\n\n");
-            sb.append(readAttribute(response.getStringHeaders()));
+            {
+                String headsString = readAttribute(response.getStringHeaders());
+                sb.append(StringUtil.isNullOrEmpty(headsString) ? "<Response head is empty>" : headsString);
+            }
+
+            sb.append("\n\n");
             if (response.hasEntity()) {
-                sb.append("\n\n");
                 Object entity = response.getEntity();
                 if (entity instanceof String) {
 //                    sb.append(Json.encodePrettily(Json.decodeValue((String) entity)));
@@ -70,6 +81,9 @@ public class HttpLogFilter {
                     sb.append(Json.encodePrettily(entity));
                 }
             }
+            else {
+                sb.append("<Response body is empty>");
+            }
 
             logger.info(sb.toString());
             future.complete();
@@ -78,7 +92,7 @@ public class HttpLogFilter {
 
     private String readAttribute(MultivaluedMap<String, String> headers) {
         if (headers.isEmpty()) {
-            return "-- No Headers";
+            return null;
         } else {
             final StringJoiner joiner = new StringJoiner(System.lineSeparator());
 
