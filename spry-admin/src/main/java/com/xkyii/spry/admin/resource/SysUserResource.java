@@ -44,11 +44,7 @@ public class SysUserResource {
     @Path("login")
     public Uni<Response<TokenOutput>> login(@Valid LoginInput loginInput) {
         return userService.findByUsername(loginInput.getUsername())
-                .onItem().transform(u -> {
-                    TokenOutput token = new TokenOutput();
-                    token.setToken(tokenService.generateToken(u));
-                    return token;
-                })
+                .onItem().transform(u -> new TokenOutput(tokenService.generateToken(u)))
                 .onItem().transform(Response::ok);
     }
 }
