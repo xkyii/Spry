@@ -10,4 +10,9 @@ public interface ISysUserService {
      * 注册用户
      */
     Uni<SysUser> register(RegisterInput input);
+
+    /**
+     * 登录用户
+     */
+    Uni<SysUser> findByUsername(String username);
 }

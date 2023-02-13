@@ -70,7 +70,7 @@ public class HttpLogFilter {
 
     private String readAttribute(MultivaluedMap<String, String> headers) {
         if (headers.isEmpty()) {
-            return null;
+            return "No Headers";
         } else {
             final StringJoiner joiner = new StringJoiner(System.lineSeparator());
 

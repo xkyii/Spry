@@ -1,6 +1,7 @@
 package com.xkyii.spry.admin.service.impl;
 
 import com.xkyii.spry.admin.constant.AdminError;
+import com.xkyii.spry.admin.dto.login.LoginInput;
 import com.xkyii.spry.admin.dto.login.RegisterInput;
 import com.xkyii.spry.admin.entity.SysUser;
 import com.xkyii.spry.admin.repository.SysUserRepository;
@@ -43,5 +44,16 @@ public class SysUserService implements ISysUserService {
                 return userRepository.persist(user);
             })
             ;
+    }
+
+    @Override
+    public Uni<SysUser> findByUsername(String username) {
+        return userRepository.find("username", username).firstResult()
+                .onItem().ifNull().failWith(new ApiException(AdminError.用户名不存在, username))
+                .onItem().invoke(user -> {
+                    // 置空密码
+                    user.setPassword(null);
+                })
+                ;
     }
 }

@@ -6,6 +6,7 @@ import com.xkyii.spry.admin.dto.login.RegisterInput;
 import com.xkyii.spry.admin.dto.login.RegisterOutput;
 import com.xkyii.spry.admin.dto.login.TokenOutput;
 import com.xkyii.spry.admin.service.ISysUserService;
+import com.xkyii.spry.admin.service.ITokenService;
 import com.xkyii.spry.common.dto.Response;
 import io.quarkus.hibernate.reactive.panache.common.runtime.ReactiveTransactional;
 import io.smallrye.mutiny.Uni;
@@ -25,10 +26,10 @@ import org.jboss.logging.Logger;
 public class SysUserResource {
 
     @Inject
-    Logger logger;
+    ISysUserService userService;
 
     @Inject
-    ISysUserService userService;
+    ITokenService tokenService;
 
     @POST
     @Path("register")
@@ -42,7 +43,12 @@ public class SysUserResource {
     @POST
     @Path("login")
     public Uni<Response<TokenOutput>> login(@Valid LoginInput loginInput) {
-        return Uni.createFrom().item(new TokenOutput())
-            .onItem().transform(Response::ok);
+        return userService.findByUsername(loginInput.getUsername())
+                .onItem().transform(u -> {
+                    TokenOutput token = new TokenOutput();
+                    token.setToken(tokenService.generateToken(u));
+                    return token;
+                })
+                .onItem().transform(Response::ok);
     }
 }

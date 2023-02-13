@@ -13,6 +13,7 @@ public interface AdminError extends ErrorCode {
     // ------------------
 
     Integer 用户名已经被注册 = 10000;
+    Integer 用户名不存在 = 10001;
 
     // ------------------
     // Validate
