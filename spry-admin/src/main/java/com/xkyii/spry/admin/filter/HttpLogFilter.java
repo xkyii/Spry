@@ -63,7 +63,8 @@ public class HttpLogFilter {
                 sb.append("\n\n");
                 Object entity = response.getEntity();
                 if (entity instanceof String) {
-                    sb.append(Json.encodePrettily(Json.decodeValue((String) entity)));
+//                    sb.append(Json.encodePrettily(Json.decodeValue((String) entity)));
+                    sb.append(entity);
                 }
                 else {
                     sb.append(Json.encodePrettily(entity));

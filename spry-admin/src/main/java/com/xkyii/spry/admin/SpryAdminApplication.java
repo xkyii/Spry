@@ -33,23 +33,4 @@ public class SpryAdminApplication {
     ErrorMessageManager getErrorMessageManager() {
         return new ErrorMessageManager();
     }
-
-    public void onRouter(@Observes Router router) {
-        System.out.println("onRouter");
-
-        router.route().handler(rc -> {
-            System.out.println("onRouter 0");
-            HttpServerResponse response = rc.response();
-            response.bodyEndHandler(v -> {
-                System.out.println("onRouter body end");
-            });
-            response.exceptionHandler(e -> {
-                System.out.println("onRouter exception " + e.getMessage());
-            });
-            response.endHandler(v -> {
-                System.out.println("onRouter end " + response.bytesWritten());
-            });
-            rc.next();
-        });
-    }
 }
