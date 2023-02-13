@@ -4,7 +4,7 @@ import com.xkyii.spry.admin.constant.AdminError;
 import com.xkyii.spry.common.dto.Response;
 import com.xkyii.spry.common.error.ApiException;
 import com.xkyii.spry.common.error.ErrorMessageManager;
-import com.xkyii.spry.common.util.Strings;
+import com.xkyss.core.util.Stringx;
 import io.vertx.core.json.Json;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.ext.ExceptionMapper;
@@ -41,7 +41,7 @@ public class ExceptionFilter implements ExceptionMapper<Exception> {
         }
         else {
             String[] split = exception.getMessage().trim().split("\\s*,\\s*");
-            r.setMessage(Strings.arrayFormat(emm.getMessage(r.getCode()), split));
+            r.setMessage(Stringx.arrayFormat(emm.getMessage(r.getCode()), split));
         }
 
         return toResponse(r);

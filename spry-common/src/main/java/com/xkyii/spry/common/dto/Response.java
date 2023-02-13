@@ -2,7 +2,6 @@ package com.xkyii.spry.common.dto;
 
 import com.xkyii.spry.common.constant.ErrorCode;
 import com.xkyii.spry.common.error.ApiException;
-import com.xkyii.spry.common.util.Strings;
 
 public class Response<T> {
 

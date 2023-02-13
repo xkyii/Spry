@@ -5,7 +5,7 @@ import com.xkyii.spry.admin.dto.error.ValidateOutput;
 import com.xkyii.spry.common.constant.ErrorCode;
 import com.xkyii.spry.common.dto.Response;
 import com.xkyii.spry.common.error.ErrorMessageManager;
-import com.xkyii.spry.common.util.Strings;
+import com.xkyss.core.util.Stringx;
 import io.quarkus.hibernate.validator.runtime.jaxrs.ViolationReport;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -22,17 +22,8 @@ import java.util.List;
 
 @ApplicationScoped
 class ExceptionMappers {
-
-    @Inject
-    Logger logger;
-
     @Inject
     ErrorMessageManager emm;
-
-    @ServerExceptionMapper
-    public RestResponse<String> mapException(ConstraintViolationException x) {
-        return RestResponse.status(RestResponse.Status.NOT_FOUND, "mapped Exception > " + x.getClass().getName());
-    }
 
     @ServerResponseFilter
     public void  mapResponse(ContainerResponseContext context) {
@@ -51,7 +42,7 @@ class ExceptionMappers {
                         vo.setField(violation.getField());
                         vo.setCode(key);
                         if (split.length > 1) {
-                            String message = Strings.arrayFormat(emm.getMessage(key), Arrays.copyOfRange(split, 1, split.length));
+                            String message = Stringx.format(emm.getMessage(key), (Object[]) Arrays.copyOfRange(split, 1, split.length));
                             vo.setMessage(message);
                         }
                         else {
