@@ -56,10 +56,15 @@ public class SysUserService implements ISysUserService {
         String username = input.getUsername();
         return userRepository.find("username", username).firstResult()
                 .onItem().ifNull().failWith(new ApiException(AdminError.用户不存在, username))
+                // 校验密码
+                .onItem().invoke(u -> {
+
+                })
+                // 置空密码
                 .onItem().invoke(user -> {
-                    // 置空密码
                     user.setPassword(null);
                 })
+                // 生成token
                 .onItem().transform(u -> new TokenOutput(tokenService.generateToken(u)))
                 ;
     }

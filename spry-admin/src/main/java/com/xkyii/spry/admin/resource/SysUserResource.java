@@ -30,7 +30,7 @@ public class SysUserResource {
     @POST
     @Path("register")
     @Operation(summary = "注册用户", description = "注册用户")
-    public Uni<RegisterOutput> register(RegisterInput input) {
+    public Uni<RegisterOutput> register(@Valid RegisterInput input) {
         return userService.register(input);
     }
 

@@ -1,0 +1,8 @@
+
+### 获取公钥
+GET {{url}}/security/public-key
+Authorization: Bearer {{bearer}}
+
+### 获取私钥
+GET {{url}}/security/private-key
+Authorization: Bearer {{bearer}}

@@ -33,7 +33,7 @@ public class EntryResource {
     }
 
     @GET
-    @Path("test/permitall")
+    @Path("test/permit-all")
     @PermitAll
     @Operation(summary = "测试全权限", description = "@PermitAll 注解的资源无需权限就可以访问")
     public String permitall(@Context SecurityContext context) {
@@ -41,7 +41,7 @@ public class EntryResource {
     }
 
     @GET
-    @Path("test/denyall")
+    @Path("test/deny-all")
     @DenyAll
     @Operation(summary = "测试无权限", description = "@DenyAll 注解的资源不可访问")
     public String denyall(@Context SecurityContext context) {
@@ -57,10 +57,11 @@ public class EntryResource {
     }
 
     @GET
-    @Path("test/rolesallowed")
+    @Path("test/roles-allowed")
     @RolesAllowed("Admin")
     @Operation(summary = "测试角色权限", description = "@RolesAllowed 注解的资源需要有对应的角色权限才可以访问(当前为'Admin')")
     public String rolesallowed(@Context SecurityContext context) {
         return "rolesallowed";
     }
+
 }
