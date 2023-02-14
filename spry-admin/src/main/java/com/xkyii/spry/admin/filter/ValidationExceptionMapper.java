@@ -7,23 +7,41 @@ import com.xkyss.core.util.Stringx;
 import jakarta.inject.Inject;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.ValidationException;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.ExceptionMapper;
 import jakarta.ws.rs.ext.Provider;
+import org.jboss.logging.Logger;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * 校验异常统一处理
+ */
 @Provider
-public class ConstraintViolationExceptionFilter implements ExceptionMapper<ConstraintViolationException> {
+public class ValidationExceptionMapper implements ExceptionMapper<ValidationException> {
+
+    @Inject
+    Logger logger;
 
     @Inject
     ErrorMessageManager emm;
 
     @Override
-    public Response toResponse(ConstraintViolationException cve) {
+    public Response toResponse(ValidationException ve) {
+
+        if (ve instanceof ConstraintViolationException) {
+            return toConstraintViolationResponse((ConstraintViolationException) ve);
+        }
+
+        logger.warn("未处理的[ValidationException]异常", ve);
+        throw ve;
+    }
+
+    private Response toConstraintViolationResponse(ConstraintViolationException cve) {
         Response.Status status = Response.Status.BAD_REQUEST;
         Response.ResponseBuilder builder = Response.status(status);
 
