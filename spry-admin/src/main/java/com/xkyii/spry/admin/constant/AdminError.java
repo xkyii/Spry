@@ -16,6 +16,8 @@ public interface AdminError extends ErrorCode {
 
     Integer 用户名已经被注册 = 10000;
     Integer 用户不存在 = 10001;
+    Integer 密码格式错误 = 10002;
+    Integer 密码错误 = 10003;
 
 
     // ------------------
