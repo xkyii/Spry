@@ -6,9 +6,6 @@ import com.xkyii.spry.admin.dto.login.RegisterInput;
 import com.xkyii.spry.admin.dto.login.RegisterOutput;
 import com.xkyii.spry.admin.dto.login.TokenOutput;
 import com.xkyii.spry.admin.service.ISysUserService;
-import com.xkyii.spry.admin.service.ITokenService;
-import com.xkyii.spry.common.dto.Response;
-import io.quarkus.hibernate.reactive.panache.common.runtime.ReactiveTransactional;
 import io.smallrye.mutiny.Uni;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
@@ -33,16 +30,14 @@ public class SysUserResource {
     @POST
     @Path("register")
     @Operation(summary = "注册用户", description = "注册用户")
-    public Uni<Response<RegisterOutput>> register(RegisterInput input) {
-        return userService.register(input)
-                .onItem().transform(Response::ok);
+    public Uni<RegisterOutput> register(RegisterInput input) {
+        return userService.register(input);
     }
 
     @POST
     @Path("login")
     @Operation(summary = "登录用户", description = "登录用户")
-    public Uni<Response<TokenOutput>> login(@Valid LoginInput loginInput) {
-        return userService.login(loginInput)
-                .onItem().transform(Response::ok);
+    public Uni<TokenOutput> login(@Valid LoginInput loginInput) {
+        return userService.login(loginInput);
     }
 }
