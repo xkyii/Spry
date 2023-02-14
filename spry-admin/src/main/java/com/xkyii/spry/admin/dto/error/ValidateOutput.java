@@ -1,22 +1,17 @@
 package com.xkyii.spry.admin.dto.error;
 
-/**
- * 参数校验输出
- */
+import org.eclipse.microprofile.openapi.annotations.media.Schema;
+
+@Schema(description = "参数校验输出")
 public class ValidateOutput {
-    /**
-     * 字段名
-     */
+
+    @Schema(title="字段名")
     private String field;
 
-    /**
-     * 代码
-     */
+    @Schema(title="代码")
     private String code;
 
-    /**
-     * 信息
-     */
+    @Schema(title="信息")
     private String message;
 
     public String getField() {

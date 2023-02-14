@@ -1,6 +1,9 @@
 package com.xkyii.spry.admin.dto.login;
 
 
+import org.eclipse.microprofile.openapi.annotations.media.Schema;
+
+@Schema(description = "Token出参")
 public class TokenOutput {
 
     private String token;
