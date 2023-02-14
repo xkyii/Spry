@@ -6,3 +6,17 @@ Authorization: Bearer {{bearer}}
 ### 获取私钥
 GET {{url}}/security/private-key
 Authorization: Bearer {{bearer}}
+
+### 加密
+GET {{url}}/security/encrypt?text=123456
+Authorization: Bearer {{bearer}}
+
+### 解密
+# 123456
+# SChgVPQGHqVpW7hGzWfCnBWFkTiDYWRs3TmYgreHpsN6sZBPmO16eSYmghd7vdQimYh6tnKv+tjbxnmYeyzbm0niF9cOxiA5SD4LpPMOBeqpqHO9JPHtxhDd3f7ZZi5XgBJkxRzg5L1mo2BSHoo7KWCVE3bkoUqmN+ztUyvDCk8Q/w5Kk2Jzk9/Oamjh+v8La4AliqzyRpFppaeo+2vKmNMNWhd1vhET6esYtIUh6GThklRCyPCYBZhUWAm454PgJFCCbAHkBmEmT8S6m5vwHZHbNXTd+q56hijfbqW7Z0n/aqOWisbWo8ABARUMu9GKzx4t6gy9zXfCCUh0MhSywA==
+# admin123
+# ebsO1fWDmuY7INdn7zk9fxaPcs5l0nSPE6d7SZebA5icikvRb7Ue7vzhbBL/UA2zUWNOk5XGcDm6w2AruCol3Qi15omOwPywsyI/rD4Mc/qvT6hWzkRjhvG3Kr/iil7Uo+uIVHKih/mdYfMhwEd6o3+yrNHA5N0Nt0CH8LyY5AEldNEUA1RGua0JP8MsCeJMrlWimmb4krqK8PZYoRVxGFHxRxAvDylQ2jgTmte97/DrgDMCZIiNj7optdAA5ZTZBfyzg9aK5EOkSGnWBhB3/tbk6COysvZfYZH9Dp9YdnxU2QjDeCOTp0W37gVNaqEEFDxbtsXRL2ljdgZNzkhXPA==
+POST {{url}}/security/decrypt
+Authorization: Bearer {{bearer}}
+
+ebsO1fWDmuY7INdn7zk9fxaPcs5l0nSPE6d7SZebA5icikvRb7Ue7vzhbBL/UA2zUWNOk5XGcDm6w2AruCol3Qi15omOwPywsyI/rD4Mc/qvT6hWzkRjhvG3Kr/iil7Uo+uIVHKih/mdYfMhwEd6o3+yrNHA5N0Nt0CH8LyY5AEldNEUA1RGua0JP8MsCeJMrlWimmb4krqK8PZYoRVxGFHxRxAvDylQ2jgTmte97/DrgDMCZIiNj7optdAA5ZTZBfyzg9aK5EOkSGnWBhB3/tbk6COysvZfYZH9Dp9YdnxU2QjDeCOTp0W37gVNaqEEFDxbtsXRL2ljdgZNzkhXPA==

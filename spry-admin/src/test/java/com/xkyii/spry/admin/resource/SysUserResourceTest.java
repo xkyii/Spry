@@ -1,7 +1,5 @@
 package com.xkyii.spry.admin.resource;
 
-import com.xkyii.spry.admin.dto.login.RegisterInput;
-import com.xkyii.spry.admin.dto.login.RegisterOutput;
 import io.quarkus.test.common.http.TestHTTPEndpoint;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
