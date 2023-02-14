@@ -27,3 +27,4 @@ spry-admin/src/main/resources/application-xk.properties
 target
 spry-admin/src/main/resources/application-dev.properties
 spry-migration/src/main/resources/application-dev.properties
+spry-admin/src/main/resources/application-test.properties
