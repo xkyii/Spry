@@ -8,6 +8,7 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.container.ContainerRequestContext;
 import jakarta.ws.rs.container.ContainerResponseContext;
 import jakarta.ws.rs.core.MultivaluedMap;
+import jakarta.ws.rs.core.Response;
 import org.jboss.logging.Logger;
 import org.jboss.resteasy.reactive.server.ServerResponseFilter;
 
@@ -37,16 +38,21 @@ public class HttpLogFilter {
         vertx.executeBlocking(future -> {
             StringBuilder sb = new StringBuilder();
 
+            sb.append("\n\n[Request]:\n");
+
+            // Request URL
             sb.append(request.getMethod());
             sb.append(" ");
             sb.append(request.getUriInfo().getPath());
 
+            // Request Header
             sb.append("\n");
             {
                 String headsString = readAttribute(request.getHeaders());
                 sb.append(StringUtil.isNullOrEmpty(headsString) ? "<Request head is empty>" : headsString);
             }
 
+            // Request Body
             if (request.hasEntity()) {
                 try {
                     request.getEntityStream().reset();
@@ -64,12 +70,23 @@ public class HttpLogFilter {
                 sb.append("<Request body is empty>");
             }
 
-            sb.append("\n\n\n");
+            sb.append("\n\n\n[Response]:\n");
+            // Response Status
+            {
+                Response.StatusType status = response.getStatusInfo();
+                sb.append("Status: ").append(status.getStatusCode());
+                sb.append(", ").append(status.getReasonPhrase());
+                sb.append(", ").append(status.getFamily());
+                sb.append("\n\n");
+            }
+
+            // Response Header
             {
                 String headsString = readAttribute(response.getStringHeaders());
                 sb.append(StringUtil.isNullOrEmpty(headsString) ? "<Response head is empty>" : headsString);
             }
 
+            // Response Body
             sb.append("\n\n");
             if (response.hasEntity()) {
                 Object entity = response.getEntity();
