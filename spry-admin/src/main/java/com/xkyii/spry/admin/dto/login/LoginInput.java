@@ -15,8 +15,7 @@ public class LoginInput {
     private String username;
 
     @NotBlank(message = 校验用户密码不能为空)
-    @Length(min=5, message = 校验用户密码长度)
-    @Schema(title="用户密码, 长度区间: [5, -]", required = true)
+    @Schema(title="用户密码(密文), 非空", required = true)
     private String password;
 
     @Schema(title="验证码")
