@@ -1,226 +1,247 @@
 package com.xkyii.spry.admin.entity;
 
-import com.xkyii.spry.common.entity.BaseEntity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
-import java.util.Date;
-
+/**
+ * 用户
+ */
 @Entity
 @Table(name = "sys_user")
-public class SysUser extends BaseEntity {
+@SuppressWarnings({"JpaDataSourceORMInspection", "unused"})
+public class SysUser {
 
     /** 用户ID */
     @Id
     @GeneratedValue
-    private Long userId;
+    @Column(name = "user_id")
+    private java.lang.Long userId;
 
-    /** 部门ID */
-    private Long deptId;
-
-    /** 部门父ID */
-    private Long parentId;
+    /** 职位ID */
+    @Column(name = "post_id")
+    private java.lang.Long postId;
 
     /** 角色ID */
-    private Long roleId;
+    @Column(name = "role_id")
+    private java.lang.Long roleId;
 
-    /** 登录名称 */
-    private String loginName;
+    /** 部门ID */
+    @Column(name = "dept_id")
+    private java.lang.Long deptId;
 
-    /** 用户名称 */
-    private String userName;
+    /** 用户账号 */
+    @Column(name = "username")
+    private java.lang.String username;
 
-    /** 用户类型 */
-    private String userType;
+    /** 用户昵称 */
+    @Column(name = "nick_name")
+    private java.lang.String nickName;
+
+    /** 用户类型（00系统用户） */
+    @Column(name = "user_type")
+    private java.lang.Short userType;
 
     /** 用户邮箱 */
-    private String email;
+    @Column(name = "email")
+    private java.lang.String email;
 
     /** 手机号码 */
-    private String phonenumber;
+    @Column(name = "phone_number")
+    private java.lang.String phoneNumber;
 
-    /** 用户性别 */
-    private String sex;
+    /** 用户性别（0男 1女 2未知） */
+    @Column(name = "sex")
+    private java.lang.Short sex;
 
-    /** 用户头像 */
-    private String avatar;
+    /** 头像地址 */
+    @Column(name = "avatar")
+    private java.lang.String avatar;
 
     /** 密码 */
-    private String password;
+    @Column(name = "password")
+    private java.lang.String password;
 
-    /** 盐加密 */
-    private String salt;
-
-    /** 帐号状态（0正常 1停用） */
-    private String status;
-
-    /** 删除标志（0代表存在 2代表删除） */
-    private String delFlag;
+    /** 帐号状态（1正常 2停用 3冻结） */
+    @Column(name = "status")
+    private java.lang.Short status;
 
     /** 最后登录IP */
-    private String loginIp;
+    @Column(name = "login_ip")
+    private java.lang.String loginIp;
 
     /** 最后登录时间 */
-    private Date loginDate;
+    @Column(name = "login_date")
+    private java.util.Date loginDate;
 
-    /** 密码最后更新时间 */
-    private Date pwdUpdateDate;
+    /** 更新者ID */
+    @Column(name = "creator_id")
+    private java.lang.Long creatorId;
 
-    /** 部门对象 */
-//    private SysDept dept;
+    /** 创建时间 */
+    @Column(name = "create_time")
+    private java.util.Date createTime;
 
-//    private List<SysRole> roles;
+    /** 更新者ID */
+    @Column(name = "updater_id")
+    private java.lang.Long updaterId;
 
-    /** 角色组 */
-//    private Long[] roleIds;
+    /** 更新时间 */
+    @Column(name = "update_time")
+    private java.util.Date updateTime;
 
-    /** 岗位组 */
-//    private Long[] postIds;
+    /** 备注 */
+    @Column(name = "remark")
+    private java.lang.String remark;
+
+    /** 删除标志（0代表存在 1代表删除） */
+    @Column(name = "deleted")
+    private java.lang.Byte deleted;
 
 
-    public Long getUserId() {
+    public java.lang.Long getUserId() {
         return userId;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(java.lang.Long userId) {
         this.userId = userId;
     }
-
-    public Long getDeptId() {
-        return deptId;
+    public java.lang.Long getPostId() {
+        return postId;
     }
 
-    public void setDeptId(Long deptId) {
-        this.deptId = deptId;
+    public void setPostId(java.lang.Long postId) {
+        this.postId = postId;
     }
-
-    public Long getParentId() {
-        return parentId;
-    }
-
-    public void setParentId(Long parentId) {
-        this.parentId = parentId;
-    }
-
-    public Long getRoleId() {
+    public java.lang.Long getRoleId() {
         return roleId;
     }
 
-    public void setRoleId(Long roleId) {
+    public void setRoleId(java.lang.Long roleId) {
         this.roleId = roleId;
     }
-
-    public String getLoginName() {
-        return loginName;
+    public java.lang.Long getDeptId() {
+        return deptId;
     }
 
-    public void setLoginName(String loginName) {
-        this.loginName = loginName;
+    public void setDeptId(java.lang.Long deptId) {
+        this.deptId = deptId;
+    }
+    public java.lang.String getUsername() {
+        return username;
     }
 
-    public String getUserName() {
-        return userName;
+    public void setUsername(java.lang.String username) {
+        this.username = username;
+    }
+    public java.lang.String getNickName() {
+        return nickName;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setNickName(java.lang.String nickName) {
+        this.nickName = nickName;
     }
-
-    public String getUserType() {
+    public java.lang.Short getUserType() {
         return userType;
     }
 
-    public void setUserType(String userType) {
+    public void setUserType(java.lang.Short userType) {
         this.userType = userType;
     }
-
-    public String getEmail() {
+    public java.lang.String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
+    public void setEmail(java.lang.String email) {
         this.email = email;
     }
-
-    public String getPhonenumber() {
-        return phonenumber;
+    public java.lang.String getPhoneNumber() {
+        return phoneNumber;
     }
 
-    public void setPhonenumber(String phonenumber) {
-        this.phonenumber = phonenumber;
+    public void setPhoneNumber(java.lang.String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
-
-    public String getSex() {
+    public java.lang.Short getSex() {
         return sex;
     }
 
-    public void setSex(String sex) {
+    public void setSex(java.lang.Short sex) {
         this.sex = sex;
     }
-
-    public String getAvatar() {
+    public java.lang.String getAvatar() {
         return avatar;
     }
 
-    public void setAvatar(String avatar) {
+    public void setAvatar(java.lang.String avatar) {
         this.avatar = avatar;
     }
-
-    public String getPassword() {
+    public java.lang.String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
+    public void setPassword(java.lang.String password) {
         this.password = password;
     }
-
-    public String getSalt() {
-        return salt;
-    }
-
-    public void setSalt(String salt) {
-        this.salt = salt;
-    }
-
-    public String getStatus() {
+    public java.lang.Short getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(java.lang.Short status) {
         this.status = status;
     }
-
-    public String getDelFlag() {
-        return delFlag;
-    }
-
-    public void setDelFlag(String delFlag) {
-        this.delFlag = delFlag;
-    }
-
-    public String getLoginIp() {
+    public java.lang.String getLoginIp() {
         return loginIp;
     }
 
-    public void setLoginIp(String loginIp) {
+    public void setLoginIp(java.lang.String loginIp) {
         this.loginIp = loginIp;
     }
-
-    public Date getLoginDate() {
+    public java.util.Date getLoginDate() {
         return loginDate;
     }
 
-    public void setLoginDate(Date loginDate) {
+    public void setLoginDate(java.util.Date loginDate) {
         this.loginDate = loginDate;
     }
-
-    public Date getPwdUpdateDate() {
-        return pwdUpdateDate;
+    public java.lang.Long getCreatorId() {
+        return creatorId;
     }
 
-    public void setPwdUpdateDate(Date pwdUpdateDate) {
-        this.pwdUpdateDate = pwdUpdateDate;
+    public void setCreatorId(java.lang.Long creatorId) {
+        this.creatorId = creatorId;
+    }
+    public java.util.Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(java.util.Date createTime) {
+        this.createTime = createTime;
+    }
+    public java.lang.Long getUpdaterId() {
+        return updaterId;
+    }
+
+    public void setUpdaterId(java.lang.Long updaterId) {
+        this.updaterId = updaterId;
+    }
+    public java.util.Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(java.util.Date updateTime) {
+        this.updateTime = updateTime;
+    }
+    public java.lang.String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(java.lang.String remark) {
+        this.remark = remark;
+    }
+    public java.lang.Byte getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(java.lang.Byte deleted) {
+        this.deleted = deleted;
     }
 }

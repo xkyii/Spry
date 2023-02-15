@@ -24,8 +24,13 @@ public class ResponseWrapFilter {
             return;
         }
 
+        // 不处理无媒体类型
+        if (response.getMediaType() == null) {
+            return;
+        }
+
         // 只对json返回类型进行处理
-        if (response.getMediaType() != null && !response.getMediaType().isCompatible(MediaType.APPLICATION_JSON_TYPE)) {
+        if (!response.getMediaType().isCompatible(MediaType.APPLICATION_JSON_TYPE)) {
             return;
         }
 

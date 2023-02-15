@@ -6,7 +6,7 @@
 -- drop table if exists sys_config;
 create table sys_config
 (
-    config_id       int                      not null auto_increment    comment '参数主键',
+    config_id       int                      not null auto_increment    comment '参数ID',
     config_name     varchar(128)  default '' not null                   comment '配置名称',
     config_key      varchar(128)  default '' not null                   comment '配置键名',
     config_options  varchar(1024) default '' not null                   comment '可选的选项',
@@ -25,8 +25,8 @@ create table sys_config
 -- drop table if exists sys_dept;
 create table sys_dept
 (
-    dept_id      int                     not null auto_increment comment '部门主键',
-    parent_id    bigint       default 0  not null                comment '父部门id',
+    dept_id      int                     not null auto_increment comment '部门ID',
+    parent_id    bigint       default 0  not null                comment '父部门ID',
     ancestors    text                    not null                comment '祖级列表',
     dept_name    varchar(64)  default '' not null                comment '部门名称',
     order_num    int          default 0  not null                comment '显示顺序',
@@ -47,7 +47,7 @@ create table sys_dept
 -- drop table if exists sys_login_info;
 create table sys_login_info
 (
-    info_id          bigint not null auto_increment,
+    info_id          bigint not null auto_increment comment '登录日志ID',
     username         varchar(50)  default '' not null comment '用户账号',
     ip_address       varchar(128) default '' not null comment '登录IP地址',
     login_location   varchar(255) default '' not null comment '登录地点',
@@ -64,7 +64,7 @@ create table sys_login_info
 -- drop table if exists sys_menu;
 create table sys_menu
 (
-    menu_id      bigint not null auto_increment,
+    menu_id      bigint not null auto_increment comment '菜单ID',
     menu_name    varchar(64)              not null comment '菜单名称',
     parent_id    bigint       default 0   not null comment '父菜单ID',
     order_num    int          default 0   not null comment '显示顺序',
@@ -91,7 +91,7 @@ create table sys_menu
 -- drop table if exists sys_notice;
 create table sys_notice
 (
-    notice_id      int not null auto_increment,
+    notice_id      int not null auto_increment comment '公告ID',
     notice_title   varchar(64)             not null comment '公告标题',
     notice_type    smallint                not null comment '公告类型（1通知 2公告）',
     notice_content text                    null comment '公告内容',
@@ -109,7 +109,7 @@ create table sys_notice
 -- drop table if exists sys_operation_log;
 create table sys_operation_log
 (
-    operation_id      bigint not null auto_increment,
+    operation_id      bigint not null auto_increment comment '操作ID',
     business_type     smallint      default 0  not null comment '业务类型（0其它 1新增 2修改 3删除）',
     request_method    smallint      default 0  not null comment '请求方式',
     request_module    varchar(64)   default '' not null comment '请求模块',
@@ -118,7 +118,7 @@ create table sys_operation_log
     operator_type     smallint      default 0  not null comment '操作类别（0其它 1后台用户 2手机端用户）',
     user_id           bigint        default 0  null comment '用户ID',
     username          varchar(32)   default '' null comment '操作人员',
-    operator_ip       varchar(128)  default '' null comment '操作人员ip',
+    operator_ip       varchar(128)  default '' null comment '操作人员IP',
     operator_location varchar(256)  default '' null comment '操作地点',
     dept_id           bigint        default 0  null comment '部门ID',
     dept_name         varchar(64)              null comment '部门名称',
@@ -135,7 +135,7 @@ create table sys_operation_log
 -- drop table if exists sys_post;
 create table sys_post
 (
-    post_id      bigint not null auto_increment,
+    post_id      bigint not null auto_increment  comment '岗位主键',
     post_code    varchar(64)            not null comment '岗位编码',
     post_name    varchar(64)            not null comment '岗位名称',
     post_sort    int                    not null comment '显示顺序',
@@ -153,7 +153,7 @@ create table sys_post
 -- drop table if exists sys_role;
 create table sys_role
 (
-    role_id      bigint not null auto_increment,
+    role_id      bigint not null auto_increment    comment '角色ID',
     role_name    varchar(32)              not null comment '角色名称',
     role_key     varchar(128)             not null comment '角色权限字符串',
     role_sort    int                      not null comment '显示顺序',
@@ -181,9 +181,9 @@ create table sys_role_menu
 -- drop table if exists sys_user;
 create table sys_user
 (
-    user_id      bigint not null auto_increment,
-    post_id      bigint                  null comment '职位id',
-    role_id      bigint                  null comment '角色id',
+    user_id      bigint not null auto_increment comment '用户ID',
+    post_id      bigint                  null comment '职位ID',
+    role_id      bigint                  null comment '角色ID',
     dept_id      bigint                  null comment '部门ID',
     username     varchar(64)             not null comment '用户账号',
     nick_name    varchar(32)             not null comment '用户昵称',

@@ -1,10 +1,10 @@
 
 package com.xkyii.spry.admin.repository;
 
-import com.xkyii.spry.admin.entity.SysUser;
+import com.xkyii.spry.admin.entity.SysRoleMenu;
 import io.quarkus.hibernate.reactive.panache.PanacheRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
-public class SysUserRepository implements PanacheRepository<SysUser> {
+public class SysRoleMenuRepository implements PanacheRepository<SysRoleMenu> {
 }

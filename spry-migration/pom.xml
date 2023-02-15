@@ -15,6 +15,14 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.xkyss</groupId>
+            <artifactId>xkyss-quarkus-codegen</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-resteasy</artifactId>
+        </dependency>
+        <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-flyway</artifactId>
         </dependency>

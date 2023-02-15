@@ -1,0 +1,33 @@
+package {generator.packageName}.{target.relativePackage};
+
+import jakarta.persistence.*;
+
+/**
+ * {table.remarks}
+ */
+@Entity
+@Table(name = "{table.name}")
+@SuppressWarnings({"JpaDataSourceORMInspection", "unused"})
+public class {target.prefix}{table.namePascal} {
+
+    {#for column in table.columns}
+    /** {column.remarks} */
+    {#if column.isPrimary}
+    @Id
+    @GeneratedValue
+    {/if}
+    @Column(name = "{column.name}")
+    private {column.javaType} {column.nameCamel};
+
+    {/for}
+
+    {#for column in table.columns}
+    public {column.javaType} get{column.namePascal}() {
+        return {column.nameCamel};
+    }
+
+    public void set{column.namePascal}({column.javaType} {column.nameCamel}) {
+        this.{column.nameCamel} = {column.nameCamel};
+    }
+    {/for}
+}

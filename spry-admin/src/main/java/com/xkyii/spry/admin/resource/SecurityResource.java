@@ -1,22 +1,18 @@
 package com.xkyii.spry.admin.resource;
 
+import cn.hutool.crypto.digest.DigestUtil;
 import com.xkyii.spry.admin.service.ISecureService;
-import io.smallrye.jwt.util.KeyUtils;
-import io.smallrye.jwt.util.ResourceUtils;
+import io.quarkus.elytron.security.common.BcryptUtil;
+import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
-import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.security.GeneralSecurityException;
-import java.security.PrivateKey;
-import java.security.PublicKey;
-import java.util.Base64;
 
 @Path("security")
 @RolesAllowed("Admin")
@@ -44,16 +40,33 @@ public class SecurityResource {
     }
 
     @GET
-    @Path("encrypt")
-    @Operation(summary = "明文转换为密文")
-    public String encrypt(@QueryParam("text") String text) {
+    @Path("rsa-encrypt")
+    @PermitAll
+    @Operation(summary = "明文转换为密文(RSA)")
+    public String rsaEncrypt(@QueryParam("text") String text) {
         return secureService.encrypt(text);
     }
 
     @POST
-    @Path("decrypt")
-    @Operation(summary = "密文转换为明文")
-    public String decrypt(String password) {
+    @Path("rsa-decrypt")
+    @PermitAll
+    @Operation(summary = "密文转换为明文(RSA)")
+    public String rsaDecrypt(String password) {
         return secureService.decrypt(password);
+    }
+    
+    @GET
+    @Path("bc-hash")
+    @PermitAll
+    @Operation(summary = "明文转换为密文(BCrypt)")
+    public String bcEncrypt(@QueryParam("text") String text, @QueryParam("salt") String salt) {
+        StringBuilder sb = new StringBuilder();
+        String saltMd5 = DigestUtil.md5Hex16(salt).toUpperCase();
+        sb.append("Salt Md5:\n");
+        sb.append(saltMd5);
+        sb.append("\n\n");
+        sb.append("BCrypt Hash:\n");
+        sb.append(BcryptUtil.bcryptHash(text, 10, saltMd5.getBytes()));
+        return sb.toString();
     }
 }

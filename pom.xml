@@ -67,6 +67,11 @@
                 <artifactId>xkyss-mocky</artifactId>
                 <version>${xkyss.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.xkyss</groupId>
+                <artifactId>xkyss-quarkus-codegen</artifactId>
+                <version>${xkyss.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 

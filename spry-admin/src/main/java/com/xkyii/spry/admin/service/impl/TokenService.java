@@ -18,7 +18,7 @@ public class TokenService implements ITokenService {
         JwtClaimsBuilder claims = Jwt.claims();
         claims.issuer("https://xkyii.com/issuer");
         claims.upn(StringUtil.isNullOrEmpty(user.getEmail())
-            ? (user.getUserName() + "@xkyii.com")
+            ? (user.getUsername() + "@xkyii.com")
             : user.getEmail());
         claims.groups(new HashSet<>(Arrays.asList("User", "Admin")));
         claims.expiresIn(86400);

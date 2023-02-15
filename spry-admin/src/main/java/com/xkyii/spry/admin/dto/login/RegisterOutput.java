@@ -10,7 +10,7 @@ public class RegisterOutput {
 
     public static RegisterOutput from(SysUser user) {
         RegisterOutput output = new RegisterOutput();
-        output.setUsername(user.getUserName());
+        output.setUsername(user.getUsername());
         return output;
     }
 

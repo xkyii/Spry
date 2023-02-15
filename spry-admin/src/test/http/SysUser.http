@@ -3,8 +3,8 @@ POST {{url}}/user/register
 Content-Type: application/json
 
 {
-  "username": "hello",
-  "password": "1",
+  "username": "xkyii",
+  "password": "123456",
   "code": "4",
   "uuid": "aaaabbbb443423243"
 }

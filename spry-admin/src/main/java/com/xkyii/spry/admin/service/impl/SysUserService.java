@@ -48,11 +48,8 @@ public class SysUserService implements ISysUserService {
                 String password = input.getPassword();
 
                 SysUser user = new SysUser();
-                user.setUserName(username);
-
-                Strings strings = new Strings(ThreadLocalRandom.current());
-                user.setSalt(strings.size(16).get());
-                user.setPassword(BcryptUtil.bcryptHash(password, 10, user.getSalt().getBytes()));
+                user.setUsername(username);
+                user.setPassword(BcryptUtil.bcryptHash(password, 10, username.toUpperCase().getBytes()));
                 return userRepository.persist(user);
             })
             .onItem().transform(RegisterOutput::from)
@@ -67,7 +64,7 @@ public class SysUserService implements ISysUserService {
                 // 校验密码
                 .onItem().invoke(Unchecked.consumer(u -> {
                     String decryptPassword = secureService.decrypt(input.getPassword());
-                    String decryptHash = BcryptUtil.bcryptHash(decryptPassword, 10, u.getSalt().getBytes());
+                    String decryptHash = BcryptUtil.bcryptHash(decryptPassword, 10, u.getUsername().toUpperCase().getBytes());
                     if (!Objects.equals(decryptHash, u.getPassword())) {
                         throw new ApiException(AdminError.密码错误);
                     }
