@@ -13,13 +13,11 @@ public class SysRoleMenu implements java.io.Serializable {
 
     /** 角色ID */
     @Id
-    @GeneratedValue
     @Column(name = "role_id")
     private java.lang.Long roleId;
 
     /** 菜单ID */
     @Id
-    @GeneratedValue
     @Column(name = "menu_id")
     private java.lang.Long menuId;
 

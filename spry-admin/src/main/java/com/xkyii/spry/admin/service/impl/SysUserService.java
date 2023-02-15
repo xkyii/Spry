@@ -1,6 +1,8 @@
 package com.xkyii.spry.admin.service.impl;
 
+import cn.hutool.crypto.digest.DigestUtil;
 import com.xkyii.spry.admin.constant.AdminError;
+import com.xkyii.spry.admin.constant.UserStatus;
 import com.xkyii.spry.admin.dto.login.LoginInput;
 import com.xkyii.spry.admin.dto.login.RegisterInput;
 import com.xkyii.spry.admin.dto.login.RegisterOutput;
@@ -49,7 +51,12 @@ public class SysUserService implements ISysUserService {
 
                 SysUser user = new SysUser();
                 user.setUsername(username);
-                user.setPassword(BcryptUtil.bcryptHash(password, 10, username.toUpperCase().getBytes()));
+                String saltMd5 = DigestUtil.md5Hex16(username.toUpperCase()).toUpperCase();
+                user.setPassword(BcryptUtil.bcryptHash(password, 10, saltMd5.getBytes()));
+                // 默认值
+                user.setDeleted((byte) 0);
+                user.setNickName(input.getUsername());
+                user.setStatus(UserStatus.正常);
                 return userRepository.persist(user);
             })
             .onItem().transform(RegisterOutput::from)
@@ -64,7 +71,8 @@ public class SysUserService implements ISysUserService {
                 // 校验密码
                 .onItem().invoke(Unchecked.consumer(u -> {
                     String decryptPassword = secureService.decrypt(input.getPassword());
-                    String decryptHash = BcryptUtil.bcryptHash(decryptPassword, 10, u.getUsername().toUpperCase().getBytes());
+                    String saltMd5 = DigestUtil.md5Hex16(username.toUpperCase()).toUpperCase();
+                    String decryptHash = BcryptUtil.bcryptHash(decryptPassword, 10, saltMd5.getBytes());
                     if (!Objects.equals(decryptHash, u.getPassword())) {
                         throw new ApiException(AdminError.密码错误);
                     }

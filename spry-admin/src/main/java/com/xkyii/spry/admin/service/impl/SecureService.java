@@ -40,6 +40,7 @@ public class SecureService implements ISecureService {
             RSA rsa = SecureUtil.rsa(privateKey.getEncoded(), null);
             byte[] decrypt = rsa.decrypt(Base64.decode(password), KeyType.PrivateKey);
             String decryptPassword = StrUtil.str(decrypt, CharsetUtil.CHARSET_UTF_8);
+            logger.info("待解密文: " + password);
             logger.info("解出明文: " + decryptPassword);
             return decryptPassword;
 
