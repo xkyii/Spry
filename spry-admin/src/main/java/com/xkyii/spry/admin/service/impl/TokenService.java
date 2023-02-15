@@ -21,6 +21,7 @@ public class TokenService implements ITokenService {
             ? (user.getUsername() + "@xkyii.com")
             : user.getEmail());
         claims.groups(new HashSet<>(Arrays.asList("User", "Admin")));
+        // 过期时间
         claims.expiresIn(86400);
         return claims.sign();
     }
