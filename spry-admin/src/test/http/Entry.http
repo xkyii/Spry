@@ -1,8 +1,8 @@
 ### test-permission
-GET {{url}}/test/permitall
+GET {{url}}/test/permit-all
 
 ### test-denyall
-GET {{url}}/test/denyall
+GET {{url}}/test/deny-all
 
 ### test-Authenticated
 GET {{url}}/test/authenticated

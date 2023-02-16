@@ -1,7 +1,7 @@
 package com.xkyii.spry.admin.resource;
 
 import cn.hutool.crypto.digest.DigestUtil;
-import com.xkyii.spry.admin.service.ISecureService;
+import com.xkyii.spry.admin.service.SecureService;
 import io.quarkus.elytron.security.common.BcryptUtil;
 import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
@@ -23,7 +23,7 @@ import java.security.GeneralSecurityException;
 public class SecurityResource {
 
     @Inject
-    ISecureService secureService;
+    SecureService secureService;
 
     @GET
     @Path("public-key")

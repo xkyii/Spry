@@ -1,4 +1,4 @@
-package com.xkyii.spry.admin.service.impl;
+package com.xkyii.spry.admin.service;
 
 import cn.hutool.core.codec.Base64;
 import cn.hutool.core.util.CharsetUtil;
@@ -7,7 +7,6 @@ import cn.hutool.crypto.SecureUtil;
 import cn.hutool.crypto.asymmetric.KeyType;
 import cn.hutool.crypto.asymmetric.RSA;
 import com.xkyii.spry.admin.constant.AdminError;
-import com.xkyii.spry.admin.service.ISecureService;
 import com.xkyii.spry.common.error.ApiException;
 import io.smallrye.jwt.util.KeyUtils;
 import io.smallrye.jwt.util.ResourceUtils;
@@ -23,7 +22,7 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 
 @ApplicationScoped
-public class SecureService implements ISecureService {
+public class SecureService {
 
     @Inject
     Logger logger;

@@ -19,6 +19,8 @@ public interface AdminError extends ErrorCode {
     Integer 加密失败 = 10002;
     Integer 解密失败 = 10003;
     Integer 密码错误 = 10004;
+    Integer 用户未登录 = 10005;
+
 
 
     // ------------------

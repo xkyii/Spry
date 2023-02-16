@@ -53,6 +53,7 @@ public class HttpLogFilter {
             }
 
             // Request Body
+            sb.append("\n\n");
             if (request.hasEntity()) {
                 try {
                     request.getEntityStream().reset();
@@ -60,7 +61,6 @@ public class HttpLogFilter {
                             new InputStreamReader(request.getEntityStream(), StandardCharsets.UTF_8))
                             .lines()
                             .collect(Collectors.joining("\n"));
-                    sb.append("\n\n");
                     sb.append(text);
                 } catch (IOException e) {
                     // ignore

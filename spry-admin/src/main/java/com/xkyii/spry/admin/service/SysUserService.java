@@ -1,41 +1,41 @@
-package com.xkyii.spry.admin.service.impl;
+package com.xkyii.spry.admin.service;
 
 import cn.hutool.crypto.digest.DigestUtil;
 import com.xkyii.spry.admin.constant.AdminError;
 import com.xkyii.spry.admin.constant.UserStatus;
-import com.xkyii.spry.admin.dto.login.LoginInput;
-import com.xkyii.spry.admin.dto.login.RegisterInput;
-import com.xkyii.spry.admin.dto.login.RegisterOutput;
-import com.xkyii.spry.admin.dto.login.TokenOutput;
+import com.xkyii.spry.admin.dto.login.*;
 import com.xkyii.spry.admin.entity.SysUser;
 import com.xkyii.spry.admin.repository.SysUserRepository;
-import com.xkyii.spry.admin.service.ISecureService;
-import com.xkyii.spry.admin.service.ISysUserService;
-import com.xkyii.spry.admin.service.ITokenService;
 import com.xkyii.spry.common.error.ApiException;
-import com.xkyss.mocky.unit.text.Strings;
 import io.quarkus.elytron.security.common.BcryptUtil;
 import io.quarkus.hibernate.reactive.panache.common.runtime.ReactiveTransactional;
 import io.smallrye.mutiny.Uni;
 import io.smallrye.mutiny.unchecked.Unchecked;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.enterprise.inject.spi.CDI;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
+import jakarta.ws.rs.core.Context;
+import jakarta.ws.rs.core.SecurityContext;
 
+import java.security.Principal;
 import java.util.Objects;
-import java.util.concurrent.ThreadLocalRandom;
 
 @ApplicationScoped
-public class SysUserService implements ISysUserService {
+public class SysUserService {
 
     @Inject
     SysUserRepository userRepository;
 
     @Inject
-    ITokenService tokenService;
+    TokenService tokenService;
 
     @Inject
-    ISecureService secureService;
+    SecureService secureService;
+
+    @Context
+    SecurityContext securityContext;
 
 
     @ReactiveTransactional
@@ -63,7 +63,6 @@ public class SysUserService implements ISysUserService {
             ;
     }
 
-    @Override
     public Uni<TokenOutput> login(@Valid LoginInput input) {
         String username = input.getUsername();
         return userRepository.find("username", username).firstResult()
@@ -86,4 +85,18 @@ public class SysUserService implements ISysUserService {
                 ;
     }
 
+    @RequestScoped
+    public Uni<UserPermissionOutput> getLoginUserInfo() {
+        // 获取当前已登录用户的信息
+        Principal loginUser = securityContext.getUserPrincipal();
+        String username = loginUser.getName();
+
+        return userRepository.find("username", username).firstResult()
+                .onItem().ifNull().failWith(new ApiException(AdminError.用户不存在, username))
+                .onItem().transform(u -> {
+                    UserPermissionOutput userPermission = new UserPermissionOutput();
+                    userPermission.setRoleKey(loginUser.getName());
+                    return userPermission;
+                });
+    }
 }
