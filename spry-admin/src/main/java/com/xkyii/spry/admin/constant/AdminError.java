@@ -21,16 +21,4 @@ public interface AdminError extends ErrorCode {
     Integer 密码错误 = 10004;
     Integer 用户未登录 = 10005;
 
-
-
-    // ------------------
-    // Validate Message
-    //  From: 11000
-    // ------------------
-
-    String 校验用户名不能为空 = "11001";
-    String 校验用户名长度 = "11002, {min}, {max}";
-    String 校验用户密码不能为空 = "11003";
-    String 校验用户密码长度 = "11004, {min}, {max}";
-
 }

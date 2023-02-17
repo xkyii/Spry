@@ -11,3 +11,6 @@ Authorization: Bearer {{bearer}}
 ### test-rolesallowed
 GET {{url}}/test/rolesallowed
 Authorization: Bearer {{bearer}}
+
+### test-validator
+GET {{url}}/test/validator

@@ -9,12 +9,12 @@ import static com.xkyii.spry.admin.constant.AdminError.*;
 @Schema(description = "用户登录参数")
 public class LoginCommand {
 
-    @NotBlank(message = 校验用户名不能为空)
-    @Length(min=2, max=20, message = 校验用户名长度)
+    @NotBlank
+    @Length(min=2, max=20)
     @Schema(title="用户名, 长度区间: [2, 20]", required = true)
     private String username;
 
-    @NotBlank(message = 校验用户密码不能为空)
+    @NotBlank
     @Schema(title="用户密码(密文), 非空", required = true)
     private String password;
 

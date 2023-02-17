@@ -1,11 +1,13 @@
 package com.xkyii.spry.admin.resource;
 
+import com.xkyii.spry.admin.dto.test.TestValidateDto;
 import com.xkyii.spry.common.config.SpryConfig;
 import io.quarkus.security.Authenticated;
 import jakarta.annotation.security.DenyAll;
 import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
+import jakarta.validation.Valid;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
@@ -13,8 +15,13 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.SecurityContext;
+import jakarta.ws.rs.ext.Provider;
+import org.bouncycastle.util.test.Test;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
+
+import java.util.Arrays;
+import java.util.List;
 
 
 @Path("")
@@ -62,6 +69,23 @@ public class EntryResource {
     @Operation(summary = "测试角色权限", description = "@RolesAllowed 注解的资源需要有对应的角色权限才可以访问(当前为'Admin')")
     public String rolesallowed(@Context SecurityContext context) {
         return "rolesallowed";
+    }
+
+
+    @GET
+    @Path("test/validator")
+    @PermitAll
+    @Produces(MediaType.APPLICATION_JSON)
+    @Operation(summary = "测试输出参数校验")
+    public @Valid List<TestValidateDto> validator() {
+        TestValidateDto dto = new TestValidateDto();
+//        dto.setName("test");
+        dto.setCode("1");
+        TestValidateDto.InnerDto innerDto = new TestValidateDto.InnerDto();
+//        innerDto.setName("inner");
+        dto.setInner(Arrays.asList(innerDto));
+
+        return Arrays.asList(dto);
     }
 
 }

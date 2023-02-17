@@ -21,7 +21,13 @@ public class ErrorMessageManager {
     }
 
     public String getMessage(String key, Locale locale) {
-        return ResourceBundle.getBundle(PATH, locale).getString(key);
+        ResourceBundle bundle = ResourceBundle.getBundle(PATH, locale);
+        if (bundle.containsKey(key)) {
+            return bundle.getString(key);
+        }
+        else {
+            return key;
+        }
     }
 
 }

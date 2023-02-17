@@ -17,6 +17,7 @@ import org.jboss.logging.Logger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 校验异常统一处理
@@ -45,22 +46,14 @@ public class ValidationExceptionMapper implements ExceptionMapper<ValidationExce
         Response.Status status = Response.Status.BAD_REQUEST;
         Response.ResponseBuilder builder = Response.status(status);
 
-        List<ValidateDto> outputs = new ArrayList<>();
-        for (ConstraintViolation<?> cv: cve.getConstraintViolations()) {
-            String[] split = cv.getMessage().trim().split("\\s*,\\s*");
-            String key = split[0].trim();
-            ValidateDto vo = new ValidateDto();
-            vo.setField(cv.getPropertyPath().toString());
-            vo.setCode(key);
-            if (split.length > 1) {
-                String message = Stringx.format(emm.getMessage(key), (Object[]) Arrays.copyOfRange(split, 1, split.length));
-                vo.setMessage(message);
-            }
-            else {
-                vo.setMessage(emm.getMessage(key));
-            }
-            outputs.add(vo);
-        }
+        List<ValidateDto> outputs = cve.getConstraintViolations().stream()
+                .map(cv -> {
+                    ValidateDto vo = new ValidateDto();
+                    vo.setMessage(cv.getMessage());
+                    vo.setField(cv.getPropertyPath().toString());
+                    return vo;
+                })
+                .collect(Collectors.toList());
 
         com.xkyii.spry.common.dto.Response<List<ValidateDto>> r =
                 new com.xkyii.spry.common.dto.Response<>(ErrorCode.参数校验失败, emm.getMessage(ErrorCode.参数校验失败), outputs);
