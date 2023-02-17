@@ -3,7 +3,11 @@ package com.xkyii.spry.admin.service;
 import cn.hutool.crypto.digest.DigestUtil;
 import com.xkyii.spry.admin.constant.AdminError;
 import com.xkyii.spry.admin.constant.UserStatus;
-import com.xkyii.spry.admin.dto.login.*;
+import com.xkyii.spry.admin.dto.user.get_user_info.UserPermissionDto;
+import com.xkyii.spry.admin.dto.user.login.LoginCommand;
+import com.xkyii.spry.admin.dto.user.login.LoginDto;
+import com.xkyii.spry.admin.dto.user.register.RegisterCommand;
+import com.xkyii.spry.admin.dto.user.register.RegisterDto;
 import com.xkyii.spry.admin.entity.SysUser;
 import com.xkyii.spry.admin.repository.SysUserRepository;
 import com.xkyii.spry.common.error.ApiException;
@@ -13,7 +17,6 @@ import io.smallrye.mutiny.Uni;
 import io.smallrye.mutiny.unchecked.Unchecked;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.context.RequestScoped;
-import jakarta.enterprise.inject.spi.CDI;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.core.Context;
@@ -39,7 +42,7 @@ public class SysUserService {
 
 
     @ReactiveTransactional
-    public Uni<RegisterOutput> register(@Valid RegisterInput input) {
+    public Uni<RegisterDto> register(@Valid RegisterCommand input) {
         String username = input.getUsername();
 
         return userRepository.find("username", username).firstResult()
@@ -59,11 +62,11 @@ public class SysUserService {
                 user.setStatus(UserStatus.正常);
                 return userRepository.persist(user);
             })
-            .onItem().transform(RegisterOutput::from)
+            .onItem().transform(RegisterDto::from)
             ;
     }
 
-    public Uni<TokenOutput> login(@Valid LoginInput input) {
+    public Uni<LoginDto> login(@Valid LoginCommand input) {
         String username = input.getUsername();
         return userRepository.find("username", username).firstResult()
                 .onItem().ifNull().failWith(new ApiException(AdminError.用户不存在, username))
@@ -81,12 +84,12 @@ public class SysUserService {
                     user.setPassword(null);
                 })
                 // 生成token
-                .onItem().transform(u -> new TokenOutput(tokenService.generateToken(u)))
+                .onItem().transform(u -> new LoginDto(tokenService.generateToken(u)))
                 ;
     }
 
     @RequestScoped
-    public Uni<UserPermissionOutput> getLoginUserInfo() {
+    public Uni<UserPermissionDto> getLoginUserInfo() {
         // 获取当前已登录用户的信息
         Principal loginUser = securityContext.getUserPrincipal();
         String username = loginUser.getName();
@@ -94,7 +97,7 @@ public class SysUserService {
         return userRepository.find("username", username).firstResult()
                 .onItem().ifNull().failWith(new ApiException(AdminError.用户不存在, username))
                 .onItem().transform(u -> {
-                    UserPermissionOutput userPermission = new UserPermissionOutput();
+                    UserPermissionDto userPermission = new UserPermissionDto();
                     userPermission.setRoleKey(loginUser.getName());
                     return userPermission;
                 });

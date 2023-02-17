@@ -1,6 +1,6 @@
-package com.xkyii.spry.admin.dto;
+package com.xkyii.spry.admin.dto.user.get_user_info;
 
-public class DictionaryData {
+public class DictionaryDto {
 
     private String label;
     private String value;

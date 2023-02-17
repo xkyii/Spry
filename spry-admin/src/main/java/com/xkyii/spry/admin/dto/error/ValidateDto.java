@@ -3,7 +3,7 @@ package com.xkyii.spry.admin.dto.error;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 
 @Schema(description = "参数校验输出")
-public class ValidateOutput {
+public class ValidateDto {
 
     @Schema(title="字段名")
     private String field;

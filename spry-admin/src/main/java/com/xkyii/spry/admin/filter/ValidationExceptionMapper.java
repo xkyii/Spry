@@ -1,6 +1,6 @@
 package com.xkyii.spry.admin.filter;
 
-import com.xkyii.spry.admin.dto.error.ValidateOutput;
+import com.xkyii.spry.admin.dto.error.ValidateDto;
 import com.xkyii.spry.common.constant.ErrorCode;
 import com.xkyii.spry.common.error.ErrorMessageManager;
 import com.xkyss.core.util.Stringx;
@@ -45,11 +45,11 @@ public class ValidationExceptionMapper implements ExceptionMapper<ValidationExce
         Response.Status status = Response.Status.BAD_REQUEST;
         Response.ResponseBuilder builder = Response.status(status);
 
-        List<ValidateOutput> outputs = new ArrayList<>();
+        List<ValidateDto> outputs = new ArrayList<>();
         for (ConstraintViolation<?> cv: cve.getConstraintViolations()) {
             String[] split = cv.getMessage().trim().split("\\s*,\\s*");
             String key = split[0].trim();
-            ValidateOutput vo = new ValidateOutput();
+            ValidateDto vo = new ValidateDto();
             vo.setField(cv.getPropertyPath().toString());
             vo.setCode(key);
             if (split.length > 1) {
@@ -62,7 +62,7 @@ public class ValidationExceptionMapper implements ExceptionMapper<ValidationExce
             outputs.add(vo);
         }
 
-        com.xkyii.spry.common.dto.Response<List<ValidateOutput>> r =
+        com.xkyii.spry.common.dto.Response<List<ValidateDto>> r =
                 new com.xkyii.spry.common.dto.Response<>(ErrorCode.参数校验失败, emm.getMessage(ErrorCode.参数校验失败), outputs);
         builder.entity(r);
         builder.type(MediaType.APPLICATION_JSON_TYPE);

@@ -1,7 +1,5 @@
-package com.xkyii.spry.admin.dto.login;
+package com.xkyii.spry.admin.dto.user.get_user_info;
 
-import com.xkyii.spry.admin.dto.DictionaryData;
-import com.xkyii.spry.admin.dto.UserDto;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 
 import java.util.List;
@@ -9,7 +7,7 @@ import java.util.Map;
 import java.util.Set;
 
 @Schema(description = "用户信息出参")
-public class UserPermissionOutput {
+public class UserPermissionDto {
 
     @Schema(title="角色名")
     private String roleKey;
@@ -21,7 +19,7 @@ public class UserPermissionOutput {
     private Set<String> permissions;
 
     @Schema(title="字典列表")
-    private Map<String, List<DictionaryData>> dictTypes;
+    private Map<String, List<DictionaryDto>> dictTypes;
 
     public String getRoleKey() {
         return roleKey;
@@ -47,11 +45,11 @@ public class UserPermissionOutput {
         this.permissions = permissions;
     }
 
-    public Map<String, List<DictionaryData>> getDictTypes() {
+    public Map<String, List<DictionaryDto>> getDictTypes() {
         return dictTypes;
     }
 
-    public void setDictTypes(Map<String, List<DictionaryData>> dictTypes) {
+    public void setDictTypes(Map<String, List<DictionaryDto>> dictTypes) {
         this.dictTypes = dictTypes;
     }
 }
