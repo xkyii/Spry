@@ -42,3 +42,5 @@ Content-Type: application/json
 }
 
 ### getLoginUserInfo
+GET {{url}}/user/getLoginUserInfo
+Authorization: Bearer {{bearer}}

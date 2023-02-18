@@ -45,7 +45,6 @@ public class SysUserResource {
     @Operation(summary = "获取用户信息", description = "获取当前已经登录的用户信息")
     @Authenticated
     public Uni<UserPermissionDto> getLoginUserInfo() {
-
         return userService.getLoginUserInfo();
     }
 }

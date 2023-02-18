@@ -3,6 +3,7 @@ package com.xkyii.spry.admin.service;
 import cn.hutool.crypto.digest.DigestUtil;
 import com.xkyii.spry.admin.constant.AdminError;
 import com.xkyii.spry.admin.constant.UserStatus;
+import com.xkyii.spry.admin.dto.user.get_user_info.Converter;
 import com.xkyii.spry.admin.dto.user.get_user_info.UserPermissionDto;
 import com.xkyii.spry.admin.dto.user.login.LoginCommand;
 import com.xkyii.spry.admin.dto.user.login.LoginDto;
@@ -36,6 +37,9 @@ public class SysUserService {
 
     @Inject
     SecureService secureService;
+
+    @Inject
+    Converter converter;
 
     @Context
     SecurityContext securityContext;
@@ -94,12 +98,16 @@ public class SysUserService {
         Principal loginUser = securityContext.getUserPrincipal();
         String username = loginUser.getName();
 
-        return userRepository.find("username", username).firstResult()
-                .onItem().ifNull().failWith(new ApiException(AdminError.用户不存在, username))
-                .onItem().transform(u -> {
-                    UserPermissionDto userPermission = new UserPermissionDto();
-                    userPermission.setRoleKey(loginUser.getName());
-                    return userPermission;
-                });
+        Uni<SysUser> userUni = userRepository.find("username", username).firstResult()
+                .onItem().ifNull().failWith(new ApiException(AdminError.用户不存在, username));
+
+        return Uni.createFrom().item(new UserPermissionDto())
+                .chain(dto -> converter.convert(userUni)
+                        .map(u -> {
+                            dto.setUser(u);
+                            return dto;
+                        }))
+                ;
+
     }
 }

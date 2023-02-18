@@ -14,7 +14,7 @@ public class SysDept {
     @Id
     @GeneratedValue
     @Column(name = "dept_id")
-    private java.lang.Integer deptId;
+    private java.lang.Long deptId;
 
     /** 父部门ID */
     @Column(name = "parent_id")
@@ -73,11 +73,11 @@ public class SysDept {
     private java.lang.Byte deleted;
 
 
-    public java.lang.Integer getDeptId() {
+    public java.lang.Long getDeptId() {
         return deptId;
     }
 
-    public void setDeptId(java.lang.Integer deptId) {
+    public void setDeptId(java.lang.Long deptId) {
         this.deptId = deptId;
     }
     public java.lang.Long getParentId() {

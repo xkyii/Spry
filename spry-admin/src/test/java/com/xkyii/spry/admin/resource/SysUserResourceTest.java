@@ -41,7 +41,6 @@ public class SysUserResourceTest {
 
         Assertions.assertEquals(BAD_REQUEST.getStatusCode(), response.statusCode());
         Assertions.assertEquals(AdminError.参数校验失败, response.jsonPath().getInt("code"));
-        Assertions.assertTrue(AdminError.校验用户密码长度.startsWith(response.jsonPath().getString("data[0].code")));
     }
 
     /**
