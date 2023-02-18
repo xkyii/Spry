@@ -14,6 +14,7 @@ import com.xkyii.spry.admin.repository.SysUserRepository;
 import com.xkyii.spry.common.error.ApiException;
 import io.quarkus.elytron.security.common.BcryptUtil;
 import io.quarkus.hibernate.reactive.panache.common.runtime.ReactiveTransactional;
+import io.quarkus.security.identity.SecurityIdentity;
 import io.smallrye.mutiny.Uni;
 import io.smallrye.mutiny.unchecked.Unchecked;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -44,6 +45,8 @@ public class SysUserService {
     @Context
     SecurityContext securityContext;
 
+    @Context
+    SecurityIdentity securityIdentity;
 
     @ReactiveTransactional
     public Uni<RegisterDto> register(@Valid RegisterCommand input) {
@@ -98,16 +101,26 @@ public class SysUserService {
         Principal loginUser = securityContext.getUserPrincipal();
         String username = loginUser.getName();
 
-        Uni<SysUser> userUni = userRepository.find("username", username).firstResult()
+        Uni<SysUser> userUni = userRepository.get(username)
                 .onItem().ifNull().failWith(new ApiException(AdminError.用户不存在, username));
 
         return Uni.createFrom().item(new UserPermissionDto())
-                .chain(dto -> converter.convert(userUni)
-                        .map(u -> {
-                            dto.setUser(u);
-                            return dto;
-                        }))
-                ;
-
+            // 字典信息(Dict)
+            .map(dto -> {
+//                dto.setDictTypes();
+                return dto;
+            })
+            // 用户信息(User)
+            .flatMap(dto -> converter.convertUser(userUni).map(userDto -> {
+                dto.setUser(userDto);
+                return dto;
+            }))
+            // 角色信息(Role)
+            .flatMap(dto -> converter.convertRole(userUni).map(userDto -> {
+                dto.setRoleKey(userDto.getRoleKey());
+                dto.setPermissions(userDto.getMenuPermissions());
+                return dto;
+            }))
+            ;
     }
 }

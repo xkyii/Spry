@@ -9,9 +9,15 @@ import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
 public class SysUserRepository implements PanacheRepository<SysUser> {
+    private final String CACHE_NAME = "sys-user";
 
-    @CacheResult(cacheName = "sys-user")
+    @CacheResult(cacheName = CACHE_NAME)
     public Uni<SysUser> get(Long id) {
         return findById(id);
+    }
+
+    @CacheResult(cacheName = CACHE_NAME)
+    public Uni<SysUser> get(String username) {
+        return find("username", username).firstResult();
     }
 }
