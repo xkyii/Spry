@@ -1,8 +1,36 @@
-package com.xkyii.spry.admin.dto.user.get_user_info;
+package com.xkyii.spry.admin.dto.auth;
 
+import cn.hutool.core.convert.Convert;
+import cn.hutool.core.util.StrUtil;
+import com.xkyii.spry.admin.entity.SysRole;
+
+import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
-public class RoleDto {
+public class RoleInfo {
+
+    public RoleInfo() {
+
+    }
+
+    public RoleInfo(SysRole entity, String roleKey, Set<String> menuPermissions, Set<Long> menuIds) {
+        if (entity != null) {
+            this.roleId = entity.getRoleId();
+            this.roleName = entity.getRoleName();
+//            this.dataScope = BasicEnumUtil.fromValue(DataScopeEnum.class, entity.getDataScope());
+
+            if(StrUtil.isNotEmpty(entity.getDeptIdSet())) {
+                this.deptIdSet = StrUtil.split(entity.getDeptIdSet(), ",").stream()
+                    .map(Convert::toLong).collect(Collectors.toSet());
+            }
+
+            this.roleKey = roleKey;
+            this.menuPermissions = menuPermissions != null ? menuPermissions : new HashSet<>();
+            this.menuIds = menuIds != null ? menuIds : new HashSet<>();
+
+        }
+    }
 
     private Long roleId;
     private String roleName;

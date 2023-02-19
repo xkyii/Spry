@@ -3,6 +3,7 @@ package com.xkyii.spry.admin.service;
 import cn.hutool.crypto.digest.DigestUtil;
 import com.xkyii.spry.admin.constant.AdminError;
 import com.xkyii.spry.admin.constant.UserStatus;
+import com.xkyii.spry.admin.dto.auth.LoginUser;
 import com.xkyii.spry.admin.dto.user.get_user_info.Converter;
 import com.xkyii.spry.admin.dto.user.get_user_info.UserPermissionDto;
 import com.xkyii.spry.admin.dto.user.login.LoginCommand;
@@ -10,6 +11,7 @@ import com.xkyii.spry.admin.dto.user.login.LoginDto;
 import com.xkyii.spry.admin.dto.user.register.RegisterCommand;
 import com.xkyii.spry.admin.dto.user.register.RegisterDto;
 import com.xkyii.spry.admin.entity.SysUser;
+import com.xkyii.spry.admin.filter.AuthedAugmentor;
 import com.xkyii.spry.admin.repository.SysUserRepository;
 import com.xkyii.spry.common.error.ApiException;
 import io.quarkus.elytron.security.common.BcryptUtil;
@@ -22,9 +24,7 @@ import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.core.Context;
-import jakarta.ws.rs.core.SecurityContext;
 
-import java.security.Principal;
 import java.util.Objects;
 
 @ApplicationScoped
@@ -41,9 +41,6 @@ public class SysUserService {
 
     @Inject
     Converter converter;
-
-    @Context
-    SecurityContext securityContext;
 
     @Context
     SecurityIdentity securityIdentity;
@@ -97,30 +94,16 @@ public class SysUserService {
 
     @RequestScoped
     public Uni<UserPermissionDto> getLoginUserInfo() {
-        // 获取当前已登录用户的信息
-        Principal loginUser = securityContext.getUserPrincipal();
-        String username = loginUser.getName();
+        LoginUser loginUser = securityIdentity.getAttribute(AuthedAugmentor.LOGIN_USER);
 
-        Uni<SysUser> userUni = userRepository.get(username)
-                .onItem().ifNull().failWith(new ApiException(AdminError.用户不存在, username));
-
-        return Uni.createFrom().item(new UserPermissionDto())
-            // 字典信息(Dict)
-            .map(dto -> {
-//                dto.setDictTypes();
-                return dto;
-            })
-            // 用户信息(User)
-            .flatMap(dto -> converter.convertUser(userUni).map(userDto -> {
-                dto.setUser(userDto);
-                return dto;
-            }))
-            // 角色信息(Role)
-            .flatMap(dto -> converter.convertRole(userUni).map(userDto -> {
-                dto.setRoleKey(userDto.getRoleKey());
-                dto.setPermissions(userDto.getMenuPermissions());
-                return dto;
-            }))
-            ;
+        return converter.convertUser(loginUser.getEntity())
+            .map(userDto -> {
+                UserPermissionDto permissionDto = new UserPermissionDto();
+                permissionDto.setUser(userDto);
+                permissionDto.setRoleKey(loginUser.getRoleInfo().getRoleKey());
+                permissionDto.setPermissions(loginUser.getRoleInfo().getMenuPermissions());
+                // dto.setDictTypes();
+                return permissionDto;
+            });
     }
 }

@@ -1,23 +1,33 @@
 package com.xkyii.spry.admin.filter;
 
+import com.xkyii.spry.admin.dto.auth.LoginUser;
+import com.xkyii.spry.admin.dto.auth.RoleInfo;
+import com.xkyii.spry.admin.entity.SysRole;
+import com.xkyii.spry.admin.entity.SysUser;
+import com.xkyii.spry.admin.repository.SysRoleRepository;
 import com.xkyii.spry.admin.repository.SysUserRepository;
 import io.quarkus.security.identity.AuthenticationRequestContext;
 import io.quarkus.security.identity.SecurityIdentity;
 import io.quarkus.security.identity.SecurityIdentityAugmentor;
 import io.quarkus.security.runtime.QuarkusSecurityIdentity;
 import io.smallrye.mutiny.Uni;
-import io.vertx.core.json.JsonObject;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.context.control.ActivateRequestContext;
 import jakarta.inject.Inject;
 
-import java.util.function.Supplier;
+import java.util.Set;
+
 
 @ApplicationScoped
 public class AuthedAugmentor implements SecurityIdentityAugmentor {
 
+    public static final String LOGIN_USER = LoginUser.class.getName();
+
     @Inject
     SysUserRepository userRepository;
+
+    @Inject
+    SysRoleRepository roleRepository;
 
     @Override
     @ActivateRequestContext
@@ -26,36 +36,49 @@ public class AuthedAugmentor implements SecurityIdentityAugmentor {
             return Uni.createFrom().item(identity);
         }
 
-        return userRepository.get(identity.getPrincipal().getName())
-            .onItem().ifNotNull().<SecurityIdentity>transform(user -> {
-                JsonObject attributes = new JsonObject()
-                    .put("email", user.getEmail());
-                return QuarkusSecurityIdentity.builder()
-                    .setPrincipal(identity.getPrincipal())
-                    .addAttributes(attributes.getMap())
-//                    .addRoles()
-//                    .addPermissions()
-                    .build();
-            })
-            .onItem().ifNull().continueWith(identity)
-            ;
-
-
+        return Uni.createFrom().item(new Context())
+            .flatMap(ctx -> userRepository.get(identity.getPrincipal().getName()).map(ctx::setUser))
+            .flatMap(ctx -> roleRepository.getRoleOfUser(ctx.getUserId()).map(ctx::setRole))
+            .flatMap(ctx -> userRepository.getMenuPermissionsOf(ctx.getUserId()).map(ctx::setMenuPermissions))
+            .map(ctx -> QuarkusSecurityIdentity.builder(identity)
+                .addAttribute(LOGIN_USER, new LoginUser(ctx.user, new RoleInfo(
+                    ctx.role,
+                    ctx.role.getRoleKey(),
+                    ctx.menuPermissions,
+                    ctx.menuIds
+                )))
+                .build()
+            );
     }
 
-    @ActivateRequestContext
-    Supplier<SecurityIdentity> build(SecurityIdentity identity) {
-        QuarkusSecurityIdentity.Builder builder = QuarkusSecurityIdentity.builder(identity);
-        String username = identity.getPrincipal().getName();
+    private static class Context {
+        private SysUser user;
+        private SysRole role;
+        private Set<String> menuPermissions;
+        private Set<Long> menuIds;
 
-        userRepository.get(username).subscribe().with(user -> {
-            builder.addAttribute("000", "000000");
-        });
+        public Long getUserId() {
+            return (user == null || user.getUserId() == null) ? 0L : user.getUserId();
+        }
 
-//        UserRoleEntity.<userRoleEntity>streamAll()
-//            .filter(role -> user.equals(role.user))
-//            .forEach(role -> builder.addRole(role.role));
+        public Context setUser(SysUser user) {
+            this.user = user;
+            return this;
+        }
 
-        return builder::build;
+        public Context setRole(SysRole role) {
+            this.role = role;
+            return this;
+        }
+
+        public Context setMenuPermissions(Set<String> permissions) {
+            this.menuPermissions = permissions;
+            return this;
+        }
+
+        public Context setMenuIds(Set<Long> menuIds) {
+            this.menuIds = menuIds;
+            return this;
+        }
     }
 }
