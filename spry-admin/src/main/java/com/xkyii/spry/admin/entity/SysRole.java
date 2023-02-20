@@ -7,7 +7,7 @@ import jakarta.persistence.*;
  */
 @Entity
 @Table(name = "sys_role")
-@NamedQuery(name = "SysRole.getRoleOfUser", query = "Select r From SysRole as r LEFT JOIN SysUser as u ON r.deleted=0 AND u.userId=?1")
+@NamedQuery(name = "SysRole.getRoleOfUser", query = "SELECT r FROM SysRole as r LEFT JOIN SysUser as u ON r.deleted=0 AND u.userId=?1")
 @SuppressWarnings({"JpaDataSourceORMInspection", "unused", "SqlDialectInspection", "SqlNoDataSourceInspection"})
 public class SysRole {
 

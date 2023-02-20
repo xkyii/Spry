@@ -7,7 +7,7 @@ import jakarta.persistence.*;
  */
 @Entity
 @Table(name = "sys_user")
-@SuppressWarnings({"JpaDataSourceORMInspection", "unused"})
+@SuppressWarnings({"unused"})
 public class SysUser {
 
     /** 用户ID */

@@ -7,6 +7,13 @@ import jakarta.persistence.*;
  */
 @Entity
 @Table(name = "sys_menu")
+@NamedQuery(name= "SysMenu.getPermissionsOfUser", query = "" +
+    "SELECT DISTINCT m.perms " +
+    "FROM SysMenu m " +
+    " LEFT JOIN SysRoleMenu rm ON m.menuId=rm.menuId " +
+    " LEFT JOIN SysUser u ON rm.roleId=u.roleId " +
+    " LEFT JOIN SysRole r ON r.roleId=u.roleId " +
+    "WHERE m.status=1 AND m.deleted=0 AND r.status=1 AND r.deleted=0 AND u.userId=?1")
 @SuppressWarnings({"JpaDataSourceORMInspection", "unused"})
 public class SysMenu {
 

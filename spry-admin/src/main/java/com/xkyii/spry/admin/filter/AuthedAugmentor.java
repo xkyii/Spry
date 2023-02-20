@@ -4,6 +4,7 @@ import com.xkyii.spry.admin.dto.auth.LoginUser;
 import com.xkyii.spry.admin.dto.auth.RoleInfo;
 import com.xkyii.spry.admin.entity.SysRole;
 import com.xkyii.spry.admin.entity.SysUser;
+import com.xkyii.spry.admin.repository.SysMenuRepository;
 import com.xkyii.spry.admin.repository.SysRoleRepository;
 import com.xkyii.spry.admin.repository.SysUserRepository;
 import io.quarkus.security.identity.AuthenticationRequestContext;
@@ -27,6 +28,9 @@ public class AuthedAugmentor implements SecurityIdentityAugmentor {
     SysUserRepository userRepository;
 
     @Inject
+    SysMenuRepository menuRepository;
+
+    @Inject
     SysRoleRepository roleRepository;
 
     @Override
@@ -39,7 +43,7 @@ public class AuthedAugmentor implements SecurityIdentityAugmentor {
         return Uni.createFrom().item(new Context())
             .flatMap(ctx -> userRepository.get(identity.getPrincipal().getName()).map(ctx::setUser))
             .flatMap(ctx -> roleRepository.getRoleOfUser(ctx.getUserId()).map(ctx::setRole))
-            .flatMap(ctx -> userRepository.getMenuPermissionsOf(ctx.getUserId()).map(ctx::setMenuPermissions))
+            .flatMap(ctx -> menuRepository.getPermissionsOfUser(ctx.getUserId()).map(ctx::setMenuPermissions))
             .map(ctx -> QuarkusSecurityIdentity.builder(identity)
                 .addAttribute(LOGIN_USER, new LoginUser(ctx.user, new RoleInfo(
                     ctx.role,
