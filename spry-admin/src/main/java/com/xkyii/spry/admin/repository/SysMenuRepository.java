@@ -4,6 +4,7 @@ package com.xkyii.spry.admin.repository;
 import com.xkyii.spry.admin.entity.SysMenu;
 import io.quarkus.cache.CacheResult;
 import io.quarkus.hibernate.reactive.panache.PanacheRepository;
+import io.quarkus.runtime.util.StringUtil;
 import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
 
@@ -20,6 +21,14 @@ public class SysMenuRepository implements PanacheRepository<SysMenu> {
             session.createNamedQuery("SysMenu.getPermissionsOfUser", String.class)
                 .setParameter(1, userId)
                 .getResultList()
-                .map(HashSet::new));
+                .map(permissions -> {
+                    Set<String> set = new HashSet<>();
+                    for (String permission: permissions) {
+                        if (!StringUtil.isNullOrEmpty(permission)) {
+                            set.add(permission);
+                        }
+                    }
+                    return set;
+                }));
     }
 }
