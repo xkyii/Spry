@@ -1,4 +1,4 @@
-package com.xkyii.spry.admin.service;
+package com.xkyii.spry.admin.manager;
 
 import com.xkyii.spry.admin.entity.SysUser;
 import io.quarkus.runtime.util.StringUtil;
@@ -11,7 +11,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 
 @ApplicationScoped
-public class TokenService {
+public class TokenManager {
 
     public String generateToken(SysUser user) {
         JwtClaimsBuilder claims = Jwt.claims();

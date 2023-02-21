@@ -1,4 +1,4 @@
-package com.xkyii.spry.admin.service;
+package com.xkyii.spry.admin.manager;
 
 import cn.hutool.core.codec.Base64;
 import cn.hutool.core.util.CharsetUtil;
@@ -22,7 +22,7 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 
 @ApplicationScoped
-public class SecureService {
+public class SecureManager {
 
     @Inject
     Logger logger;

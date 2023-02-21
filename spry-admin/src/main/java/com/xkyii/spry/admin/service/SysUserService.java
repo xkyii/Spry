@@ -12,6 +12,8 @@ import com.xkyii.spry.admin.dto.user.register.RegisterCommand;
 import com.xkyii.spry.admin.dto.user.register.RegisterDto;
 import com.xkyii.spry.admin.entity.SysUser;
 import com.xkyii.spry.admin.filter.AuthedAugmentor;
+import com.xkyii.spry.admin.manager.SecureManager;
+import com.xkyii.spry.admin.manager.TokenManager;
 import com.xkyii.spry.admin.repository.SysUserRepository;
 import com.xkyii.spry.common.error.ApiException;
 import io.quarkus.elytron.security.common.BcryptUtil;
@@ -34,10 +36,10 @@ public class SysUserService {
     SysUserRepository userRepository;
 
     @Inject
-    TokenService tokenService;
+    TokenManager tokenManager;
 
     @Inject
-    SecureService secureService;
+    SecureManager secureManager;
 
     @Inject
     Converter converter;
@@ -76,7 +78,7 @@ public class SysUserService {
                 .onItem().ifNull().failWith(new ApiException(AdminError.用户不存在, username))
                 // 校验密码
                 .onItem().invoke(Unchecked.consumer(u -> {
-                    String decryptPassword = secureService.decrypt(input.getPassword());
+                    String decryptPassword = secureManager.decrypt(input.getPassword());
                     String saltMd5 = DigestUtil.md5Hex16(username.toUpperCase()).toUpperCase();
                     String decryptHash = BcryptUtil.bcryptHash(decryptPassword, 10, saltMd5.getBytes());
                     if (!Objects.equals(decryptHash, u.getPassword())) {
@@ -88,7 +90,7 @@ public class SysUserService {
                     user.setPassword(null);
                 })
                 // 生成token
-                .onItem().transform(u -> new LoginDto(tokenService.generateToken(u)))
+                .onItem().transform(u -> new LoginDto(tokenManager.generateToken(u)))
                 ;
     }
 
