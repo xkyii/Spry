@@ -108,10 +108,9 @@ public class SysUserService {
                 permissionDto.setUser(userDto);
                 permissionDto.setRoleKey(loginUser.getRoleInfo().getRoleKey());
                 permissionDto.setPermissions(loginUser.getRoleInfo().getMenuPermissions());
-//                permissionDto.setDictTypes(dictionaryManager.getAll());
                 return permissionDto;
             })
-            .flatMap(permissionDto -> dictionaryManager.getAll().map(dic -> {
+            .flatMap(permissionDto -> dictionaryManager.getAllCache().map(dic -> {
                 permissionDto.setDictTypes(dic);
                 return permissionDto;
             }));

@@ -23,20 +23,22 @@ public class DictionaryManager {
 
     private static final String CACHE_KEY = "dictionary";
 
+    public Map<String, List<DictionaryData>> getAll() {
+        Map<String, List<DictionaryData>> map = MapUtil.newHashMap(128);
+        map.put(BusinessTypeEnum.Key, arrayToList(BusinessTypeEnum.values()));
+        map.put(YesOrNoEnum.Key, arrayToList(YesOrNoEnum.values()));
+        map.put(StatusEnum.Key, arrayToList(StatusEnum.values()));
+        map.put(GenderEnum.Key, arrayToList(GenderEnum.values()));
+        map.put(NoticeStatusEnum.Key, arrayToList(NoticeStatusEnum.values()));
+        map.put(NoticeTypeEnum.Key, arrayToList(NoticeTypeEnum.values()));
+        map.put(OperationStatusEnum.Key, arrayToList(OperationStatusEnum.values()));
+        map.put(VisibleStatusEnum.Key, arrayToList(VisibleStatusEnum.values()));
+        return map;
+    }
+
     @CacheResult(cacheName = CACHE_KEY)
-    public Uni<Map<String, List<DictionaryData>>> getAll() {
-        return Uni.createFrom().emitter(em -> {
-            Map<String, List<DictionaryData>> map = MapUtil.newHashMap(128);
-            map.put(BusinessTypeEnum.Key, arrayToList(BusinessTypeEnum.values()));
-            map.put(YesOrNoEnum.Key, arrayToList(YesOrNoEnum.values()));
-            map.put(StatusEnum.Key, arrayToList(StatusEnum.values()));
-            map.put(GenderEnum.Key, arrayToList(GenderEnum.values()));
-            map.put(NoticeStatusEnum.Key, arrayToList(NoticeStatusEnum.values()));
-            map.put(NoticeTypeEnum.Key, arrayToList(NoticeTypeEnum.values()));
-            map.put(OperationStatusEnum.Key, arrayToList(OperationStatusEnum.values()));
-            map.put(VisibleStatusEnum.Key, arrayToList(VisibleStatusEnum.values()));
-            em.complete(map);
-        });
+    public Uni<Map<String, List<DictionaryData>>> getAllCache() {
+        return Uni.createFrom().emitter(em -> em.complete(getAll()));
     }
 
     @SuppressWarnings("rawtypes")
