@@ -1,10 +1,22 @@
-package com.xkyii.spry.admin.dto.user.get_user_info;
+package com.xkyii.spry.admin.dto.data;
 
-public class DictionaryDto {
+import cn.hutool.core.util.StrUtil;
+import com.xkyii.spry.common.constant.DictionaryEnum;
+
+public class DictionaryData {
 
     private String label;
     private String value;
     private String cssTag;
+
+    @SuppressWarnings("rawtypes")
+    public DictionaryData(DictionaryEnum enumType) {
+        if (enumType != null) {
+            this.label = enumType.description();
+            this.value = StrUtil.toString(enumType.getValue());
+            this.cssTag = enumType.cssTag();
+        }
+    }
 
     public String getLabel() {
         return label;

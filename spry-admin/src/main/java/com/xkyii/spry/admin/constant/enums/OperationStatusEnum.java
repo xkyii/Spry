@@ -8,7 +8,6 @@ import com.xkyii.spry.common.constant.DictionaryEnum;
  * 对应sys_operation_log的status字段
  * @author valarchie
  */
-//@Dictionary(name = "sys_operation_status")
 public enum OperationStatusEnum implements DictionaryEnum<Integer> {
 
     /**
@@ -17,6 +16,7 @@ public enum OperationStatusEnum implements DictionaryEnum<Integer> {
     SUCCESS(1, "成功", CssTag.PRIMARY),
     FAIL(0, "失败", CssTag.DANGER);
 
+    public static final String Key = "sys_operation_status";
     private final int value;
     private final String description;
     private final String cssTag;

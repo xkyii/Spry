@@ -1,5 +1,6 @@
 package com.xkyii.spry.admin.dto.user.get_user_info;
 
+import com.xkyii.spry.admin.dto.data.DictionaryData;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 
 import java.util.List;
@@ -19,7 +20,7 @@ public class UserPermissionDto {
     private Set<String> permissions;
 
     @Schema(title="字典列表")
-    private Map<String, List<DictionaryDto>> dictTypes;
+    private Map<String, List<DictionaryData>> dictTypes;
 
     public String getRoleKey() {
         return roleKey;
@@ -45,11 +46,11 @@ public class UserPermissionDto {
         this.permissions = permissions;
     }
 
-    public Map<String, List<DictionaryDto>> getDictTypes() {
+    public Map<String, List<DictionaryData>> getDictTypes() {
         return dictTypes;
     }
 
-    public void setDictTypes(Map<String, List<DictionaryDto>> dictTypes) {
+    public void setDictTypes(Map<String, List<DictionaryData>> dictTypes) {
         this.dictTypes = dictTypes;
     }
 }

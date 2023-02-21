@@ -12,6 +12,7 @@ import com.xkyii.spry.admin.dto.user.register.RegisterCommand;
 import com.xkyii.spry.admin.dto.user.register.RegisterDto;
 import com.xkyii.spry.admin.entity.SysUser;
 import com.xkyii.spry.admin.filter.AuthedAugmentor;
+import com.xkyii.spry.admin.manager.DictionaryManager;
 import com.xkyii.spry.admin.manager.SecureManager;
 import com.xkyii.spry.admin.manager.TokenManager;
 import com.xkyii.spry.admin.repository.SysUserRepository;
@@ -40,6 +41,9 @@ public class SysUserService {
 
     @Inject
     SecureManager secureManager;
+
+    @Inject
+    DictionaryManager dictionaryManager;
 
     @Inject
     Converter converter;
@@ -104,8 +108,12 @@ public class SysUserService {
                 permissionDto.setUser(userDto);
                 permissionDto.setRoleKey(loginUser.getRoleInfo().getRoleKey());
                 permissionDto.setPermissions(loginUser.getRoleInfo().getMenuPermissions());
-                // dto.setDictTypes();
+//                permissionDto.setDictTypes(dictionaryManager.getAll());
                 return permissionDto;
-            });
+            })
+            .flatMap(permissionDto -> dictionaryManager.getAll().map(dic -> {
+                permissionDto.setDictTypes(dic);
+                return permissionDto;
+            }));
     }
 }

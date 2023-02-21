@@ -19,6 +19,8 @@ public enum BusinessTypeEnum implements DictionaryEnum<Integer> {
     CLEAN(8, "清空", CssTag.DANGER),
         ;
 
+    public static final String Key = "sys_operation_type";
+
     private final int value;
     private final String description;
     private final String cssTag;

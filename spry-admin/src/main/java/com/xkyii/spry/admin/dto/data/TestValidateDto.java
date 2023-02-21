@@ -1,4 +1,4 @@
-package com.xkyii.spry.admin.dto.test;
+package com.xkyii.spry.admin.dto.data;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;

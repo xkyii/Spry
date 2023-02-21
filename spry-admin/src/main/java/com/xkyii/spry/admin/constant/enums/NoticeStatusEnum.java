@@ -8,7 +8,6 @@ import com.xkyii.spry.common.constant.DictionaryEnum;
  * 对应sys_notice的 status字段
  * @author valarchie
  */
-//@Dictionary(name = "sys_notice_status")
 public enum NoticeStatusEnum implements DictionaryEnum<Integer> {
 
     /**
@@ -17,6 +16,7 @@ public enum NoticeStatusEnum implements DictionaryEnum<Integer> {
     OPEN(1, "正常", CssTag.PRIMARY),
     CLOSE(0, "关闭", CssTag.DANGER);
 
+    public static final String Key = "sys_notice_status";
     private final int value;
     private final String description;
     private final String cssTag;

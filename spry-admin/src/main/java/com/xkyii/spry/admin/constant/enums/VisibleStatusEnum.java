@@ -8,7 +8,6 @@ import com.xkyii.spry.common.constant.DictionaryEnum;
  * 对应sys_menu表的is_visible字段
  * @author valarchie
  */
-//@Dictionary(name = "sys_visible")
 public enum VisibleStatusEnum implements DictionaryEnum<Integer> {
 
     /**
@@ -17,6 +16,7 @@ public enum VisibleStatusEnum implements DictionaryEnum<Integer> {
     SHOW(1, "显示", CssTag.PRIMARY),
     HIDE(0, "隐藏", CssTag.DANGER);
 
+    public static final String Key = "sys_visible";
     private final int value;
     private final String description;
     private final String cssTag;

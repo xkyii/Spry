@@ -1,6 +1,6 @@
 package com.xkyii.spry.admin.resource;
 
-import com.xkyii.spry.admin.dto.test.TestValidateDto;
+import com.xkyii.spry.admin.dto.data.TestValidateDto;
 import com.xkyii.spry.common.config.SpryConfig;
 import io.quarkus.security.Authenticated;
 import jakarta.annotation.security.DenyAll;
@@ -15,8 +15,6 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.SecurityContext;
-import jakarta.ws.rs.ext.Provider;
-import org.bouncycastle.util.test.Test;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 

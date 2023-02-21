@@ -8,7 +8,6 @@ import com.xkyii.spry.common.constant.DictionaryEnum;
  * 对应sys_notice的 notice_type字段
  * @author valarchie
  */
-//@Dictionary(name = "sys_notice_type")
 public enum NoticeTypeEnum implements DictionaryEnum<Integer> {
 
     /**
@@ -17,6 +16,7 @@ public enum NoticeTypeEnum implements DictionaryEnum<Integer> {
     NOTIFICATION(1, "通知", CssTag.WARNING),
     ANNOUNCEMENT(2, "公告", CssTag.SUCCESS);
 
+    public static final String Key = "sys_notice_type";
     private final int value;
     private final String description;
     private final String cssTag;

@@ -9,7 +9,6 @@ import com.xkyii.spry.common.constant.DictionaryEnum;
  *
  * @author valarchie
  */
-//@Dictionary(name = "sys_user_sex")
 public enum GenderEnum implements DictionaryEnum<Integer> {
 
     /**
@@ -19,6 +18,7 @@ public enum GenderEnum implements DictionaryEnum<Integer> {
     FEMALE(2, "女", CssTag.NONE),
     UNKNOWN(0, "未知", CssTag.NONE);
 
+    public static final String Key = "sys_user_sex";
     private final int value;
     private final String description;
     private final String cssTag;

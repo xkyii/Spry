@@ -8,13 +8,14 @@ import com.xkyii.spry.common.constant.DictionaryEnum;
  * 除非表有特殊指明的话，一般用这个枚举代表 status字段
  * @author valarchie
  */
-//@Dictionary(name = "sys_status")
 public enum StatusEnum implements DictionaryEnum<Integer> {
     /**
      * 开关状态
      */
     ENABLE(1, "正常", CssTag.PRIMARY),
     DISABLE(0, "停用", CssTag.DANGER);
+
+    public static final String Key = "sys_status";
 
     private final int value;
     private final String description;

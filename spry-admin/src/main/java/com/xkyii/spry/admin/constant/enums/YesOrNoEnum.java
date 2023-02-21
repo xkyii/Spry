@@ -16,6 +16,8 @@ public enum YesOrNoEnum implements DictionaryEnum<Integer> {
     YES(1, "是", CssTag.PRIMARY),
     NO(0, "否", CssTag.DANGER);
 
+    public static final String Key = "sys_yes_no";
+
     private final int value;
     private final String description;
     private final String cssTag;
