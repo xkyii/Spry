@@ -4,11 +4,15 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.xkyii.spry</groupId>
+    <groupId>com.xkyii</groupId>
     <artifactId>spry</artifactId>
-    <version>2023.7-alpha1</version>
+    <version>2023.7.1</version>
     <packaging>pom</packaging>
     <name>Spry</name>
+
+    <modules>
+        <module>spry-admin</module>
+    </modules>
 
     <properties>
         <skipITs>true</skipITs>
@@ -19,7 +23,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
         <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
-        <quarkus.platform.version>3.1.2.Final</quarkus.platform.version>
+        <quarkus.platform.version>3.2.2.Final</quarkus.platform.version>
         <compiler-plugin.version>3.11.0</compiler-plugin.version>
         <surefire-plugin.version>3.0.0</surefire-plugin.version>
         <mapstruct.version>1.5.3.Final</mapstruct.version>
