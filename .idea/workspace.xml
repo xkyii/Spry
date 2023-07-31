@@ -42,7 +42,7 @@
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "jdk.selected.JAVA_MODULE": "openjdk-17",
+    "jdk.selected.JAVA_MODULE": "graalvm-11",
     "last_opened_file_path": "E:/xk/Code/xkpro/Spry/spry-admin",
     "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.15",
@@ -112,7 +112,7 @@
       <workItem from="1690773491695" duration="4000" />
       <workItem from="1690773560228" duration="869000" />
       <workItem from="1690774441374" duration="576000" />
-      <workItem from="1690775026598" duration="3211000" />
+      <workItem from="1690775026598" duration="6653000" />
     </task>
     <servers />
   </component>

@@ -12,6 +12,7 @@
 
     <modules>
         <module>spry-admin</module>
+        <module>spry-common</module>
     </modules>
 
     <properties>
@@ -38,6 +39,12 @@
                 <version>${quarkus.platform.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+            <!-- spry -->
+            <dependency>
+                <groupId>com.xkyii</groupId>
+                <artifactId>spry-common</artifactId>
+                <version>${project.version}</version>
             </dependency>
             <!-- mapstruct -->
             <dependency>
