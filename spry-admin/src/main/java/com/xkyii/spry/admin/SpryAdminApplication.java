@@ -33,4 +33,39 @@ public class SpryAdminApplication {
     ErrorMessageManager getErrorMessageManager() {
         return new ErrorMessageManager();
     }
+
+
+
+    public void onRouter(@Observes Router router) {
+        System.out.println("onRouter");
+        router.route().order(Integer.MIN_VALUE).handler(rc -> {
+            QuarkusRequestWrapper.get(rc.request()).addRequestDoneHandler(event -> System.out.println("onRouter min"));
+            rc.next();
+        });
+        router.route().order(Integer.MIN_VALUE+1).handler(rc -> {
+            QuarkusRequestWrapper.get(rc.request()).addRequestDoneHandler(event -> System.out.println("onRouter min+1"));
+            rc.next();
+        });
+        router.route().order(Integer.MIN_VALUE+1).handler(rc -> {
+            QuarkusRequestWrapper.get(rc.request()).addRequestDoneHandler(event -> System.out.println("onRouter min++1"));
+            rc.next();
+        });
+        router.route().order(Integer.MIN_VALUE+2).handler(rc -> {
+            QuarkusRequestWrapper.get(rc.request()).addRequestDoneHandler(event -> System.out.println("onRouter min+2"));
+            rc.next();
+        });
+        router.route().order(-1).handler(rc -> {
+            QuarkusRequestWrapper.get(rc.request()).addRequestDoneHandler(event -> System.out.println("onRouter -1"));
+            rc.next();
+        });
+        router.route().order(0).handler(rc -> {
+            QuarkusRequestWrapper.get(rc.request()).addRequestDoneHandler(event -> System.out.println("onRouter 0"));
+            rc.next();
+        });
+        router.route().order(1).handler(rc -> {
+            QuarkusRequestWrapper.get(rc.request()).addRequestDoneHandler(event -> System.out.println("onRouter 1"));
+            QuarkusRequestWrapper.get(rc.request()).addRequestDoneHandler(event -> System.out.println("onRouter +1"));
+            rc.next();
+        });
+    }
 }

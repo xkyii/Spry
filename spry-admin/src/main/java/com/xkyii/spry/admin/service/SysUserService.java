@@ -76,7 +76,8 @@ public class SysUserService {
             ;
     }
 
-    public Uni<LoginDto> login(@Valid LoginCommand input) {
+    public Uni<LoginDto>
+    login(@Valid LoginCommand input) {
         String username = input.getUsername();
         return userRepository.find("username", username).firstResult()
                 .onItem().ifNull().failWith(new ApiException(AdminError.用户不存在, username))

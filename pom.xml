@@ -17,10 +17,10 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
         <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
-        <quarkus.platform.version>3.0.0.Alpha3</quarkus.platform.version>
+        <quarkus.platform.version>3.0.0.Alpha4</quarkus.platform.version>
         <compiler-plugin.version>3.10.1</compiler-plugin.version>
         <surefire-plugin.version>3.0.0-M8</surefire-plugin.version>
-        <xkyss.version>2023.2.9</xkyss.version>
+        <xkyss.version>2023.4.1</xkyss.version>
         <hutool.version>5.8.11</hutool.version>
         <bouncycastle.version>1.72</bouncycastle.version>
     </properties>
