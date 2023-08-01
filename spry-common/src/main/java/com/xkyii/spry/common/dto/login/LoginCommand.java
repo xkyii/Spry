@@ -1,6 +1,6 @@
-package com.xkyii.spry.common.dto.entity;
+package com.xkyii.spry.common.dto.login;
 
-public class LoginQuery {
+public class LoginCommand {
 
     /**
      * 用户名

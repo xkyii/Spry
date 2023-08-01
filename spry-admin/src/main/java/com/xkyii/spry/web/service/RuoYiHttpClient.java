@@ -1,6 +1,6 @@
 package com.xkyii.spry.web.service;
 
-import com.xkyii.spry.common.dto.entity.LoginQuery;
+import com.xkyii.spry.common.dto.login.LoginCommand;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
@@ -12,13 +12,17 @@ public interface RuoYiHttpClient {
 
     @POST
     @Path("login")
-    public Response login(LoginQuery query);
+    Response login(LoginCommand query);
 
     @POST
     @Path("logout")
-    public Response logout();
+    Response logout();
 
     @GET
     @Path("getInfo")
-    public Response getInfo();
+    Response getInfo();
+
+    @GET
+    @Path("captchaImage")
+     Response captchaImage();
 }
