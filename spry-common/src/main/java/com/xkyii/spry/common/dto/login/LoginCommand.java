@@ -1,25 +1,28 @@
 package com.xkyii.spry.common.dto.login;
 
+
+import jakarta.validation.constraints.NotBlank;
+import org.eclipse.microprofile.openapi.annotations.media.Schema;
+import org.hibernate.validator.constraints.Length;
+
+@Schema(description = "用户登录参数")
 public class LoginCommand {
 
-    /**
-     * 用户名
-     */
+    @NotBlank
+    @Length(min=2, max=20)
+    @Schema(title="用户名, 长度区间: [2, 20]", required = true)
     private String username;
 
-    /**
-     * 用户密码
-     */
+    @NotBlank
+    @Schema(title="用户密码(密文), 非空", required = true)
     private String password;
 
-    /**
-     * 验证码
-     */
+
+    @Schema(title="验证码")
     private String code;
 
-    /**
-     * 唯一标识
-     */
+
+    @Schema(title="唯一标识")
     private String uuid;
 
     public String getUsername() {

@@ -1,6 +1,7 @@
 package com.xkyii.spry.web.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 
@@ -52,6 +53,7 @@ public class SysDept extends BaseEntity {
     private String status;
 
     /** 删除标志（0代表存在 2代表删除） */
+    @JsonIgnore
     @Column(name = "del_flag")
     private String delFlag;
 

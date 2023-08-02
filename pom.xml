@@ -28,6 +28,7 @@
         <compiler-plugin.version>3.11.0</compiler-plugin.version>
         <surefire-plugin.version>3.0.0</surefire-plugin.version>
         <mapstruct.version>1.5.3.Final</mapstruct.version>
+        <xkyss.version>2023.8.1</xkyss.version>
     </properties>
 
     <dependencyManagement>
@@ -37,6 +38,14 @@
                 <groupId>${quarkus.platform.group-id}</groupId>
                 <artifactId>${quarkus.platform.artifact-id}</artifactId>
                 <version>${quarkus.platform.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!-- xkyss -->
+            <dependency>
+                <groupId>com.xkyss</groupId>
+                <artifactId>xkyss-quarkus-bom</artifactId>
+                <version>${xkyss.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>

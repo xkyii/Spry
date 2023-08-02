@@ -7,6 +7,8 @@ import com.xkyii.spry.web.service.RuoYiHttpClient;
 import com.xkyii.spry.web.service.SysUserService;
 import io.smallrye.mutiny.Uni;
 import jakarta.inject.Inject;
+import jakarta.validation.MessageInterpolator;
+import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -31,6 +33,9 @@ public class LoginController {
     @Inject
     SysUserService userService;
 
+    @Inject
+    MessageInterpolator messageInterpolator;
+
     @GET
     @Path("captchaImage")
     public Response captchaImage() {
@@ -39,7 +44,7 @@ public class LoginController {
 
     @POST
     @Path("login")
-    public Uni<LoginOutput> login(LoginCommand input) {
+    public Uni<LoginOutput> login(@Valid LoginCommand input) {
         return userService.login(input);
     }
 

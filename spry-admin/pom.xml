@@ -55,6 +55,11 @@
       <artifactId>quarkus-junit5</artifactId>
       <scope>test</scope>
     </dependency>
+    <!-- xkyss -->
+    <dependency>
+      <groupId>com.xkyss</groupId>
+      <artifactId>xkyss-quarkus-server</artifactId>
+    </dependency>
     <!-- spry -->
     <dependency>
       <groupId>com.xkyii</groupId>
