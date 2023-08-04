@@ -5,9 +5,11 @@ import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.core.Response;
+import org.eclipse.microprofile.rest.client.annotation.RegisterClientHeaders;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 
 @RegisterRestClient(configKey = "ruoyi")
+@RegisterClientHeaders
 public interface RuoYiHttpClient {
 
     @POST
@@ -24,5 +26,9 @@ public interface RuoYiHttpClient {
 
     @GET
     @Path("captchaImage")
-     Response captchaImage();
+    Response captchaImage();
+
+    @GET
+    @Path("getRouters")
+    Response getRouters();
 }

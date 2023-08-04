@@ -7,10 +7,14 @@ import com.xkyii.spry.web.service.RuoYiHttpClient;
 import com.xkyii.spry.web.service.SysUserService;
 import io.quarkus.elytron.security.common.BcryptUtil;
 import io.smallrye.mutiny.Uni;
+import io.vertx.core.json.JsonObject;
+import jakarta.annotation.security.PermitAll;
 import jakarta.inject.Inject;
 import jakarta.validation.MessageInterpolator;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.Context;
+import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
@@ -44,17 +48,17 @@ public class LoginController {
         return ruoyi.captchaImage();
     }
 
-    @POST
-    @Path("login")
-    public Uni<LoginOutput> login(@Valid LoginCommand input) {
-        return userService.login(input);
-    }
-
     // @POST
     // @Path("login")
-    // public Response login(@Valid LoginCommand input) {
-    //     return ruoyi.login(input);
+    // public Uni<LoginOutput> login(@Valid LoginCommand input) {
+    //     return userService.login(input);
     // }
+
+    @POST
+    @Path("login")
+    public Response login(@Valid LoginCommand input) {
+        return ruoyi.login(input);
+    }
 
     @POST
     @Path("logout")
@@ -62,10 +66,20 @@ public class LoginController {
         return ruoyi.logout();
     }
 
+    // @GET
+    // @Path("getInfo")
+    // public Uni<JsonObject> getInfo() {
+    //     return userService.getInfo();
+    // }
+
     @GET
     @Path("getInfo")
     public Response getInfo() {
-        logger.info("getInfo");
         return ruoyi.getInfo();
+    }
+    @GET
+    @Path("getRouters")
+    public Response getRouters() {
+        return ruoyi.getRouters();
     }
 }
