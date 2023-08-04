@@ -5,6 +5,7 @@ import com.xkyii.spry.common.dto.login.LoginCommand;
 import com.xkyii.spry.common.dto.login.LoginOutput;
 import com.xkyii.spry.web.service.RuoYiHttpClient;
 import com.xkyii.spry.web.service.SysUserService;
+import io.quarkus.elytron.security.common.BcryptUtil;
 import io.smallrye.mutiny.Uni;
 import jakarta.inject.Inject;
 import jakarta.validation.MessageInterpolator;
@@ -15,6 +16,7 @@ import jakarta.ws.rs.core.Response;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.jboss.logging.Logger;
+import org.wildfly.security.password.interfaces.BCryptPassword;
 
 import static com.xkyii.spry.web.constant.Constants.ROUTER_PREFIX;
 
@@ -47,6 +49,12 @@ public class LoginController {
     public Uni<LoginOutput> login(@Valid LoginCommand input) {
         return userService.login(input);
     }
+
+    // @POST
+    // @Path("login")
+    // public Response login(@Valid LoginCommand input) {
+    //     return ruoyi.login(input);
+    // }
 
     @POST
     @Path("logout")
