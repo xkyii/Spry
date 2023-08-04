@@ -1,12 +1,19 @@
-<?xml version="1.0"?>
-<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"
-         xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <groupId>com.xkyii</groupId>
     <artifactId>spry</artifactId>
-    <version>0.0.2</version>
+    <version>2023.8.1</version>
     <packaging>pom</packaging>
+    <name>Spry</name>
+
+    <modules>
+        <module>spry-admin</module>
+        <module>spry-common</module>
+    </modules>
 
     <properties>
         <skipITs>true</skipITs>
@@ -17,19 +24,12 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
         <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
-        <quarkus.platform.version>3.0.0.Alpha4</quarkus.platform.version>
-        <compiler-plugin.version>3.10.1</compiler-plugin.version>
-        <surefire-plugin.version>3.0.0-M8</surefire-plugin.version>
-        <xkyss.version>2023.4.1</xkyss.version>
-        <hutool.version>5.8.11</hutool.version>
-        <bouncycastle.version>1.72</bouncycastle.version>
+        <quarkus.platform.version>3.2.2.Final</quarkus.platform.version>
+        <compiler-plugin.version>3.11.0</compiler-plugin.version>
+        <surefire-plugin.version>3.0.0</surefire-plugin.version>
+        <mapstruct.version>1.5.3.Final</mapstruct.version>
+        <xkyss.version>2023.8.1</xkyss.version>
     </properties>
-
-    <modules>
-        <module>spry-admin</module>
-        <module>spry-common</module>
-        <module>spry-migration</module>
-    </modules>
 
     <dependencyManagement>
         <dependencies>
@@ -41,38 +41,114 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-<!--            <dependency>-->
-<!--                <groupId>io.quarkus</groupId>-->
-<!--                <artifactId>quarkus-elytron-security-common</artifactId>-->
-<!--                <version>${quarkus.platform.version}</version>-->
-<!--            </dependency>-->
-            <!-- xkyii -->
+            <!-- xkyss -->
             <dependency>
-                <groupId>com.xkyii</groupId>
-                <artifactId>spry-admin</artifactId>
-                <version>${project.version}</version>
+                <groupId>com.xkyss</groupId>
+                <artifactId>xkyss-quarkus-bom</artifactId>
+                <version>${xkyss.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
+            <!-- spry -->
             <dependency>
                 <groupId>com.xkyii</groupId>
                 <artifactId>spry-common</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <!-- mapstruct -->
             <dependency>
-                <groupId>com.xkyii</groupId>
-                <artifactId>spry-migration</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.xkyss</groupId>
-                <artifactId>xkyss-mocky</artifactId>
-                <version>${xkyss.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.xkyss</groupId>
-                <artifactId>xkyss-quarkus-codegen</artifactId>
-                <version>${xkyss.version}</version>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct</artifactId>
+                <version>${mapstruct.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>${quarkus.platform.group-id}</groupId>
+                    <artifactId>quarkus-maven-plugin</artifactId>
+                    <version>${quarkus.platform.version}</version>
+                    <extensions>true</extensions>
+                    <configuration>
+                        <systemProperties>
+                            <file.encoding>UTF-8</file.encoding>
+                            <project.version>${project.version}</project.version>
+                            <!-- picocli用到 -->
+                            <sun.stdout.encoding>UTF-8</sun.stdout.encoding>
+                            <sun.stderr.encoding>UTF-8</sun.stderr.encoding>
+                        </systemProperties>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>build</goal>
+                                <goal>generate-code</goal>
+                                <goal>generate-code-tests</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${compiler-plugin.version}</version>
+                    <configuration>
+                        <compilerArgs>
+                            <arg>-parameters</arg>
+                        </compilerArgs>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>${surefire-plugin.version}</version>
+                    <configuration>
+                        <systemPropertyVariables>
+                            <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
+                            <maven.home>${maven.home}</maven.home>
+                        </systemPropertyVariables>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-failsafe-plugin</artifactId>
+                    <version>${surefire-plugin.version}</version>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>integration-test</goal>
+                                <goal>verify</goal>
+                            </goals>
+                            <configuration>
+                                <systemPropertyVariables>
+                                    <native.image.path>${project.build.directory}/${project.build.finalName}-runner</native.image.path>
+                                    <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
+                                    <maven.home>${maven.home}</maven.home>
+                                </systemPropertyVariables>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>native</id>
+            <activation>
+                <property>
+                    <name>native</name>
+                </property>
+            </activation>
+            <properties>
+                <skipITs>false</skipITs>
+                <quarkus.package.type>native</quarkus.package.type>
+            </properties>
+        </profile>
+    </profiles>
 
 </project>

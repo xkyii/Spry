@@ -7,3 +7,4 @@ public interface ErrorCode {
     Integer 参数校验失败 = 102;
     Integer 未知错误 = 199;
 }
+

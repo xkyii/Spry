@@ -1,5 +1,6 @@
 package com.xkyii.spry.common.config;
 
+
 import io.smallrye.config.ConfigMapping;
 
 import java.util.Map;
@@ -35,3 +36,4 @@ public interface SpryConfig {
         return String.format("UnConfigured Error(%d)", code);
     }
 }
+

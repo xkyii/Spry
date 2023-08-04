@@ -1,0 +1,15 @@
+
+### 登录admin
+POST {{url}}/login
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "epBqlhkISqOgzqy8ePae/spvVp7r3x/NZrNNSPbUlhU1QZZxyceoIUaaswzGIaRn8KZexwjJsTU6/BZvyYszBMCKPXKkyOHHPZLfDhg9UDCfnkdCm5fJznwilaLyGpBKSBCvoSrkfIibkCQoEQi0V8LmtM0SY+MZaQ640FYWe5TYqOm1/Vfd9IqngQXuFPlmXn4RUt3U4Nti4ay+hZJFxJXFrg0S8pNBUGKg8hLL2weOq0wMZa45o6scVUpxezpw/1TAbegFMNFZ0RtaJWsIJFvC1nV5C2CEuGrFLHDodsuiGkiGWh5AGB7SVEwVxFV0gqbTvzNDD/D7Il/IFmBcGA==",
+  "code": "4",
+  "uuid": "aaaabbbb443423243"
+}
+
+
+### getInfo
+GET {{url}}/getInfo
