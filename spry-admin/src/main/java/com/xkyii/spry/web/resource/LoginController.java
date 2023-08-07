@@ -48,17 +48,17 @@ public class LoginController {
         return ruoyi.captchaImage();
     }
 
-    // @POST
-    // @Path("login")
-    // public Uni<LoginOutput> login(@Valid LoginCommand input) {
-    //     return userService.login(input);
-    // }
-
     @POST
     @Path("login")
-    public Response login(@Valid LoginCommand input) {
-        return ruoyi.login(input);
+    public Uni<LoginOutput> login(@Valid LoginCommand input) {
+        return userService.login(input);
     }
+
+    // @POST
+    // @Path("login")
+    // public Response login(@Valid LoginCommand input) {
+    //     return ruoyi.login(input);
+    // }
 
     @POST
     @Path("logout")

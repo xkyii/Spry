@@ -1,7 +1,7 @@
 package com.xkyii.spry.web.constant;
 
 
-import com.xkyii.spry.common.constant.ErrorCode;
+import com.xkyss.quarkus.server.error.ErrorCode;
 
 /**
  * 错误号
