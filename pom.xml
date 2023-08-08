@@ -13,6 +13,7 @@
     <modules>
         <module>spry-admin</module>
         <module>spry-common</module>
+        <module>spry-framework</module>
     </modules>
 
     <properties>
@@ -53,6 +54,11 @@
             <dependency>
                 <groupId>com.xkyii</groupId>
                 <artifactId>spry-common</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.xkyii</groupId>
+                <artifactId>spry-framework</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <!-- mapstruct -->

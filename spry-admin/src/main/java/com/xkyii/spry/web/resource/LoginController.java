@@ -2,25 +2,19 @@ package com.xkyii.spry.web.resource;
 
 
 import com.xkyii.spry.common.dto.login.LoginCommand;
-import com.xkyii.spry.common.dto.login.LoginOutput;
+import com.xkyii.spry.framework.dto.AjaxResult;
 import com.xkyii.spry.web.service.RuoYiHttpClient;
 import com.xkyii.spry.web.service.SysUserService;
-import io.quarkus.elytron.security.common.BcryptUtil;
 import io.smallrye.mutiny.Uni;
-import io.vertx.core.json.JsonObject;
-import jakarta.annotation.security.PermitAll;
 import jakarta.inject.Inject;
 import jakarta.validation.MessageInterpolator;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
-import jakarta.ws.rs.core.Context;
-import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.jboss.logging.Logger;
-import org.wildfly.security.password.interfaces.BCryptPassword;
 
 import static com.xkyii.spry.web.constant.Constants.ROUTER_PREFIX;
 
@@ -39,9 +33,6 @@ public class LoginController {
     @Inject
     SysUserService userService;
 
-    @Inject
-    MessageInterpolator messageInterpolator;
-
     @GET
     @Path("captchaImage")
     public Response captchaImage() {
@@ -50,8 +41,9 @@ public class LoginController {
 
     @POST
     @Path("login")
-    public Uni<LoginOutput> login(@Valid LoginCommand input) {
-        return userService.login(input);
+    public Uni<AjaxResult> login(@Valid LoginCommand input) {
+        return userService.login(input)
+            .onItem().transform(output -> AjaxResult.success().put("token", output.getToken()));
     }
 
     // @POST
@@ -66,17 +58,18 @@ public class LoginController {
         return ruoyi.logout();
     }
 
-    // @GET
-    // @Path("getInfo")
-    // public Uni<JsonObject> getInfo() {
-    //     return userService.getInfo();
-    // }
-
     @GET
     @Path("getInfo")
-    public Response getInfo() {
-        return ruoyi.getInfo();
+    public Uni<AjaxResult> getInfo() {
+        return userService.getInfo();
     }
+
+    // @GET
+    // @Path("getInfo")
+    // public Response getInfo() {
+    //     return ruoyi.getInfo();
+    // }
+
     @GET
     @Path("getRouters")
     public Response getRouters() {
