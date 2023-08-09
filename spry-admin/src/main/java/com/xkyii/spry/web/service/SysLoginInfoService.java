@@ -3,15 +3,16 @@ package com.xkyii.spry.web.service;
 import com.xkyii.spry.web.entity.SysLoginInfo;
 import com.xkyii.spry.web.entity.SysUser;
 import com.xkyii.spry.web.repository.SysLoginInfoRepository;
-import io.quarkus.hibernate.reactive.panache.Panache;
 import io.quarkus.hibernate.reactive.panache.common.WithTransaction;
+import io.quarkus.vertx.ConsumeEvent;
 import io.smallrye.mutiny.Uni;
-import io.vertx.core.Vertx;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.jboss.logging.Logger;
 
 import java.util.Date;
+
+import static com.xkyii.spry.web.constant.Constants.创建登录日志;
 
 @ApplicationScoped
 public class SysLoginInfoService {
@@ -22,8 +23,8 @@ public class SysLoginInfoService {
     @Inject
     SysLoginInfoRepository loginInfoRepository;
 
-
-    // @WithTransaction
+    @ConsumeEvent(创建登录日志)
+    @WithTransaction
     public Uni<SysLoginInfo> create(SysUser user) {
 
         SysLoginInfo info = new SysLoginInfo();
@@ -37,11 +38,8 @@ public class SysLoginInfoService {
         info.setMsg("成功");
         info.setLoginTime(new Date());
 
-
         logger.info("创建登录日志");
 
-        // return Panache.withTransaction(() -> {
-            return loginInfoRepository.persist(info);
-        // });
+        return loginInfoRepository.persist(info);
     }
 }
