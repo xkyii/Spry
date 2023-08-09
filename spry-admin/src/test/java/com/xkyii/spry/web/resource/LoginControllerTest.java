@@ -54,7 +54,7 @@ public class LoginControllerTest {
         .then()
             .statusCode(OK)
             .and().body("code", equalTo(INTERNAL_SERVER_ERROR))
-            .and().body("msd", equalTo("用户不存在/密码错误"))
+            .and().body("msg", equalTo("用户不存在/密码错误"))
         ;
     }
 
