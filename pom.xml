@@ -30,10 +30,12 @@
         <surefire-plugin.version>3.0.0</surefire-plugin.version>
         <mapstruct.version>1.5.3.Final</mapstruct.version>
         <xkyss.version>2023.8.1</xkyss.version>
+        <bitwalker.version>1.21</bitwalker.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
+
             <!-- quarkus -->
             <dependency>
                 <groupId>${quarkus.platform.group-id}</groupId>
@@ -42,6 +44,7 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+
             <!-- xkyss -->
             <dependency>
                 <groupId>com.xkyss</groupId>
@@ -50,6 +53,7 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+
             <!-- spry -->
             <dependency>
                 <groupId>com.xkyii</groupId>
@@ -61,11 +65,19 @@
                 <artifactId>spry-framework</artifactId>
                 <version>${project.version}</version>
             </dependency>
+
             <!-- mapstruct -->
             <dependency>
                 <groupId>org.mapstruct</groupId>
                 <artifactId>mapstruct</artifactId>
                 <version>${mapstruct.version}</version>
+            </dependency>
+
+            <!-- 解析客户端操作系统、浏览器等 -->
+            <dependency>
+                <groupId>eu.bitwalker</groupId>
+                <artifactId>UserAgentUtils</artifactId>
+                <version>${bitwalker.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

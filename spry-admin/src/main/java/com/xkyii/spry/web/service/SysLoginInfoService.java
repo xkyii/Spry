@@ -8,6 +8,8 @@ import io.quarkus.vertx.ConsumeEvent;
 import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.ws.rs.core.Context;
+import jakarta.ws.rs.core.UriInfo;
 import org.jboss.logging.Logger;
 
 import java.util.Date;
@@ -25,21 +27,8 @@ public class SysLoginInfoService {
 
     @ConsumeEvent(创建登录日志)
     @WithTransaction
-    public Uni<SysLoginInfo> create(SysUser user) {
-
-        SysLoginInfo info = new SysLoginInfo();
-        // info.setInfoId(180L);
-        info.setUserName(user.getUserName());
-        info.setIpaddr("127.0.0.1");
-        info.setLoginLocation("内网IP");
-        info.setBrowser("Chrome 11");
-        info.setOs("Unknown");
-        info.setStatus("1");
-        info.setMsg("成功");
-        info.setLoginTime(new Date());
-
-        logger.info("创建登录日志");
-
+    public Uni<SysLoginInfo> create(SysLoginInfo info) {
+        logger.info(创建登录日志);
         return loginInfoRepository.persist(info);
     }
 }
