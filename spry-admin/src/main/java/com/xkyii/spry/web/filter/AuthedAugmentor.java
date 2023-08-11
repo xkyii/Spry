@@ -10,19 +10,23 @@ import io.quarkus.security.runtime.QuarkusSecurityIdentity;
 import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.context.control.ActivateRequestContext;
+import jakarta.inject.Inject;
 import org.eclipse.microprofile.jwt.JsonWebToken;
+import org.jboss.logging.Logger;
 
-import static com.xkyii.spry.web.constant.AdminError.Token已失效;
-import static com.xkyii.spry.web.constant.Constants.CACHE_NAME_LOGIN_USER;
-import static com.xkyii.spry.web.constant.Constants.CONTEXT_KEY_LOGIN_USER;
+import static com.xkyii.spry.web.constant.AdminError.缓存LoginUser已失效;
+import static com.xkyii.spry.web.constant.Constants.ADMIN_CACHE_NAME_LOGIN_USER;
+import static com.xkyii.spry.web.constant.Constants.ADMIN_CONTEXT_KEY_LOGIN_USER;
 
 /**
  * 给请求添加用户信息
  */
 @ApplicationScoped
 public class AuthedAugmentor implements SecurityIdentityAugmentor {
+    @Inject
+    Logger logger;
 
-    @CacheName(CACHE_NAME_LOGIN_USER)
+    @CacheName(ADMIN_CACHE_NAME_LOGIN_USER)
     Cache cache;
 
     @Override
@@ -41,10 +45,14 @@ public class AuthedAugmentor implements SecurityIdentityAugmentor {
         JsonWebToken jwt = (JsonWebToken) identity.getPrincipal();
 
         return cache.get(jwt.getTokenID(), tokenID -> null)
-            .onItem().ifNull().failWith(new ServerException(Token已失效))
-            .onItem().transform(loginUser -> QuarkusSecurityIdentity.builder(identity)
-                .addAttribute(CONTEXT_KEY_LOGIN_USER, loginUser)
+            .onItem().ifNull().failWith(() -> new ServerException(缓存LoginUser已失效))
+            .onItem().<SecurityIdentity>transform(loginUser -> QuarkusSecurityIdentity.builder(identity)
+                .addAttribute(ADMIN_CONTEXT_KEY_LOGIN_USER, loginUser)
                 .build()
-            );
+            )
+            .onFailure().recoverWithItem(e -> {
+                logger.warn("获取LoginUser失败", e);
+                return identity;
+            });
     }
 }

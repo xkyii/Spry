@@ -11,9 +11,9 @@ import jakarta.ws.rs.core.Response;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
-import static com.xkyii.spry.web.constant.Constants.ROUTER_PREFIX;
+import static com.xkyii.spry.web.constant.Constants.ADMIN_ROUTER_PREFIX;
 
-@Path(ROUTER_PREFIX + "/demo")
+@Path(ADMIN_ROUTER_PREFIX + "/demo")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 @Tag(description = "DEMO")

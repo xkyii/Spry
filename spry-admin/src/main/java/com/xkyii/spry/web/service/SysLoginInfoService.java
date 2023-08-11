@@ -20,7 +20,7 @@ import org.jboss.logging.Logger;
 import java.util.Date;
 
 import static com.xkyii.spry.web.constant.AdminError.登录成功;
-import static com.xkyii.spry.web.constant.Constants.创建登录日志;
+import static com.xkyii.spry.web.constant.Constants.ADMIN_EVENT_创建登录日志;
 
 @ApplicationScoped
 public class SysLoginInfoService {
@@ -63,14 +63,14 @@ public class SysLoginInfoService {
             info.setMsg(info.getMsg() + "-" + extraMessage);
         }
 
-        vertx.eventBus().publish(创建登录日志, info);
+        vertx.eventBus().publish(ADMIN_EVENT_创建登录日志, info);
         return info;
     }
 
-    @ConsumeEvent(创建登录日志)
+    @ConsumeEvent(ADMIN_EVENT_创建登录日志)
     @WithTransaction
     public Uni<SysLoginInfo> onCreate(SysLoginInfo info) {
-        logger.info(创建登录日志);
+        logger.info(ADMIN_EVENT_创建登录日志);
         return loginInfoRepository.persist(info);
     }
 }

@@ -22,5 +22,5 @@ public interface AdminError extends ErrorCode {
     int 密码错误 = 10005;
     int 用户未登录 = 10006;
     int 用户名已经被注册 = 10007;
-    int Token已失效 = 10010;
+    int 缓存LoginUser已失效 = 10010;
 }

@@ -4,28 +4,25 @@ import com.xkyii.spry.web.entity.SysUser;
 import com.xkyii.spry.web.model.LoginUser;
 import com.xkyii.spry.web.repository.SysUserRepository;
 import io.quarkus.cache.Cache;
-import io.quarkus.cache.CacheManager;
 import io.quarkus.cache.CacheName;
 import io.quarkus.cache.CaffeineCache;
 import io.quarkus.runtime.util.StringUtil;
-import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
 import io.smallrye.jwt.build.Jwt;
 import io.smallrye.jwt.build.JwtClaimsBuilder;
 import jakarta.inject.Inject;
 import org.eclipse.microprofile.jwt.Claims;
 
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
-import static com.xkyii.spry.web.constant.Constants.CACHE_NAME_LOGIN_USER;
+import static com.xkyii.spry.web.constant.Constants.ADMIN_CACHE_NAME_LOGIN_USER;
 
 @ApplicationScoped
 public class TokenService {
 
-    @CacheName(CACHE_NAME_LOGIN_USER)
+    @CacheName(ADMIN_CACHE_NAME_LOGIN_USER)
     Cache cache;
 
     @Inject

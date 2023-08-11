@@ -17,7 +17,7 @@ import jakarta.ws.rs.core.Context;
 import org.jboss.logging.Logger;
 
 import static com.xkyii.spry.web.constant.AdminError.*;
-import static com.xkyii.spry.web.constant.Constants.CONTEXT_KEY_LOGIN_USER;
+import static com.xkyii.spry.web.constant.Constants.ADMIN_CONTEXT_KEY_LOGIN_USER;
 
 @SuppressWarnings("NonAsciiCharacters")
 @ApplicationScoped
@@ -38,7 +38,6 @@ public class SysUserService {
 
     @Inject
     SysLoginInfoService loginInfoService;
-
 
     @WithTransaction
     public Uni<LoginOutput> login(LoginCommand input) {
@@ -74,7 +73,7 @@ public class SysUserService {
     SecurityIdentity securityIdentity;
 
     public Uni<AjaxResult> getInfo() {
-        LoginUser loginUser = securityIdentity.getAttribute(CONTEXT_KEY_LOGIN_USER);
+        LoginUser loginUser = securityIdentity.getAttribute(ADMIN_CONTEXT_KEY_LOGIN_USER);
 
         return Uni.createFrom().item(AjaxResult.success())
             .flatMap(r -> Uni.createFrom().item(r))

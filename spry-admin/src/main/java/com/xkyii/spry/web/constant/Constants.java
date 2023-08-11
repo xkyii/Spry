@@ -1,15 +1,25 @@
 package com.xkyii.spry.web.constant;
 
+import static com.xkyii.spry.framework.constant.FrameworkConstants.SPRY_FRAMEWORK_CONFIG_PREFIX;
+import static com.xkyii.spry.framework.constant.FrameworkConstants.SPRY_FRAMEWORK_PRIORITY;
+
 public class Constants {
-    /**
-     * 路由入口
-     */
-    public static final String ROUTER_PREFIX = "/api/v1";
+    /// Config
+    public static final String ADMIN_CONFIG_PREFIX = SPRY_FRAMEWORK_CONFIG_PREFIX + ".admin";
 
+    /// 路由
+    public static final String ADMIN_ROUTER_PREFIX = "/api/v1";
 
-    public static final String 创建登录日志 = "事件-创建登录日志";
+    /// Priority
+    public static final int ADMIN_PRIORITY = SPRY_FRAMEWORK_PRIORITY + 500;
+    public static final int ADMIN_STARTUP_PRIORITY = ADMIN_PRIORITY + 1;
 
-    public static final String CACHE_NAME_LOGIN_USER = "已登录用户";
+    /// EventBus
+    public static final String ADMIN_EVENT_创建登录日志 = "事件-创建登录日志";
 
-    public static final String CONTEXT_KEY_LOGIN_USER = "已登录用户";
+    /// Cache
+    public static final String ADMIN_CACHE_NAME_LOGIN_USER = "已登录用户";
+
+    /// Context
+    public static final String ADMIN_CONTEXT_KEY_LOGIN_USER = "已登录用户";
 }

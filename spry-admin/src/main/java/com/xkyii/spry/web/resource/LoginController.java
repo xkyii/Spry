@@ -16,9 +16,9 @@ import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.jboss.logging.Logger;
 
-import static com.xkyii.spry.web.constant.Constants.ROUTER_PREFIX;
+import static com.xkyii.spry.web.constant.Constants.ADMIN_ROUTER_PREFIX;
 
-@Path(ROUTER_PREFIX)
+@Path(ADMIN_ROUTER_PREFIX)
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 @Tag(description = "登录")
