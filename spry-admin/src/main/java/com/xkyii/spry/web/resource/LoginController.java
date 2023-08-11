@@ -5,9 +5,11 @@ import com.xkyii.spry.common.dto.login.LoginCommand;
 import com.xkyii.spry.framework.dto.AjaxResult;
 import com.xkyii.spry.web.service.RuoYiHttpClient;
 import com.xkyii.spry.web.service.SysUserService;
+import io.quarkus.security.Authenticated;
 import io.smallrye.mutiny.Uni;
+import jakarta.annotation.security.DenyAll;
+import jakarta.annotation.security.PermitAll;
 import jakarta.inject.Inject;
-import jakarta.validation.MessageInterpolator;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -54,12 +56,14 @@ public class LoginController {
 
     @POST
     @Path("logout")
+    @Authenticated
     public Response logout() {
         return ruoyi.logout();
     }
 
     @GET
     @Path("getInfo")
+    @DenyAll
     public Uni<AjaxResult> getInfo() {
         return userService.getInfo();
     }
@@ -72,6 +76,7 @@ public class LoginController {
 
     @GET
     @Path("getRouters")
+    @Authenticated
     public Response getRouters() {
         return ruoyi.getRouters();
     }

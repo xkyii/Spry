@@ -4,7 +4,11 @@ import com.xkyii.spry.common.dto.login.LoginCommand;
 import com.xkyii.spry.common.dto.login.LoginOutput;
 import com.xkyii.spry.framework.dto.AjaxResult;
 import com.xkyii.spry.web.exception.LoginException;
+import com.xkyii.spry.web.model.LoginUser;
 import com.xkyii.spry.web.repository.SysUserRepository;
+import io.quarkus.cache.Cache;
+import io.quarkus.cache.CacheName;
+import io.quarkus.cache.CaffeineCache;
 import io.quarkus.elytron.security.common.BcryptUtil;
 import io.quarkus.hibernate.reactive.panache.common.WithTransaction;
 import io.smallrye.mutiny.Uni;
@@ -13,7 +17,10 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.jboss.logging.Logger;
 
+import java.util.concurrent.CompletableFuture;
+
 import static com.xkyii.spry.web.constant.AdminError.*;
+import static com.xkyii.spry.web.constant.Constants.CACHE_NAME_LOGIN_USER;
 
 @SuppressWarnings("NonAsciiCharacters")
 @ApplicationScoped
@@ -50,8 +57,11 @@ public class SysUserService {
             }))
             // 创建登录日志
             .onItem().invoke(u -> loginInfoService.create(username, 登录成功))
+            // 转换为LoginUser
+            .onItem().transformToUni(user -> permissionService.getRolePermission(user)
+                .onItem().transform(permissions -> new LoginUser(user).withPermissions(permissions)))
             // 生成token
-            .onItem().transform(u -> new LoginOutput(tokenService.generateToken(u)))
+            .onItem().transform(loginUser -> new LoginOutput(tokenService.generateToken(loginUser)))
             // 如果失败
             .onFailure().transform(e -> {
                 if (e instanceof LoginException) {

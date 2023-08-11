@@ -10,8 +10,13 @@ import java.util.Set;
 @ApplicationScoped
 public class SysPermissionService {
 
+    /**
+     * 获取用户的权限列表
+     */
     public Uni<Set<String>> getRolePermission(SysUser user) {
         Set<String> set = new HashSet<>();
+        set.add("User");
+        set.add("Admin");
         return Uni.createFrom().item(set);
     }
 }

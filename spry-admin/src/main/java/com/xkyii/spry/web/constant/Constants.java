@@ -8,4 +8,6 @@ public class Constants {
 
 
     public static final String 创建登录日志 = "事件-创建登录日志";
+
+    public static final String CACHE_NAME_LOGIN_USER = "已登录用户";
 }
