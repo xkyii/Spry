@@ -7,8 +7,6 @@ import com.xkyii.spry.web.service.RuoYiHttpClient;
 import com.xkyii.spry.web.service.SysUserService;
 import io.quarkus.security.Authenticated;
 import io.smallrye.mutiny.Uni;
-import jakarta.annotation.security.DenyAll;
-import jakarta.annotation.security.PermitAll;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
@@ -63,7 +61,7 @@ public class LoginController {
 
     @GET
     @Path("getInfo")
-    @DenyAll
+    @Authenticated
     public Uni<AjaxResult> getInfo() {
         return userService.getInfo();
     }

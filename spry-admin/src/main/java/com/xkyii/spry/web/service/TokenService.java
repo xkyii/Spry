@@ -36,18 +36,20 @@ public class TokenService {
      */
     public String generateToken(LoginUser loginUser) {
         SysUser user = loginUser.getUser();
+        String jti = UUID.randomUUID().toString();
+
         JwtClaimsBuilder claims = Jwt.claims();
         claims.issuer("https://xkyii.com/issuer");
         claims.upn(user.getUserName());
         claims.claim(Claims.email, StringUtil.isNullOrEmpty(user.getEmail())
             ? (user.getUserName() + "@xkyii.com")
             : user.getEmail());
-        claims.claim(Claims.nonce, UUID.randomUUID().toString());
+        claims.claim(Claims.jti, jti);
         claims.groups(new HashSet<>(loginUser.getPermissions()));
         // 过期时间
         claims.expiresIn(86400);
 
-        cache.as(CaffeineCache.class).put("", CompletableFuture.completedFuture(loginUser));
+        cache.as(CaffeineCache.class).put(jti, CompletableFuture.completedFuture(loginUser));
 
         return claims.sign();
     }

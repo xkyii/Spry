@@ -6,21 +6,18 @@ import com.xkyii.spry.framework.dto.AjaxResult;
 import com.xkyii.spry.web.exception.LoginException;
 import com.xkyii.spry.web.model.LoginUser;
 import com.xkyii.spry.web.repository.SysUserRepository;
-import io.quarkus.cache.Cache;
-import io.quarkus.cache.CacheName;
-import io.quarkus.cache.CaffeineCache;
 import io.quarkus.elytron.security.common.BcryptUtil;
 import io.quarkus.hibernate.reactive.panache.common.WithTransaction;
+import io.quarkus.security.identity.SecurityIdentity;
 import io.smallrye.mutiny.Uni;
 import io.smallrye.mutiny.unchecked.Unchecked;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.ws.rs.core.Context;
 import org.jboss.logging.Logger;
 
-import java.util.concurrent.CompletableFuture;
-
 import static com.xkyii.spry.web.constant.AdminError.*;
-import static com.xkyii.spry.web.constant.Constants.CACHE_NAME_LOGIN_USER;
+import static com.xkyii.spry.web.constant.Constants.CONTEXT_KEY_LOGIN_USER;
 
 @SuppressWarnings("NonAsciiCharacters")
 @ApplicationScoped
@@ -72,7 +69,13 @@ public class SysUserService {
             ;
     }
 
+
+    @Context
+    SecurityIdentity securityIdentity;
+
     public Uni<AjaxResult> getInfo() {
+        LoginUser loginUser = securityIdentity.getAttribute(CONTEXT_KEY_LOGIN_USER);
+
         return Uni.createFrom().item(AjaxResult.success())
             .flatMap(r -> Uni.createFrom().item(r))
             ;

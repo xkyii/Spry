@@ -14,7 +14,7 @@ Content-Type: application/json
 ### getInfo
 GET {{url}}/getInfo
 Content-Type: application/json
-#Authorization: Bearer {{token}}
+Authorization: Bearer {{token}}
 
 ### captchaImage
 GET {{url}}/captchaImage
