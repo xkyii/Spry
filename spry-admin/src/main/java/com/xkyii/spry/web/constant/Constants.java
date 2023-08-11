@@ -12,7 +12,8 @@ public class Constants {
 
     /// Priority
     public static final int ADMIN_PRIORITY = SPRY_FRAMEWORK_PRIORITY + 500;
-    public static final int ADMIN_STARTUP_PRIORITY = ADMIN_PRIORITY + 1;
+    public static final int STARTUP_PRIORITY_ADMIN = ADMIN_PRIORITY + 1;
+    public static final int STARTUP_PRIORITY_DEV = ADMIN_PRIORITY + 2;
 
     /// EventBus
     public static final String ADMIN_EVENT_创建登录日志 = "事件-创建登录日志";

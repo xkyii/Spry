@@ -2,16 +2,16 @@ package com.xkyii.spry.web.service;
 
 import com.xkyii.spry.web.entity.SysUser;
 import com.xkyii.spry.web.model.LoginUser;
-import com.xkyii.spry.web.repository.SysUserRepository;
 import io.quarkus.cache.Cache;
 import io.quarkus.cache.CacheName;
 import io.quarkus.cache.CaffeineCache;
 import io.quarkus.runtime.util.StringUtil;
-import jakarta.enterprise.context.ApplicationScoped;
 import io.smallrye.jwt.build.Jwt;
 import io.smallrye.jwt.build.JwtClaimsBuilder;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.eclipse.microprofile.jwt.Claims;
+import org.jboss.logging.Logger;
 
 import java.util.HashSet;
 import java.util.UUID;
@@ -22,11 +22,11 @@ import static com.xkyii.spry.web.constant.Constants.ADMIN_CACHE_NAME_LOGIN_USER;
 @ApplicationScoped
 public class TokenService {
 
+    @Inject
+    Logger logger;
+
     @CacheName(ADMIN_CACHE_NAME_LOGIN_USER)
     Cache cache;
-
-    @Inject
-    SysUserRepository userRepository;
 
     /**
      * 生成一个token
@@ -34,6 +34,7 @@ public class TokenService {
     public String generateToken(LoginUser loginUser) {
         SysUser user = loginUser.getUser();
         String jti = UUID.randomUUID().toString();
+        logger.infof("生成token, jti: %s", jti);
 
         JwtClaimsBuilder claims = Jwt.claims();
         claims.issuer("https://xkyii.com/issuer");

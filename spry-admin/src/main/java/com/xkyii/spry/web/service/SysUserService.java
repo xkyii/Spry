@@ -64,8 +64,7 @@ public class SysUserService {
                     return e;
                 }
                 return new LoginException(username, 登录失败, e.getMessage());
-            })
-            ;
+            });
     }
 
 
