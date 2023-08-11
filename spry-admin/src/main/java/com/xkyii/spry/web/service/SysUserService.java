@@ -3,9 +3,11 @@ package com.xkyii.spry.web.service;
 import com.xkyii.spry.common.dto.login.LoginCommand;
 import com.xkyii.spry.common.dto.login.LoginOutput;
 import com.xkyii.spry.framework.dto.AjaxResult;
+import com.xkyii.spry.web.constant.AdminError;
 import com.xkyii.spry.web.exception.LoginException;
 import com.xkyii.spry.web.model.LoginUser;
 import com.xkyii.spry.web.repository.SysUserRepository;
+import com.xkyss.quarkus.server.error.ServerException;
 import io.quarkus.elytron.security.common.BcryptUtil;
 import io.quarkus.hibernate.reactive.panache.common.WithTransaction;
 import io.quarkus.security.identity.SecurityIdentity;
@@ -76,6 +78,9 @@ public class SysUserService {
 
         return Uni.createFrom().item(AjaxResult.success())
             .flatMap(r -> Uni.createFrom().item(r))
+            .onItem().invoke(Unchecked.consumer(r -> {
+                throw new ServerException(测试错误);
+            }))
             ;
     }
 }

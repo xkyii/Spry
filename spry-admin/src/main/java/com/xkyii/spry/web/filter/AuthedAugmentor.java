@@ -1,6 +1,6 @@
 package com.xkyii.spry.web.filter;
 
-import com.xkyss.quarkus.server.error.ServerException;
+import com.xkyii.spry.web.exception.AuthException;
 import io.quarkus.cache.Cache;
 import io.quarkus.cache.CacheName;
 import io.quarkus.security.identity.AuthenticationRequestContext;
@@ -45,7 +45,7 @@ public class AuthedAugmentor implements SecurityIdentityAugmentor {
         JsonWebToken jwt = (JsonWebToken) identity.getPrincipal();
 
         return cache.get(jwt.getTokenID(), tokenID -> null)
-            .onItem().ifNull().failWith(() -> new ServerException(缓存LoginUser已失效))
+            .onItem().ifNull().failWith(() -> new AuthException(jwt.getName(), 缓存LoginUser已失效))
             .onItem().<SecurityIdentity>transform(loginUser -> QuarkusSecurityIdentity.builder(identity)
                 .addAttribute(ADMIN_CONTEXT_KEY_LOGIN_USER, loginUser)
                 .build()

@@ -13,6 +13,7 @@ public interface AdminConfig {
     DevConfig dev();
 
     interface DevConfig {
+
         /**
          * Token ID, aka jti
          */

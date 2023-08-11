@@ -8,7 +8,6 @@ import io.quarkus.cache.Cache;
 import io.quarkus.cache.CacheName;
 import io.quarkus.cache.CaffeineCache;
 import io.quarkus.runtime.StartupEvent;
-import io.smallrye.mutiny.Uni;
 import jakarta.annotation.Priority;
 import jakarta.enterprise.event.Observes;
 import jakarta.inject.Inject;
@@ -19,6 +18,12 @@ import java.util.concurrent.CompletableFuture;
 import static com.xkyii.spry.web.constant.Constants.ADMIN_CACHE_NAME_LOGIN_USER;
 import static com.xkyii.spry.web.constant.Constants.STARTUP_PRIORITY_DEV;
 
+/**
+ * 仅开发模式有效的一些处理
+ *
+ * @author xkyii
+ * @since 2023-08-11
+ */
 @IfBuildProfile("dev")
 public class DevProduces {
     @Inject
@@ -39,7 +44,9 @@ public class DevProduces {
      * 这里自动做一次LoginUser的缓存,缓存key需要与登录的token id一致
      * 由于登录时的jti是随机生成,所以需要手动配置一下
      */
-    public void onStartup(@Observes @Priority(STARTUP_PRIORITY_DEV) StartupEvent e) {
+    public void onStartup(
+        // @Observes @Priority(STARTUP_PRIORITY_DEV)
+        StartupEvent e) {
         logger.info("dev startup");
         logger.info("\t模拟[admin]登录");
 
