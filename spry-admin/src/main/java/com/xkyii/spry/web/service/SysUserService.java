@@ -4,6 +4,7 @@ import com.xkyii.spry.common.dto.login.LoginCommand;
 import com.xkyii.spry.common.dto.login.LoginOutput;
 import com.xkyii.spry.framework.dto.AjaxResult;
 import com.xkyii.spry.web.constant.AdminError;
+import com.xkyii.spry.web.entity.SysUser;
 import com.xkyii.spry.web.exception.LoginException;
 import com.xkyii.spry.web.model.LoginUser;
 import com.xkyii.spry.web.repository.SysUserRepository;
@@ -75,12 +76,14 @@ public class SysUserService {
 
     public Uni<AjaxResult> getInfo() {
         LoginUser loginUser = securityIdentity.getAttribute(ADMIN_CONTEXT_KEY_LOGIN_USER);
+        SysUser sysUser = loginUser.getUser();
 
         return Uni.createFrom().item(AjaxResult.success())
-            .flatMap(r -> Uni.createFrom().item(r))
-            .onItem().invoke(Unchecked.consumer(r -> {
-                throw new ServerException(测试错误);
-            }))
+            .onItem().transform(r -> r.put("user", sysUser))
+            .onItem().transformToUni(r -> permissionService.getRolePermission(sysUser)
+                .onItem().transform(roles -> r.put("roles", roles)))
+            .onItem().transformToUni(r -> permissionService.getMenuPermission(sysUser)
+                .onItem().transform(permissions -> r.put("permissions", permissions)))
             ;
     }
 }

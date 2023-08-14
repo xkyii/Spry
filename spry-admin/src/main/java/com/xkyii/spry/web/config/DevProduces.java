@@ -45,7 +45,7 @@ public class DevProduces {
      * 由于登录时的jti是随机生成,所以需要手动配置一下
      */
     public void onStartup(
-        // @Observes @Priority(STARTUP_PRIORITY_DEV)
+        @Observes @Priority(STARTUP_PRIORITY_DEV)
         StartupEvent e) {
         logger.info("dev startup");
         logger.info("\t模拟[admin]登录");

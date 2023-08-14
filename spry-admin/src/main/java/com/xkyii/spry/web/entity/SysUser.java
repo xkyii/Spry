@@ -227,4 +227,14 @@ public class SysUser extends BaseEntity {
     public void setRoleId(Long roleId) {
         this.roleId = roleId;
     }
+
+    public boolean isAdmin()
+    {
+        return isAdmin(this.userId);
+    }
+
+    public static boolean isAdmin(Long userId)
+    {
+        return userId != null && 1L == userId;
+    }
 }

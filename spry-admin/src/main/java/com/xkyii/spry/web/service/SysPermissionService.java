@@ -15,6 +15,20 @@ public class SysPermissionService {
      */
     public Uni<Set<String>> getRolePermission(SysUser user) {
         Set<String> set = new HashSet<>();
+        // 管理员拥有所有权限
+        if (user.isAdmin()) {
+            set.add("admin");
+        }
+        else {
+            set.add("aaa");
+            set.add("bbb");
+            set.add("ccc");
+        }
+        return Uni.createFrom().item(set);
+    }
+
+    public Uni<Set<String>> getMenuPermission(SysUser sysUser) {
+        Set<String> set = new HashSet<>();
         set.add("User");
         set.add("Admin");
         return Uni.createFrom().item(set);
