@@ -26,4 +26,8 @@ public class SysRoleService {
                 .flatMap(Arrays::stream)
                 .collect(Collectors.toSet()));
     }
+
+    public Uni<Long> count() {
+        return roleRepository.count();
+    }
 }

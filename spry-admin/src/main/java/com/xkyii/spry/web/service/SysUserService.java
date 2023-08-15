@@ -25,8 +25,6 @@ import static com.xkyii.spry.web.constant.Constants.ADMIN_CONTEXT_KEY_LOGIN_USER
 @SuppressWarnings("NonAsciiCharacters")
 @ApplicationScoped
 public class SysUserService {
-
-
     @Inject
     Logger logger;
 
