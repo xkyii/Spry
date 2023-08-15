@@ -11,7 +11,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @Entity
 @Table(name = "sys_logininfor")
 @SuppressWarnings("JpaDataSourceORMInspection")
-public class SysLoginInfo extends BaseEntity {
+public class SysLoginInfo {
 
     /** ID */
     @Id
