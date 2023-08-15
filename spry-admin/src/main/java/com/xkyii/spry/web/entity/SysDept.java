@@ -8,6 +8,8 @@ import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import java.util.ArrayList;
 import java.util.List;
 
+import static jakarta.persistence.GenerationType.IDENTITY;
+
 @Schema(description = "Token出参")
 @Entity
 @Table(name = "sys_dept")
@@ -16,7 +18,7 @@ public class SysDept extends BaseEntity {
 
     /** 部门ID */
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = IDENTITY)
     @Column(name = "dept_id")
     private Long deptId;
 

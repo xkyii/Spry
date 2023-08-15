@@ -3,11 +3,13 @@ package com.xkyii.spry.web.config;
 import com.xkyii.spry.web.entity.SysUser;
 import com.xkyii.spry.web.model.LoginUser;
 import com.xkyii.spry.web.service.SysPermissionService;
+import com.xkyss.quarkus.server.error.ServerException;
 import io.quarkus.arc.profile.IfBuildProfile;
 import io.quarkus.cache.Cache;
 import io.quarkus.cache.CacheName;
 import io.quarkus.cache.CaffeineCache;
 import io.quarkus.runtime.StartupEvent;
+import io.quarkus.vertx.VertxContextSupport;
 import jakarta.annotation.Priority;
 import jakarta.enterprise.event.Observes;
 import jakarta.inject.Inject;
@@ -15,6 +17,7 @@ import org.jboss.logging.Logger;
 
 import java.util.concurrent.CompletableFuture;
 
+import static com.xkyii.spry.web.constant.AdminError.模拟登录失败;
 import static com.xkyii.spry.web.constant.Constants.ADMIN_CACHE_NAME_LOGIN_USER;
 import static com.xkyii.spry.web.constant.Constants.STARTUP_PRIORITY_DEV;
 
@@ -32,11 +35,11 @@ public class DevProduces {
     @Inject
     SysPermissionService permissionService;
 
-    @CacheName(ADMIN_CACHE_NAME_LOGIN_USER)
-    Cache cache;
-
     @Inject
     AdminConfig adminConfig;
+
+    @CacheName(ADMIN_CACHE_NAME_LOGIN_USER)
+    Cache cache;
 
     /**
      * 开发模式下,每次热启动都会清理Cache
@@ -53,12 +56,15 @@ public class DevProduces {
         SysUser user = new SysUser();
         user.setUserName("admin");
         user.setPassword("admin123");
-
-        permissionService.getRolePermission(user)
-            .onItem().transform(permissions -> new LoginUser(user).withPermissions(permissions))
-            .subscribe().with(loginUser -> {
-                cache.as(CaffeineCache.class).put(adminConfig.dev().tokenId(), CompletableFuture.completedFuture(loginUser));
-                logger.infof("\t已缓存LoginUser, jti: %s", adminConfig.dev().tokenId());
-            });
+        try {
+            VertxContextSupport.subscribeAndAwait(() -> permissionService.getRolePermission(user)
+                .onItem().transform(permissions -> new LoginUser(user).withPermissions(permissions))
+                .onItem().invoke(loginUser -> {
+                    cache.as(CaffeineCache.class).put(adminConfig.dev().tokenId(), CompletableFuture.completedFuture(loginUser));
+                    logger.infof("\t已缓存LoginUser, jti: %s", adminConfig.dev().tokenId());
+                }));
+        } catch (Throwable ex) {
+            throw new ServerException(模拟登录失败, ex);
+        }
     }
 }

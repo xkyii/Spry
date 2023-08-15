@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import java.util.Date;
 import java.util.List;
 
+import static jakarta.persistence.GenerationType.IDENTITY;
+
 @Entity
 @Table(name = "sys_user")
 @SuppressWarnings("JpaDataSourceORMInspection")
@@ -12,7 +14,7 @@ public class SysUser extends BaseEntity {
 
     /** 用户ID */
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = IDENTITY)
     @Column(name = "user_id")
     private Long userId;
 

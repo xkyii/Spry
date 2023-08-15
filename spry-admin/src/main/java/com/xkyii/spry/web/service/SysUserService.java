@@ -42,6 +42,9 @@ public class SysUserService {
     @Inject
     SysLoginInfoService loginInfoService;
 
+    @Context
+    SecurityIdentity securityIdentity;
+
     @WithTransaction
     public Uni<LoginOutput> login(LoginCommand input) {
         String username = input.getUsername();
@@ -62,17 +65,9 @@ public class SysUserService {
             // 生成token
             .onItem().transform(loginUser -> new LoginOutput(tokenService.generateToken(loginUser)))
             // 如果失败
-            .onFailure().transform(e -> {
-                if (e instanceof LoginException) {
-                    return e;
-                }
-                return new LoginException(username, 登录失败, e.getMessage());
-            });
+            .onFailure().transform(e -> (e instanceof LoginException) ? e : new LoginException(username, 登录失败, e.getMessage()));
     }
 
-
-    @Context
-    SecurityIdentity securityIdentity;
 
     public Uni<AjaxResult> getInfo() {
         LoginUser loginUser = securityIdentity.getAttribute(ADMIN_CONTEXT_KEY_LOGIN_USER);

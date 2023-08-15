@@ -24,6 +24,7 @@ public interface AdminError extends ErrorCode {
     int 用户名已经被注册 = 10007;
 
     int 缓存LoginUser已失效 = 10010;
+    int 模拟登录失败 = 10011;
 
     int 测试错误 = 19999;
 }

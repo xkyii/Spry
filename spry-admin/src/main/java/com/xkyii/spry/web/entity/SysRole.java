@@ -4,15 +4,25 @@ import jakarta.persistence.*;
 
 import java.util.Set;
 
+import static jakarta.persistence.GenerationType.IDENTITY;
+
 
 @Entity
 @Table(name = "sys_role")
 @SuppressWarnings("JpaDataSourceORMInspection")
+@NamedQueries(
+    @NamedQuery(name = "SysRole.selectRolePermissionByUserId",
+        query = "from SysRole r " +
+            "left join SysUserRole ur on ur.roleId=r.roleId " +
+            "left join SysUser u on u.userId = ur.userId " +
+            "left join SysDept d on u.deptId = d.deptId"
+    )
+)
 public class SysRole extends BaseEntity {
 
     /** 角色ID */
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = IDENTITY)
     @Column(name = "role_id")
     private Long roleId;
 
@@ -49,7 +59,7 @@ public class SysRole extends BaseEntity {
     private String delFlag;
 
     /** 用户是否存在此角色标识 默认不存在 */
-    @Column(name = "flag")
+    @Transient
     private boolean flag = false;
 
     /** 菜单组 */

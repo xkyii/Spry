@@ -1,15 +1,17 @@
 package com.xkyii.spry.web.entity;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.Transient;
 
 import java.util.Date;
 import java.util.Map;
 
+@MappedSuperclass
 public class BaseEntity {
 
     /** 搜索值 */
-    @Column(name = "search_value")
+    @Transient
     private String searchValue;
 
     /** 创建者 */
