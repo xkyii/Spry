@@ -10,14 +10,15 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @Entity
 @Table(name = "sys_role")
 @SuppressWarnings("JpaDataSourceORMInspection")
-@NamedQueries(
+@NamedQueries({
     @NamedQuery(name = "SysRole.selectRolePermissionByUserId",
         query = "from SysRole r " +
-            "left join SysUserRole ur on ur.roleId=r.roleId " +
-            "left join SysUser u on u.userId = ur.userId " +
-            "left join SysDept d on u.deptId = d.deptId"
+            " left join SysUserRole ur on ur.roleId=r.roleId " +
+            " left join SysUser u on u.userId = ur.userId " +
+            " left join SysDept d on u.deptId = d.deptId " +
+            "where r.delFlag='0' and ur.userId = :userId "
     )
-)
+})
 public class SysRole extends BaseEntity {
 
     /** 角色ID */

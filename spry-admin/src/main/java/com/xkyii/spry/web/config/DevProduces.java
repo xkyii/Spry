@@ -54,6 +54,7 @@ public class DevProduces {
         logger.info("\t模拟[admin]登录");
 
         SysUser user = new SysUser();
+        user.setUserId(1L);
         user.setUserName("admin");
         user.setPassword("admin123");
         try {
