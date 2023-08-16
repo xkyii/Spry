@@ -48,6 +48,7 @@ public class SysPermissionService {
                 .map(role -> menuService.selectMenuPermsByRoleId(role.getRoleId()))
                 .collect(Collectors.toList()))
             .combinedWith(permsLists -> {
+                // TODO: 未完成
                 // permsLists.forEach(list -> perms.addAll(list));
                 return perms;
             });

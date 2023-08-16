@@ -2,20 +2,24 @@ package com.xkyii.spry.web.config;
 
 import com.xkyii.spry.web.entity.SysUser;
 import com.xkyii.spry.web.model.LoginUser;
+import com.xkyii.spry.web.repository.SysUserRepository;
 import com.xkyii.spry.web.service.SysPermissionService;
 import com.xkyss.quarkus.server.error.ServerException;
 import io.quarkus.arc.profile.IfBuildProfile;
 import io.quarkus.cache.Cache;
 import io.quarkus.cache.CacheName;
 import io.quarkus.cache.CaffeineCache;
+import io.quarkus.hibernate.reactive.panache.common.WithSession;
 import io.quarkus.runtime.StartupEvent;
 import io.quarkus.vertx.VertxContextSupport;
+import io.smallrye.mutiny.Uni;
 import jakarta.annotation.Priority;
 import jakarta.enterprise.event.Observes;
 import jakarta.inject.Inject;
 import org.jboss.logging.Logger;
 
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Supplier;
 
 import static com.xkyii.spry.web.constant.AdminError.模拟登录失败;
 import static com.xkyii.spry.web.constant.Constants.ADMIN_CACHE_NAME_LOGIN_USER;
@@ -31,6 +35,9 @@ import static com.xkyii.spry.web.constant.Constants.STARTUP_PRIORITY_DEV;
 public class DevProduces {
     @Inject
     Logger logger;
+
+    @Inject
+    SysUserRepository userRepository;
 
     @Inject
     SysPermissionService permissionService;
@@ -53,19 +60,22 @@ public class DevProduces {
         logger.info("dev startup");
         logger.info("\t模拟[admin]登录");
 
-        SysUser user = new SysUser();
-        user.setUserId(1L);
-        user.setUserName("admin");
-        user.setPassword("admin123");
         try {
-            VertxContextSupport.subscribeAndAwait(() -> permissionService.getRolePermission(user)
-                .onItem().transform(permissions -> new LoginUser(user).withPermissions(permissions))
-                .onItem().invoke(loginUser -> {
-                    cache.as(CaffeineCache.class).put(adminConfig.dev().tokenId(), CompletableFuture.completedFuture(loginUser));
-                    logger.infof("\t已缓存LoginUser, jti: %s", adminConfig.dev().tokenId());
-                }));
+            VertxContextSupport.subscribeAndAwait(() -> getLoginUser("admin"));
         } catch (Throwable ex) {
             throw new ServerException(模拟登录失败, ex);
         }
+    }
+
+    @WithSession
+    Uni<LoginUser> getLoginUser(String userName) {
+        return userRepository.find("userName", userName).firstResult()
+            .onItem().transform(LoginUser::new)
+            .onItem().transformToUni(loginUser -> permissionService.getRolePermission(loginUser.getUser())
+                .onItem().transform(loginUser::withPermissions))
+            .onItem().invoke(loginUser -> {
+                cache.as(CaffeineCache.class).put(adminConfig.dev().tokenId(), CompletableFuture.completedFuture(loginUser));
+                logger.infof("\t已缓存(%s), jti: %s", userName, adminConfig.dev().tokenId());
+            });
     }
 }

@@ -68,7 +68,7 @@ public class SysUserService {
 
 
     public Uni<AjaxResult> getInfo() {
-        LoginUser loginUser = securityIdentity.getAttribute(ADMIN_CONTEXT_KEY_LOGIN_USER+"111");
+        LoginUser loginUser = securityIdentity.getAttribute(ADMIN_CONTEXT_KEY_LOGIN_USER);
         SysUser sysUser = loginUser.getUser();
 
         return Uni.createFrom().item(AjaxResult.success())
