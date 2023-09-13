@@ -1,5 +1,6 @@
 package com.xkyii.spry.web.service;
 
+import com.xkyii.spry.web.config.AdminConfig;
 import com.xkyii.spry.web.entity.SysUser;
 import com.xkyii.spry.web.model.LoginUser;
 import io.quarkus.cache.Cache;
@@ -25,6 +26,9 @@ public class TokenService {
     @Inject
     Logger logger;
 
+    @Inject
+    AdminConfig adminConfig;
+
     @CacheName(ADMIN_CACHE_NAME_LOGIN_USER)
     Cache cache;
 
@@ -33,7 +37,7 @@ public class TokenService {
      */
     public String generateToken(LoginUser loginUser) {
         SysUser user = loginUser.getUser();
-        String jti = UUID.randomUUID().toString();
+        String jti = adminConfig.dev().enabled() ? adminConfig.dev().tokenId() : UUID.randomUUID().toString();
         logger.infof("生成token, jti: %s", jti);
 
         JwtClaimsBuilder claims = Jwt.claims();

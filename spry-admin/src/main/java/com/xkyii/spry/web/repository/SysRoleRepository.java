@@ -2,6 +2,7 @@ package com.xkyii.spry.web.repository;
 
 import com.xkyii.spry.web.entity.SysRole;
 import io.quarkus.hibernate.reactive.panache.PanacheRepository;
+import io.quarkus.hibernate.reactive.panache.common.WithSession;
 import io.quarkus.panache.common.Parameters;
 import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -14,6 +15,7 @@ import java.util.Map;
 
 @ApplicationScoped
 public class SysRoleRepository implements PanacheRepository<SysRole> {
+    @WithSession
     public Uni<List<SysRole>> selectRolePermissionByUserId(Long userId) {
         Map<String, Object> parameters = Parameters.with("userId", userId).map();
 
