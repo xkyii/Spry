@@ -35,7 +35,7 @@ public class SysMenuRepositoryTest {
         });
 
         // test
-        asserter.assertEquals(() -> menuRepository.count(), 85L);
+        asserter.assertEquals(() -> menuRepository.count(), 86L);
 
         // IMPORTANT: We need to execute the asserter within a reactive session
         asserter.surroundWith(u -> Panache.withSession(() -> u));
