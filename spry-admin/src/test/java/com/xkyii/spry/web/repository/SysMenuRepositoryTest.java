@@ -17,11 +17,13 @@ public class SysMenuRepositoryTest {
     @Test
     @RunOnVertxContext
     public void test_selectMenuPermsByUserId(UniAsserter asserter) {
-        // debug
+        // 纯粹只是看下role==2L的MenuPerms是多少
         asserter.execute(() -> menuRepository.selectMenuPermsByRoleId(2L).onItem().transform(c -> {
             System.out.println(c);
             return c;
         }));
+
+        // 增加一个SysMenu
         asserter.execute(() -> {
             SysMenu menu = new SysMenu();
             menu.setMenuName("测试菜单");
@@ -35,9 +37,10 @@ public class SysMenuRepositoryTest {
         });
 
         // test
+        // 初始化已经又85个了
         asserter.assertEquals(() -> menuRepository.count(), 86L);
 
-        // IMPORTANT: We need to execute the asserter within a reactive session
+        // 确保在同一个Session中执行
         asserter.surroundWith(u -> Panache.withSession(() -> u));
     }
 }

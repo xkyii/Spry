@@ -15,7 +15,7 @@ import java.util.Map;
 
 @ApplicationScoped
 public class SysRoleRepository implements PanacheRepository<SysRole> {
-    @WithSession
+
     public Uni<List<SysRole>> selectRolePermissionByUserId(Long userId) {
         Map<String, Object> parameters = Parameters.with("userId", userId).map();
 
