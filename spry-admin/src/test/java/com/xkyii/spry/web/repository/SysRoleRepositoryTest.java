@@ -17,9 +17,6 @@ public class SysRoleRepositoryTest {
     @Test
     @RunOnVertxContext
     public void test_selectMenuPermsByUserId(UniAsserter asserter) {
-        asserter.execute(() -> {
-        });
-
         asserter.assertThat(
             () -> roleRepository.selectRolePermissionByUserId(1L),
             roles -> {

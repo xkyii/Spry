@@ -45,13 +45,17 @@ public class SysPermissionService {
         Set<String> perms = new HashSet<>();
         return Uni.combine().all()
             .unis(roles.stream()
-                .map(role -> menuService.selectMenuPermsByRoleId(role.getRoleId()))
+                // 每个roleId都去查询对应的权限
+                .map(role -> menuService.selectMenuPermsByRoleId(role.getRoleId())
+                    // 并填充到对应Role中
+                    .onItem().invoke(role::setPermissions))
                 .collect(Collectors.toList()))
+            // 合并
             .combinedWith(permsLists -> {
-                // TODO: 未完成
-                // permsLists.forEach(list -> perms.addAll(list));
+                @SuppressWarnings("unchecked")
+                List<Set<String>> lists = (List<Set<String>>) permsLists;
+                lists.forEach(perms::addAll);
                 return perms;
             });
-
     }
 }
