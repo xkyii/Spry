@@ -50,6 +50,7 @@ export default function RootLayout({
                         show: "/blog-posts/show/:id",
                         meta: {
                           canDelete: true,
+                          label: "Blog Posts",
                         },
                       },
                       {
@@ -60,6 +61,7 @@ export default function RootLayout({
                         show: "/categories/show/:id",
                         meta: {
                           canDelete: true,
+                          label: "Categories",
                         },
                       },
                     ]}

@@ -1,11 +1,16 @@
 "use client";
 
 import { Header } from "@components/header";
-import { ThemedLayoutV2 } from "@refinedev/mui";
+import { ThemedLayoutV2, ThemedTitleV2 } from "@refinedev/mui";
 import React from "react";
 
 export const ThemedLayout = ({ children }: React.PropsWithChildren) => {
   return (
-    <ThemedLayoutV2 Header={() => <Header sticky />}>{children}</ThemedLayoutV2>
+    <ThemedLayoutV2
+      Header={() => <Header sticky />}
+      Title={({collapsed}) => <ThemedTitleV2 collapsed={collapsed} text="Spry" />}
+    >
+      {children}
+    </ThemedLayoutV2>
   );
 };
