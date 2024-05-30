@@ -1,4 +1,0 @@
-
-### getInfo
-GET {{url}}/dev/selectRolePermissionByUserId?userId=1
-Content-Type: application/json
