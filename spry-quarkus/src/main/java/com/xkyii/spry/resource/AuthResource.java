@@ -1,8 +1,10 @@
 package com.xkyii.spry.resource;
 
+import com.xkyii.spry.domain.LoginReq;
 import io.smallrye.jwt.build.Jwt;
 import io.smallrye.jwt.build.JwtClaimsBuilder;
 import io.vertx.core.json.JsonObject;
+import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
@@ -17,9 +19,10 @@ import java.util.UUID;
 public class AuthResource {
 
     @POST
-    @Path("/login")
+    @Path("login")
     @Produces(MediaType.APPLICATION_JSON)
-    public String login(@RestQuery LoginReq req) {
+    @Consumes(MediaType.APPLICATION_JSON)
+    public String login(LoginReq req) {
         return JsonObject.of()
             .put("name", "Jhon")
             .put("email", "jhon@example.com")
@@ -38,11 +41,5 @@ public class AuthResource {
         // 过期时间
         claims.expiresIn(86400);
         return claims.sign();
-    }
-
-    public class LoginReq {
-        public String username;
-        public String email;
-        public String password;
     }
 }
