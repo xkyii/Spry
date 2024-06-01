@@ -1,45 +1,28 @@
 "use client";
 
-import { AuthBindings } from "@refinedev/core";
+import { AuthProvider } from "@refinedev/core";
 import Cookies from "js-cookie";
+import axios from "axios";
 
-const mockUsers = [
-  {
-    name: "John Doe",
-    email: "johndoe@mail.com",
-    roles: ["admin"],
-    avatar: "https://i.pravatar.cc/150?img=1",
-  },
-  {
-    name: "Jane Doe",
-    email: "janedoe@mail.com",
-    roles: ["editor"],
-    avatar: "https://i.pravatar.cc/150?img=1",
-  },
-];
+const API_URL = "http://localhost:8080";
+const http = axios.create();
 
-export const authProvider: AuthBindings = {
+export const authProvider: AuthProvider = {
   login: async ({ email, username, password, remember }) => {
-    // Suppose we actually send a request to the back end here.
-    const user = mockUsers[0];
-
-    if (user) {
-      Cookies.set("auth", JSON.stringify(user), {
-        expires: 30, // 30 days
-        path: "/",
-      });
+    const response = await http.post("/auth/login", { email, username, password });
+    if (response.status != 200) {
       return {
-        success: true,
-        redirectTo: "/",
+        success: false,
+        error: {
+          name: "LoginError",
+          message: "Invalid username or password",
+        },
       };
     }
 
     return {
-      success: false,
-      error: {
-        name: "LoginError",
-        message: "Invalid username or password",
-      },
+      success: true,
+      redirectTo: "/",
     };
   },
   logout: async () => {
