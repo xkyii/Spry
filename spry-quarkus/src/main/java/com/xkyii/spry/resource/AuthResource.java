@@ -10,7 +10,6 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import org.eclipse.microprofile.jwt.Claims;
-import org.jboss.resteasy.reactive.RestQuery;
 
 import java.util.Set;
 import java.util.UUID;
@@ -22,13 +21,12 @@ public class AuthResource {
     @Path("login")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public String login(LoginReq req) {
+    public JsonObject login(LoginReq req) {
         return JsonObject.of()
             .put("name", "Jhon")
             .put("email", "jhon@example.com")
             .put("password", "password")
-            .put("token", token("Jhon", "jhon@example.com"))
-            .toString();
+            .put("token", token("Jhon", "jhon@example.com"));
     }
 
     String token(String username, String email) {
