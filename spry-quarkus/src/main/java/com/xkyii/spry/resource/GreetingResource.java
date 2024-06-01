@@ -1,4 +1,4 @@
-package com.xkyii.spry;
+package com.xkyii.spry.resource;
 
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;

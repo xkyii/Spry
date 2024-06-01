@@ -1,4 +1,4 @@
-package com.xkyii.spry;
+package com.xkyii.spry.resource;
 
 import io.quarkus.test.junit.QuarkusIntegrationTest;
 
