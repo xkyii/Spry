@@ -3,9 +3,10 @@
 import { AuthProvider } from "@refinedev/core";
 import Cookies from "js-cookie";
 import axios from "axios";
+import { Cookie } from "@mui/icons-material";
 
 const API_URL = "http://localhost:8080";
-const http = axios.create();
+const http = axios.create({ baseURL: API_URL, timeout: 2000});
 
 export const authProvider: AuthProvider = {
   login: async ({ email, username, password, remember }) => {
@@ -20,13 +21,18 @@ export const authProvider: AuthProvider = {
       };
     }
 
+    const { token, ...auth } = response.data;
+    Cookies.set("token", token);
+    Cookies.set("auth", auth);
+
     return {
       success: true,
       redirectTo: "/",
     };
   },
   logout: async () => {
-    Cookies.remove("auth", { path: "/" });
+    Cookies.remove("auth");
+    Cookies.remove("token");
     return {
       success: true,
       redirectTo: "/login",
@@ -34,7 +40,8 @@ export const authProvider: AuthProvider = {
   },
   check: async () => {
     const auth = Cookies.get("auth");
-    if (auth) {
+    const token = Cookies.get("token");
+    if (auth && token) {
       return {
         authenticated: true,
       };
