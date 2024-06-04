@@ -20,7 +20,7 @@ public class User {
     @Column(name = "username", length = 32, unique = true, nullable = false)
     private String username;
 
-    @Column(name = "nickname", length = 32)
+    @Column(name = "nickname", length = 32, unique = true)
     private String nickname;
 
     @Column(name = "password", length = 255, nullable = false)
@@ -28,6 +28,9 @@ public class User {
 
     @Column(name = "email", length = 64)
     private String email;
+
+    @Column(name = "phone_number", length = 16, unique = true)
+    private String phoneNumber;
 
     @Column(name = "created_by")
     private Long createdBy;
@@ -85,6 +88,14 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public Long getCreatedBy() {
