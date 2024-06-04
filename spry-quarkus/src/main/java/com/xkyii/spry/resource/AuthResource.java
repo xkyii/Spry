@@ -15,12 +15,12 @@ import java.util.Set;
 import java.util.UUID;
 
 @Path("/auth")
+@Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
 public class AuthResource {
 
     @POST
     @Path("login")
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
     public JsonObject login(LoginReq req) {
         return JsonObject.of()
             .put("name", "Jhon")

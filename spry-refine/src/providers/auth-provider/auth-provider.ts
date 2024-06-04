@@ -3,7 +3,6 @@
 import { AuthProvider } from "@refinedev/core";
 import Cookies from "js-cookie";
 import axios from "axios";
-import { Cookie } from "@mui/icons-material";
 
 const API_URL = "http://localhost:8080";
 const http = axios.create({ baseURL: API_URL, timeout: 2000});
