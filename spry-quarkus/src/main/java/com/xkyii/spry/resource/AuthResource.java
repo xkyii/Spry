@@ -1,7 +1,7 @@
 package com.xkyii.spry.resource;
 
-import com.xkyii.spry.domain.auth.LoginDto;
-import com.xkyii.spry.domain.auth.LoginReq;
+import com.xkyii.spry.dto.auth.LoginDto;
+import com.xkyii.spry.dto.auth.LoginReq;
 import com.xkyii.spry.entity.User;
 import com.xkyii.spry.repository.UserRepository;
 import io.smallrye.jwt.build.Jwt;

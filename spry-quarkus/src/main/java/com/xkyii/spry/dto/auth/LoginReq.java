@@ -1,4 +1,4 @@
-package com.xkyii.spry.domain.auth;
+package com.xkyii.spry.dto.auth;
 
 import jakarta.validation.constraints.NotBlank;
 

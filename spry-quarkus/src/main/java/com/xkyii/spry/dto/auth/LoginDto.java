@@ -1,4 +1,4 @@
-package com.xkyii.spry.domain.auth;
+package com.xkyii.spry.dto.auth;
 
 public class LoginDto {
     private String username;
