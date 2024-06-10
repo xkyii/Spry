@@ -1,6 +1,7 @@
 package com.xkyss.rest.filter;
 
-import com.xkyss.rest.config.BuildConfig;
+import com.xkyss.rest.config.ResponseFilterConfig;
+import com.xkyss.rest.config.RuntimeConfig;
 import com.xkyss.rest.dto.Response;
 import io.quarkus.arc.properties.IfBuildProperty;
 import io.vertx.core.http.HttpServerResponse;
@@ -14,19 +15,25 @@ import org.jboss.resteasy.reactive.server.ServerResponseFilter;
 public class ResponseFilter {
 
     @Inject
-    BuildConfig buildConfig;
+    RuntimeConfig config;
 
     @ServerResponseFilter
     public void mapResponse(ContainerResponseContext response, HttpServerResponse resp) {
-        // 没有返回体
-        if (!response.hasEntity()) {
-            return;
-        }
 
-        // 包装一下
+        ResponseFilterConfig filterConfig = checkFilterConfig();
+
         Response<Object> r = Response.success();
-        // r.setMessage(ems.getMessage(r.getCode()));
-        r.setData(response.getEntity());
-        response.setEntity(r);
+        try {
+            // 包装一下
+            // r.setMessage(ems.getMessage(r.getCode()));
+            r.setData(response.getEntity());
+        }
+        finally {
+            response.setEntity(r);
+        }
+    }
+
+    ResponseFilterConfig checkFilterConfig() {
+        return null;
     }
 }
