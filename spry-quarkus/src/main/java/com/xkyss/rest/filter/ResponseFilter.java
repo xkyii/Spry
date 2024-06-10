@@ -4,13 +4,13 @@ import com.xkyss.rest.config.RuntimeConfig;
 import com.xkyss.rest.dto.Response;
 import io.quarkus.arc.properties.IfBuildProperty;
 import io.vertx.core.http.HttpServerResponse;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.container.ContainerResponseContext;
-import jakarta.ws.rs.ext.Provider;
 import org.jboss.resteasy.reactive.server.ServerResponseFilter;
 
-@Provider
-@IfBuildProperty(name = "xkyss.rest.build.response-filter.enabled", stringValue = "true")
+@ApplicationScoped
+// @IfBuildProperty(name = "xkyss.rest.build.response-filter.enabled", stringValue = "true")
 public class ResponseFilter {
 
     @Inject
