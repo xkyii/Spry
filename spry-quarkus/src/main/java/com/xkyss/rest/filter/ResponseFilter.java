@@ -1,6 +1,5 @@
 package com.xkyss.rest.filter;
 
-import com.xkyss.rest.config.ResponseFilterConfig;
 import com.xkyss.rest.config.RuntimeConfig;
 import com.xkyss.rest.dto.Response;
 import io.quarkus.arc.properties.IfBuildProperty;
@@ -20,7 +19,7 @@ public class ResponseFilter {
     @ServerResponseFilter
     public void mapResponse(ContainerResponseContext response, HttpServerResponse resp) {
 
-        ResponseFilterConfig filterConfig = checkFilterConfig();
+        RuntimeConfig.ResponseFilterConfig filterConfig = checkFilterConfig();
 
         Response<Object> r = Response.success();
         try {
@@ -33,7 +32,7 @@ public class ResponseFilter {
         }
     }
 
-    ResponseFilterConfig checkFilterConfig() {
+    RuntimeConfig.ResponseFilterConfig checkFilterConfig() {
         return null;
     }
 }
