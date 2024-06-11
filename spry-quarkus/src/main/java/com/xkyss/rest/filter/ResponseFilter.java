@@ -1,31 +1,38 @@
 package com.xkyss.rest.filter;
 
+import com.xkyss.rest.config.RuntimeConfig;
 import com.xkyss.rest.dto.Response;
+import io.quarkus.arc.properties.IfBuildProperty;
 import io.vertx.core.http.HttpServerResponse;
-import io.vertx.ext.web.RoutingContext;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import jakarta.ws.rs.container.ContainerResponseContext;
-import jakarta.ws.rs.ext.Provider;
 import org.jboss.resteasy.reactive.server.ServerResponseFilter;
 
-@Provider
+@ApplicationScoped
+// @IfBuildProperty(name = "xkyss.rest.build.response-filter.enabled", stringValue = "true")
 public class ResponseFilter {
 
+    @Inject
+    RuntimeConfig config;
+
     @ServerResponseFilter
-    public void mapResponse(ContainerResponseContext response, HttpServerResponse resp, RoutingContext rc) {
-        // 没有返回体
-        if (!response.hasEntity()) {
-            return;
-        }
+    public void mapResponse(ContainerResponseContext response, HttpServerResponse resp) {
 
-        // 不处理无媒体类型
-        if (response.getMediaType() == null) {
-            return;
-        }
+        RuntimeConfig.ResponseFilterConfig filterConfig = checkFilterConfig();
 
-        // 包装一下
         Response<Object> r = Response.success();
-        // r.setMessage(ems.getMessage(r.getCode()));
-        r.setData(response.getEntity());
-        response.setEntity(r);
+        try {
+            // 包装一下
+            // r.setMessage(ems.getMessage(r.getCode()));
+            r.setData(response.getEntity());
+        }
+        finally {
+            response.setEntity(r);
+        }
+    }
+
+    RuntimeConfig.ResponseFilterConfig checkFilterConfig() {
+        return null;
     }
 }
