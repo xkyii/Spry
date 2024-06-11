@@ -3,14 +3,17 @@ package com.xkyss.rest.filter;
 import com.xkyss.rest.config.RuntimeConfig;
 import com.xkyss.rest.dto.Response;
 import io.quarkus.arc.properties.IfBuildProperty;
+import io.vertx.core.json.Json;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.ws.rs.container.ContainerRequestContext;
 import jakarta.ws.rs.container.ContainerResponseContext;
+import jakarta.ws.rs.core.MediaType;
 import org.jboss.resteasy.reactive.server.ServerResponseFilter;
 
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 
 @ApplicationScoped
 @IfBuildProperty(name = "xkyss.build.rest.response-filter.enabled", stringValue = "true")
@@ -41,7 +44,19 @@ public class ResponseFilter {
             r.setData(response.getEntity());
         }
         finally {
-            response.setEntity(r);
+            // 没有指定类型,视为支持所有类型
+            if (response.getMediaType() == null) {
+                response.setEntity(r);
+            }
+            else {
+                if (response.getMediaType().isCompatible(MediaType.TEXT_PLAIN_TYPE)) {
+                    response.setEntity(Json.encode(r));
+                }
+                else {
+                    response.setEntity(r);
+                }
+            }
+
         }
     }
 
