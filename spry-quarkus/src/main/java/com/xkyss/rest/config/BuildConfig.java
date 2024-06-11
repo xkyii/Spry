@@ -7,8 +7,8 @@ import io.smallrye.config.WithDefault;
 
 import static com.xkyss.rest.constant.Constants.CONFIG_REST_BUILD_PREFIX;
 
-// @ConfigMapping(prefix = CONFIG_REST_BUILD_PREFIX)
-// @ConfigRoot(phase = ConfigPhase.BUILD_AND_RUN_TIME_FIXED)
+@ConfigMapping(prefix = CONFIG_REST_BUILD_PREFIX)
+@ConfigRoot(phase = ConfigPhase.BUILD_AND_RUN_TIME_FIXED)
 public interface BuildConfig {
 
     /**

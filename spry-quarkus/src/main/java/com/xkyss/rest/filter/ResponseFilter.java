@@ -10,7 +10,7 @@ import jakarta.ws.rs.container.ContainerResponseContext;
 import org.jboss.resteasy.reactive.server.ServerResponseFilter;
 
 @ApplicationScoped
-// @IfBuildProperty(name = "xkyss.rest.build.response-filter.enabled", stringValue = "true")
+@IfBuildProperty(name = "xkyss.rest.build.response-filter.enabled", stringValue = "true")
 public class ResponseFilter {
 
     @Inject
