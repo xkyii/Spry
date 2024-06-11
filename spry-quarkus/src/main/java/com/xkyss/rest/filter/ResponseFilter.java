@@ -3,23 +3,36 @@ package com.xkyss.rest.filter;
 import com.xkyss.rest.config.RuntimeConfig;
 import com.xkyss.rest.dto.Response;
 import io.quarkus.arc.properties.IfBuildProperty;
-import io.vertx.core.http.HttpServerResponse;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
+import jakarta.ws.rs.container.ContainerRequestContext;
 import jakarta.ws.rs.container.ContainerResponseContext;
 import org.jboss.resteasy.reactive.server.ServerResponseFilter;
 
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+
 @ApplicationScoped
-@IfBuildProperty(name = "xkyss.rest.build.response-filter.enabled", stringValue = "true")
+@IfBuildProperty(name = "xkyss.build.rest.response-filter.enabled", stringValue = "true")
 public class ResponseFilter {
 
-    @Inject
-    RuntimeConfig config;
+    private final List<RuntimeConfig.ResponseFilterConfig> responseFilterConfigs;
+
+    public ResponseFilter(RuntimeConfig runtimeConfig) {
+        Map<String, RuntimeConfig.ResponseFilterConfig> stringResponseFilterConfigMap = runtimeConfig.responseFilter();
+        responseFilterConfigs = (stringResponseFilterConfigMap == null || stringResponseFilterConfigMap.isEmpty())
+            ? null
+            : stringResponseFilterConfigMap.values().stream()
+                .filter(RuntimeConfig.ResponseFilterConfig::enabled)
+                .toList();
+    }
 
     @ServerResponseFilter
-    public void mapResponse(ContainerResponseContext response, HttpServerResponse resp) {
-
-        RuntimeConfig.ResponseFilterConfig filterConfig = checkFilterConfig();
+    public void mapResponse(ContainerResponseContext response, ContainerRequestContext requestContext) {
+        RuntimeConfig.ResponseFilterConfig filterConfig = checkFilterConfig(requestContext);
+        if (filterConfig == null) {
+            return;
+        }
 
         Response<Object> r = Response.success();
         try {
@@ -32,7 +45,32 @@ public class ResponseFilter {
         }
     }
 
-    RuntimeConfig.ResponseFilterConfig checkFilterConfig() {
+    RuntimeConfig.ResponseFilterConfig checkFilterConfig(ContainerRequestContext requestContext) {
+        if (responseFilterConfigs == null) {
+            return null;
+        }
+
+        for (RuntimeConfig.ResponseFilterConfig responseFilterConfig : responseFilterConfigs) {
+            // 匹配路径
+            boolean matchPath = responseFilterConfig.path().isEmpty()
+                || responseFilterConfig.path().get().equals("/*")
+                || responseFilterConfig.path().get().equals(requestContext.getUriInfo().getPath().toLowerCase(Locale.ROOT));
+            if (!matchPath) {
+                return null;
+            }
+
+            // 匹配方法
+            boolean matchMethod = responseFilterConfig.methods().isEmpty()
+             || responseFilterConfig.methods().get().contains("*")
+             || responseFilterConfig.methods().get().contains(requestContext.getMethod().toUpperCase(Locale.ROOT));
+            if (!matchMethod) {
+                return null;
+            }
+
+            return responseFilterConfig;
+        }
+
         return null;
     }
+
 }
