@@ -11,6 +11,7 @@ public class Constants {
     public static final String KEY_REQUEST_BODY = "request-body";
     public static final String KEY_REQUEST_BODY_HASHCODE = "request-body-hashcode-key";
     public static final String KEY_RESPONSE_BODY = "response-body";
+    public static final String KEY_RESPONSE_FUNC = "response-func";
 
 
     /// 优先级 (值越小,优先级越高)

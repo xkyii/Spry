@@ -29,6 +29,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 import java.util.StringJoiner;
+import java.util.function.Function;
 
 import static com.xkyss.rest.constant.Constants.*;
 
@@ -47,7 +48,8 @@ public class HttpLogFilter {
 
     @ServerRequestFilter
     public void mapRequest(ContainerRequestContext request, RoutingContext rc) {
-        vertx.executeBlocking(() -> {
+        Runnable next = rc.get(KEY_RESPONSE_FUNC);
+        Runnable func = () -> {
             try {
                 boolean isLogBody = request.hasEntity();
                 if (isLogBody) {
@@ -61,24 +63,26 @@ public class HttpLogFilter {
                     else {
                         rc.put(KEY_REQUEST_BODY, text);
                     }
-                    return true;
                 }
                 else {
                     rc.put(KEY_REQUEST_BODY, "<EMPTY>");
-                    return false;
                 }
             } catch (Exception e) {
                 logger.warn("获取Request Body失败", e);
                 rc.put(KEY_REQUEST_BODY, "<EXCEPTION>");
-                return false;
             }
-        }, true);
+
+            next.run();
+        };
+
+        rc.put(KEY_RESPONSE_FUNC, func);
     }
 
 
     @ServerResponseFilter(priority = PRIORITY_REST_HTTP_LOG)
     public void mapResponse(ContainerResponseContext response, RoutingContext rc) {
-        vertx.executeBlocking(() -> {
+        Runnable next = rc.get(KEY_RESPONSE_FUNC);
+        Runnable func = () -> {
             try {
                 boolean isLogBody = response.hasEntity();
                 if (isLogBody) {
@@ -95,12 +99,16 @@ public class HttpLogFilter {
                 } else {
                     rc.put(KEY_RESPONSE_BODY, "<EMPTY>");
                 }
-                return true;
             } catch (Exception e) {
                 logger.warn("获取Response Body失败", e);
                 rc.put(KEY_RESPONSE_BODY, "<EXCEPTION>");
-                return false;
             }
+            next.run();
+        };
+
+        vertx.executeBlocking(() -> {
+            func.run();
+            return true;
         }, true);
     }
 
@@ -125,7 +133,7 @@ public class HttpLogFilter {
             rc.put(KEY_REQUEST_BODY, "<EMPTY0>");
             rc.put(KEY_RESPONSE_BODY, "<EMPTY0>");
 
-            rc.addEndHandler().onComplete(_ -> {
+            Runnable func = () -> {
                 StringBuilder sb = new StringBuilder();
                 Date requestAt = rc.get(KEY_REQUEST_TIME);
 
@@ -155,7 +163,9 @@ public class HttpLogFilter {
                 }
 
                 logger.info(sb);
-            });
+            };
+
+            rc.put(KEY_RESPONSE_FUNC, func);
             rc.next();
         }
 
