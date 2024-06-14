@@ -1,7 +1,7 @@
 package com.xkyss.rest.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.xkyss.rest.constant.ErrorCode;
+import com.xkyss.rest.error.ErrorCode;
 
 import java.util.Objects;
 
@@ -26,6 +26,18 @@ public class Response<T> {
      * 分页
      */
     private Page page;
+
+    public Response(Integer code) {
+        this(code, null, null, null);
+    }
+
+    public Response(Integer code, String message) {
+        this(code, message, null, null);
+    }
+
+    public Response(Integer code, String message, T data) {
+        this(code, message, data, null);
+    }
 
     public Response(Integer code, String message, T data, Page page) {
         this.code = code;

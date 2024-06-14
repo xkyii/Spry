@@ -1,4 +1,4 @@
-package com.xkyss.rest.constant;
+package com.xkyss.rest.error;
 
 @SuppressWarnings("ALL")
 public interface ErrorCode {

@@ -13,6 +13,10 @@ public class Constants {
     public static final String KEY_RESPONSE_BODY = "response-body";
     public static final String KEY_RESPONSE_FUNC = "response-func";
 
+    // i18n
+    public static final String I18N_ERROR = "i18n/error";
+    public static final String I18N_SERVER_ERROR = "i18n/_server_error";
+    public static final String I18N_VALIDATION = "i18n/validation";
 
     /// 优先级 (值越小,优先级越高)
     public static final int PRIORITY_REST = 500;
