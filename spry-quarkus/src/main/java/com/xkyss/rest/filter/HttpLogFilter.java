@@ -48,9 +48,13 @@ public class HttpLogFilter {
 
     @ServerRequestFilter
     public void mapRequest(ContainerRequestContext request, RoutingContext rc) {
-        Runnable next = rc.get(KEY_RESPONSE_FUNC);
+        Runnable prev = rc.get(KEY_RESPONSE_FUNC);
         Runnable func = () -> {
             try {
+                if (prev != null) {
+                    prev.run();
+                }
+
                 boolean isLogBody = request.hasEntity();
                 if (isLogBody) {
                     String text = IOUtils.toString(request.getEntityStream(), StandardCharsets.UTF_8);
@@ -71,8 +75,6 @@ public class HttpLogFilter {
                 logger.warn("获取Request Body失败", e);
                 rc.put(KEY_REQUEST_BODY, "<EXCEPTION>");
             }
-
-            next.run();
         };
 
         rc.put(KEY_RESPONSE_FUNC, func);
@@ -81,9 +83,13 @@ public class HttpLogFilter {
 
     @ServerResponseFilter(priority = PRIORITY_REST_HTTP_LOG)
     public void mapResponse(ContainerResponseContext response, RoutingContext rc) {
-        Runnable next = rc.get(KEY_RESPONSE_FUNC);
+        Runnable prev = rc.get(KEY_RESPONSE_FUNC);
         Runnable func = () -> {
             try {
+                if (prev != null) {
+                    prev.run();
+                }
+
                 boolean isLogBody = response.hasEntity();
                 if (isLogBody) {
                     Object entity = response.getEntity();
@@ -103,13 +109,9 @@ public class HttpLogFilter {
                 logger.warn("获取Response Body失败", e);
                 rc.put(KEY_RESPONSE_BODY, "<EXCEPTION>");
             }
-            next.run();
         };
 
-        vertx.executeBlocking(() -> {
-            func.run();
-            return true;
-        }, true);
+        rc.put(KEY_RESPONSE_FUNC, func);
     }
 
     void register(@Observes Router router) {
@@ -165,7 +167,17 @@ public class HttpLogFilter {
                 logger.info(sb);
             };
 
-            rc.put(KEY_RESPONSE_FUNC, func);
+            rc.addEndHandler(_ -> {
+                Runnable prev = rc.get(KEY_RESPONSE_FUNC);
+                rc.vertx().executeBlocking(() -> {
+                    if (prev != null) {
+                        prev.run();
+                    }
+                    func.run();
+                    return true;
+                }, true);
+            });
+
             rc.next();
         }
 
