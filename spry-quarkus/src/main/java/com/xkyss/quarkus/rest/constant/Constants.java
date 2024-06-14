@@ -1,4 +1,4 @@
-package com.xkyss.rest.constant;
+package com.xkyss.quarkus.rest.constant;
 
 public class Constants {
     public static final String CONFIG_PREFIX = "xkyss";

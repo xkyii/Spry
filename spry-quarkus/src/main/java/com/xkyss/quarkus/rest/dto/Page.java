@@ -1,4 +1,4 @@
-package com.xkyss.rest.dto;
+package com.xkyss.quarkus.rest.dto;
 
 public class Page {
     /**

@@ -1,5 +1,6 @@
-package com.xkyss.rest.service;
+package com.xkyss.quarkus.rest.service;
 
+import com.xkyss.quarkus.rest.constant.Constants;
 import jakarta.enterprise.context.ApplicationScoped;
 import org.hibernate.validator.resourceloading.AggregateResourceBundleLocator;
 import org.hibernate.validator.spi.resourceloading.ResourceBundleLocator;
@@ -8,9 +9,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-import static com.xkyss.rest.constant.Constants.I18N_ERROR;
-import static com.xkyss.rest.constant.Constants.I18N_SERVER_ERROR;
-
 
 @ApplicationScoped
 public class ErrorMessageService {
@@ -18,7 +16,7 @@ public class ErrorMessageService {
     private final ResourceBundleLocator resourceBundleLocator;
 
     public ErrorMessageService() {
-        resourceBundleLocator = new AggregateResourceBundleLocator(List.of(I18N_ERROR, I18N_SERVER_ERROR));
+        resourceBundleLocator = new AggregateResourceBundleLocator(List.of(Constants.I18N_ERROR, Constants.I18N_SERVER_ERROR));
     }
 
     public String getMessage(Integer code) {

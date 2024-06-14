@@ -1,4 +1,4 @@
-package com.xkyss.rest.error;
+package com.xkyss.quarkus.rest.error;
 
 @SuppressWarnings("ALL")
 public interface ErrorCode {

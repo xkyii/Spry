@@ -1,4 +1,4 @@
-package com.xkyss.rest.error;
+package com.xkyss.quarkus.rest.error;
 
 public class RestException extends RuntimeException {
     private final Integer code;

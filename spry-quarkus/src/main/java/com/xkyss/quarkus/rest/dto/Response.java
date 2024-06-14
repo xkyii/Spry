@@ -1,7 +1,7 @@
-package com.xkyss.rest.dto;
+package com.xkyss.quarkus.rest.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.xkyss.rest.error.ErrorCode;
+import com.xkyss.quarkus.rest.error.ErrorCode;
 
 import java.util.Objects;
 

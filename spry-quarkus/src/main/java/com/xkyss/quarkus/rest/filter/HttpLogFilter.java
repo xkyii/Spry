@@ -1,6 +1,7 @@
-package com.xkyss.rest.filter;
+package com.xkyss.quarkus.rest.filter;
 
-import com.xkyss.rest.config.RuntimeConfig;
+import com.xkyss.quarkus.rest.config.RuntimeConfig;
+import com.xkyss.quarkus.rest.constant.Constants;
 import io.quarkus.runtime.util.StringUtil;
 import io.vertx.core.Handler;
 import io.vertx.core.MultiMap;
@@ -22,16 +23,12 @@ import org.jboss.logging.Logger;
 import org.jboss.resteasy.reactive.server.ServerRequestFilter;
 import org.jboss.resteasy.reactive.server.ServerResponseFilter;
 
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 import java.util.StringJoiner;
-import java.util.function.Function;
-
-import static com.xkyss.rest.constant.Constants.*;
 
 @ApplicationScoped
 public class HttpLogFilter {
@@ -48,7 +45,7 @@ public class HttpLogFilter {
 
     @ServerRequestFilter
     public void mapRequest(ContainerRequestContext request, RoutingContext rc) {
-        Runnable prev = rc.get(KEY_RESPONSE_FUNC);
+        Runnable prev = rc.get(Constants.KEY_RESPONSE_FUNC);
         Runnable func = () -> {
             try {
                 if (prev != null) {
@@ -59,31 +56,31 @@ public class HttpLogFilter {
                 if (isLogBody) {
                     String text = IOUtils.toString(request.getEntityStream(), StandardCharsets.UTF_8);
                     request.setEntityStream(IOUtils.toInputStream(text, StandardCharsets.UTF_8));
-                    rc.put(KEY_REQUEST_BODY_HASHCODE, text.hashCode());
+                    rc.put(Constants.KEY_REQUEST_BODY_HASHCODE, text.hashCode());
 
                     if ((request.getMediaType().isCompatible(MediaType.APPLICATION_JSON_TYPE))) {
-                        rc.put(KEY_REQUEST_BODY, Json.encodePrettily(Json.decodeValue(text)));
+                        rc.put(Constants.KEY_REQUEST_BODY, Json.encodePrettily(Json.decodeValue(text)));
                     }
                     else {
-                        rc.put(KEY_REQUEST_BODY, text);
+                        rc.put(Constants.KEY_REQUEST_BODY, text);
                     }
                 }
                 else {
-                    rc.put(KEY_REQUEST_BODY, "<EMPTY>");
+                    rc.put(Constants.KEY_REQUEST_BODY, "<EMPTY>");
                 }
             } catch (Exception e) {
                 logger.warn("获取Request Body失败", e);
-                rc.put(KEY_REQUEST_BODY, "<EXCEPTION>");
+                rc.put(Constants.KEY_REQUEST_BODY, "<EXCEPTION>");
             }
         };
 
-        rc.put(KEY_RESPONSE_FUNC, func);
+        rc.put(Constants.KEY_RESPONSE_FUNC, func);
     }
 
 
-    @ServerResponseFilter(priority = PRIORITY_REST_HTTP_LOG)
+    @ServerResponseFilter(priority = Constants.PRIORITY_REST_HTTP_LOG)
     public void mapResponse(ContainerResponseContext response, RoutingContext rc) {
-        Runnable prev = rc.get(KEY_RESPONSE_FUNC);
+        Runnable prev = rc.get(Constants.KEY_RESPONSE_FUNC);
         Runnable func = () -> {
             try {
                 if (prev != null) {
@@ -94,24 +91,24 @@ public class HttpLogFilter {
                 if (isLogBody) {
                     Object entity = response.getEntity();
                     if (entity instanceof String) {
-                        rc.put(KEY_RESPONSE_BODY, entity);
+                        rc.put(Constants.KEY_RESPONSE_BODY, entity);
                     }
                     else if (entity instanceof byte[]) {
-                        rc.put(KEY_RESPONSE_BODY, Json.encodePrettily(Json.decodeValue(Buffer.buffer((byte[]) entity))));
+                        rc.put(Constants.KEY_RESPONSE_BODY, Json.encodePrettily(Json.decodeValue(Buffer.buffer((byte[]) entity))));
                     }
                     else {
-                        rc.put(KEY_RESPONSE_BODY, Json.encodePrettily(entity));
+                        rc.put(Constants.KEY_RESPONSE_BODY, Json.encodePrettily(entity));
                     }
                 } else {
-                    rc.put(KEY_RESPONSE_BODY, "<EMPTY>");
+                    rc.put(Constants.KEY_RESPONSE_BODY, "<EMPTY>");
                 }
             } catch (Exception e) {
                 logger.warn("获取Response Body失败", e);
-                rc.put(KEY_RESPONSE_BODY, "<EXCEPTION>");
+                rc.put(Constants.KEY_RESPONSE_BODY, "<EXCEPTION>");
             }
         };
 
-        rc.put(KEY_RESPONSE_FUNC, func);
+        rc.put(Constants.KEY_RESPONSE_FUNC, func);
     }
 
     void register(@Observes Router router) {
@@ -131,13 +128,13 @@ public class HttpLogFilter {
 
         @Override
         public void handle(RoutingContext rc) {
-            rc.put(KEY_REQUEST_TIME, new Date());
-            rc.put(KEY_REQUEST_BODY, "<EMPTY0>");
-            rc.put(KEY_RESPONSE_BODY, "<EMPTY0>");
+            rc.put(Constants.KEY_REQUEST_TIME, new Date());
+            rc.put(Constants.KEY_REQUEST_BODY, "<EMPTY0>");
+            rc.put(Constants.KEY_RESPONSE_BODY, "<EMPTY0>");
 
             Runnable func = () -> {
                 StringBuilder sb = new StringBuilder();
-                Date requestAt = rc.get(KEY_REQUEST_TIME);
+                Date requestAt = rc.get(Constants.KEY_REQUEST_TIME);
 
                 // request
                 {
@@ -147,7 +144,7 @@ public class HttpLogFilter {
                     sb.append(request.method()).append(" ").append(request.uri()).append(" ").append(request.version().alpnName()).append("\n");
                     String text = readAttribute(request.headers());
                     sb.append(StringUtil.isNullOrEmpty(text) ? "<Request head is empty>" : text).append("\n\n");
-                    sb.append((String) rc.get(KEY_REQUEST_BODY));
+                    sb.append((String) rc.get(Constants.KEY_REQUEST_BODY));
                 }
 
                 // response
@@ -161,14 +158,14 @@ public class HttpLogFilter {
                     sb.append("Status: ").append(response.getStatusCode()).append(", ").append(response.getStatusMessage()).append("\n");
                     String text = readAttribute(response.headers());
                     sb.append(StringUtil.isNullOrEmpty(text) ? "<Response head is empty>" : text).append("\n\n");
-                    sb.append((String) rc.get(KEY_RESPONSE_BODY));
+                    sb.append((String) rc.get(Constants.KEY_RESPONSE_BODY));
                 }
 
                 logger.info(sb);
             };
 
             rc.addEndHandler(_ -> {
-                Runnable prev = rc.get(KEY_RESPONSE_FUNC);
+                Runnable prev = rc.get(Constants.KEY_RESPONSE_FUNC);
                 rc.vertx().executeBlocking(() -> {
                     if (prev != null) {
                         prev.run();

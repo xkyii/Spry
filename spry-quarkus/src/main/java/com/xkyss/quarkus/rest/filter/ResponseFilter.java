@@ -1,7 +1,7 @@
-package com.xkyss.rest.filter;
+package com.xkyss.quarkus.rest.filter;
 
-import com.xkyss.rest.config.RuntimeConfig;
-import com.xkyss.rest.dto.Response;
+import com.xkyss.quarkus.rest.dto.Response;
+import com.xkyss.quarkus.rest.config.RuntimeConfig;
 import io.quarkus.arc.properties.IfBuildProperty;
 import io.vertx.core.json.Json;
 import jakarta.enterprise.context.ApplicationScoped;

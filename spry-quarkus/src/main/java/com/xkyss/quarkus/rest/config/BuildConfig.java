@@ -1,11 +1,11 @@
-package com.xkyss.rest.config;
+package com.xkyss.quarkus.rest.config;
 
 import io.quarkus.runtime.annotations.ConfigPhase;
 import io.quarkus.runtime.annotations.ConfigRoot;
 import io.smallrye.config.ConfigMapping;
 import io.smallrye.config.WithDefault;
 
-import static com.xkyss.rest.constant.Constants.CONFIG_REST_BUILD_PREFIX;
+import static com.xkyss.quarkus.rest.constant.Constants.CONFIG_REST_BUILD_PREFIX;
 
 @ConfigMapping(prefix = CONFIG_REST_BUILD_PREFIX)
 @ConfigRoot(phase = ConfigPhase.BUILD_AND_RUN_TIME_FIXED)

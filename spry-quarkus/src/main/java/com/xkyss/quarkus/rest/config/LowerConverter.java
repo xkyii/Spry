@@ -1,4 +1,4 @@
-package com.xkyss.rest.config;
+package com.xkyss.quarkus.rest.config;
 
 import org.eclipse.microprofile.config.spi.Converter;
 
