@@ -45,70 +45,52 @@ public class HttpLogFilter {
 
     @ServerRequestFilter
     public void mapRequest(ContainerRequestContext request, RoutingContext rc) {
-        Runnable prev = rc.get(Constants.KEY_RESPONSE_FUNC);
-        Runnable func = () -> {
-            try {
-                if (prev != null) {
-                    prev.run();
-                }
+        try {
+            boolean isLogBody = request.hasEntity();
+            if (isLogBody) {
+                String text = IOUtils.toString(request.getEntityStream(), StandardCharsets.UTF_8);
+                request.setEntityStream(IOUtils.toInputStream(text, StandardCharsets.UTF_8));
+                rc.put(Constants.KEY_REQUEST_BODY_HASHCODE, text.hashCode());
 
-                boolean isLogBody = request.hasEntity();
-                if (isLogBody) {
-                    String text = IOUtils.toString(request.getEntityStream(), StandardCharsets.UTF_8);
-                    request.setEntityStream(IOUtils.toInputStream(text, StandardCharsets.UTF_8));
-                    rc.put(Constants.KEY_REQUEST_BODY_HASHCODE, text.hashCode());
-
-                    if ((request.getMediaType().isCompatible(MediaType.APPLICATION_JSON_TYPE))) {
-                        rc.put(Constants.KEY_REQUEST_BODY, Json.encodePrettily(Json.decodeValue(text)));
-                    }
-                    else {
-                        rc.put(Constants.KEY_REQUEST_BODY, text);
-                    }
+                if ((request.getMediaType().isCompatible(MediaType.APPLICATION_JSON_TYPE))) {
+                    rc.put(Constants.KEY_REQUEST_BODY, Json.encodePrettily(Json.decodeValue(text)));
                 }
                 else {
-                    rc.put(Constants.KEY_REQUEST_BODY, "<EMPTY>");
+                    rc.put(Constants.KEY_REQUEST_BODY, text);
                 }
-            } catch (Exception e) {
-                logger.warn("获取Request Body失败", e);
-                rc.put(Constants.KEY_REQUEST_BODY, "<EXCEPTION>");
             }
-        };
-
-        rc.put(Constants.KEY_RESPONSE_FUNC, func);
+            else {
+                rc.put(Constants.KEY_REQUEST_BODY, "<EMPTY>");
+            }
+        } catch (Exception e) {
+            logger.warn("获取Request Body失败", e);
+            rc.put(Constants.KEY_REQUEST_BODY, "<EXCEPTION>");
+        }
     }
 
 
     @ServerResponseFilter(priority = Constants.PRIORITY_REST_HTTP_LOG)
     public void mapResponse(ContainerResponseContext response, RoutingContext rc) {
-        Runnable prev = rc.get(Constants.KEY_RESPONSE_FUNC);
-        Runnable func = () -> {
-            try {
-                if (prev != null) {
-                    prev.run();
+        try {
+            boolean isLogBody = response.hasEntity();
+            if (isLogBody) {
+                Object entity = response.getEntity();
+                if (entity instanceof String) {
+                    rc.put(Constants.KEY_RESPONSE_BODY, entity);
                 }
-
-                boolean isLogBody = response.hasEntity();
-                if (isLogBody) {
-                    Object entity = response.getEntity();
-                    if (entity instanceof String) {
-                        rc.put(Constants.KEY_RESPONSE_BODY, entity);
-                    }
-                    else if (entity instanceof byte[]) {
-                        rc.put(Constants.KEY_RESPONSE_BODY, Json.encodePrettily(Json.decodeValue(Buffer.buffer((byte[]) entity))));
-                    }
-                    else {
-                        rc.put(Constants.KEY_RESPONSE_BODY, Json.encodePrettily(entity));
-                    }
-                } else {
-                    rc.put(Constants.KEY_RESPONSE_BODY, "<EMPTY>");
+                else if (entity instanceof byte[]) {
+                    rc.put(Constants.KEY_RESPONSE_BODY, Json.encodePrettily(Json.decodeValue(Buffer.buffer((byte[]) entity))));
                 }
-            } catch (Exception e) {
-                logger.warn("获取Response Body失败", e);
-                rc.put(Constants.KEY_RESPONSE_BODY, "<EXCEPTION>");
+                else {
+                    rc.put(Constants.KEY_RESPONSE_BODY, Json.encodePrettily(entity));
+                }
+            } else {
+                rc.put(Constants.KEY_RESPONSE_BODY, "<EMPTY>");
             }
-        };
-
-        rc.put(Constants.KEY_RESPONSE_FUNC, func);
+        } catch (Exception e) {
+            logger.warn("获取Response Body失败", e);
+            rc.put(Constants.KEY_RESPONSE_BODY, "<EXCEPTION>");
+        }
     }
 
     void register(@Observes Router router) {
@@ -165,11 +147,7 @@ public class HttpLogFilter {
             };
 
             rc.addEndHandler(_ -> {
-                Runnable prev = rc.get(Constants.KEY_RESPONSE_FUNC);
                 rc.vertx().executeBlocking(() -> {
-                    if (prev != null) {
-                        prev.run();
-                    }
                     func.run();
                     return true;
                 }, true);
