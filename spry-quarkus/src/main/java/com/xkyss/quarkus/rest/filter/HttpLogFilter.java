@@ -17,7 +17,6 @@ import jakarta.enterprise.event.Observes;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.container.ContainerRequestContext;
 import jakarta.ws.rs.container.ContainerResponseContext;
-import jakarta.ws.rs.core.MediaType;
 import org.apache.commons.io.IOUtils;
 import org.jboss.logging.Logger;
 import org.jboss.resteasy.reactive.server.ServerRequestFilter;
@@ -46,50 +45,25 @@ public class HttpLogFilter {
     @ServerRequestFilter
     public void mapRequest(ContainerRequestContext request, RoutingContext rc) {
         try {
+            LogEntity le = rc.get(Constants.KEY_LOG_ENTITY);
             boolean isLogBody = request.hasEntity();
             if (isLogBody) {
                 String text = IOUtils.toString(request.getEntityStream(), StandardCharsets.UTF_8);
                 request.setEntityStream(IOUtils.toInputStream(text, StandardCharsets.UTF_8));
-                rc.put(Constants.KEY_REQUEST_BODY_HASHCODE, text.hashCode());
-
-                if ((request.getMediaType().isCompatible(MediaType.APPLICATION_JSON_TYPE))) {
-                    rc.put(Constants.KEY_REQUEST_BODY, Json.encodePrettily(Json.decodeValue(text)));
-                }
-                else {
-                    rc.put(Constants.KEY_REQUEST_BODY, text);
-                }
-            }
-            else {
-                rc.put(Constants.KEY_REQUEST_BODY, "<EMPTY>");
+                le.requestBody = text;
             }
         } catch (Exception e) {
             logger.warn("获取Request Body失败", e);
-            rc.put(Constants.KEY_REQUEST_BODY, "<EXCEPTION>");
         }
     }
 
 
     @ServerResponseFilter(priority = Constants.PRIORITY_REST_HTTP_LOG)
     public void mapResponse(ContainerResponseContext response, RoutingContext rc) {
-        try {
-            boolean isLogBody = response.hasEntity();
-            if (isLogBody) {
-                Object entity = response.getEntity();
-                if (entity instanceof String) {
-                    rc.put(Constants.KEY_RESPONSE_BODY, entity);
-                }
-                else if (entity instanceof byte[]) {
-                    rc.put(Constants.KEY_RESPONSE_BODY, Json.encodePrettily(Json.decodeValue(Buffer.buffer((byte[]) entity))));
-                }
-                else {
-                    rc.put(Constants.KEY_RESPONSE_BODY, Json.encodePrettily(entity));
-                }
-            } else {
-                rc.put(Constants.KEY_RESPONSE_BODY, "<EMPTY>");
-            }
-        } catch (Exception e) {
-            logger.warn("获取Response Body失败", e);
-            rc.put(Constants.KEY_RESPONSE_BODY, "<EXCEPTION>");
+        LogEntity le = rc.get(Constants.KEY_LOG_ENTITY);
+        boolean isLogBody = response.hasEntity();
+        if (isLogBody) {
+            le.responseBody = response.getEntity();
         }
     }
 
@@ -101,6 +75,12 @@ public class HttpLogFilter {
         logger.info("已注册Http日志过滤.");
     }
 
+    static class LogEntity {
+        public Date requestTime;
+        public String requestBody;
+        public Object responseBody;
+    }
+
     public static class LoggerHandler implements Handler<RoutingContext> {
         private final Logger logger;
 
@@ -110,23 +90,25 @@ public class HttpLogFilter {
 
         @Override
         public void handle(RoutingContext rc) {
-            rc.put(Constants.KEY_REQUEST_TIME, new Date());
-            rc.put(Constants.KEY_REQUEST_BODY, "<EMPTY0>");
-            rc.put(Constants.KEY_RESPONSE_BODY, "<EMPTY0>");
+            {
+                LogEntity le = new LogEntity();
+                le.requestTime = new Date();
+                rc.put(Constants.KEY_LOG_ENTITY, le);
+            }
 
             Runnable func = () -> {
                 StringBuilder sb = new StringBuilder();
-                Date requestAt = rc.get(Constants.KEY_REQUEST_TIME);
+                LogEntity le = rc.get(Constants.KEY_LOG_ENTITY);
 
                 // request
                 {
                     HttpServerRequest request = rc.request();
                     sb.append("\n\n[Request]:\n");
-                    sb.append("[Request At]: ").append(dateFormat.format(requestAt)).append("\n\n");
+                    sb.append("[Request At]: ").append(dateFormat.format(le.requestTime)).append("\n\n");
                     sb.append(request.method()).append(" ").append(request.uri()).append(" ").append(request.version().alpnName()).append("\n");
                     String text = readAttribute(request.headers());
                     sb.append(StringUtil.isNullOrEmpty(text) ? "<Request head is empty>" : text).append("\n\n");
-                    sb.append((String) rc.get(Constants.KEY_REQUEST_BODY));
+                    sb.append(le.requestBody);
                 }
 
                 // response
@@ -134,13 +116,13 @@ public class HttpLogFilter {
                     HttpServerResponse response = rc.response();
                     Date responseAt = new Date();
                     sb.append("\n\n\n[Response]:\n");
-                    sb.append("[ Request At]: ").append(dateFormat.format(requestAt)).append("\n");
+                    sb.append("[ Request At]: ").append(dateFormat.format(le.requestTime)).append("\n");
                     sb.append("[Response At]: ").append(dateFormat.format(responseAt)).append("\n");
-                    sb.append("[ Total Cast]: ").append(responseAt.getTime() - requestAt.getTime()).append(" ms\n\n");
+                    sb.append("[ Total Cast]: ").append(responseAt.getTime() - le.requestTime.getTime()).append(" ms\n\n");
                     sb.append("Status: ").append(response.getStatusCode()).append(", ").append(response.getStatusMessage()).append("\n");
                     String text = readAttribute(response.headers());
                     sb.append(StringUtil.isNullOrEmpty(text) ? "<Response head is empty>" : text).append("\n\n");
-                    sb.append((String) rc.get(Constants.KEY_RESPONSE_BODY));
+                    sb.append(prettyBody(le.responseBody));
                 }
 
                 logger.info(sb);
@@ -149,6 +131,7 @@ public class HttpLogFilter {
             rc.addEndHandler(_ -> {
                 rc.vertx().executeBlocking(() -> {
                     func.run();
+                    // logger.info("rc: " + rc);
                     return true;
                 }, true);
             });
@@ -168,6 +151,18 @@ public class HttpLogFilter {
                 }
 
                 return joiner.toString();
+            }
+        }
+
+        private static String prettyBody(Object body) {
+            if (body instanceof String) {
+                return (String) body;
+            }
+            else if (body instanceof byte[]) {
+                return Json.encodePrettily(Json.decodeValue(Buffer.buffer((byte[]) body)));
+            }
+            else {
+                return Json.encodePrettily(body);
             }
         }
     }
