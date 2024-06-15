@@ -3,6 +3,7 @@ package com.xkyss.quarkus.rest.filter;
 import com.xkyss.quarkus.rest.dto.ValidateInfo;
 import com.xkyss.quarkus.rest.error.ErrorCode;
 import com.xkyss.quarkus.rest.service.ErrorMessageService;
+import io.quarkus.arc.properties.IfBuildProperty;
 import jakarta.inject.Inject;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.ValidationException;
@@ -19,6 +20,7 @@ import java.util.stream.Collectors;
  * 校验异常统一处理
  */
 @Provider
+@IfBuildProperty(name = "xkyss.build.rest.exception-mapper.enabled", stringValue = "true")
 public class ValidationExceptionMapper implements ExceptionMapper<ValidationException> {
 
     @Inject

@@ -2,6 +2,7 @@ package com.xkyss.quarkus.rest.filter;
 
 import com.xkyss.quarkus.rest.error.RestException;
 import com.xkyss.quarkus.rest.service.ErrorMessageService;
+import io.quarkus.arc.properties.IfBuildProperty;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -16,7 +17,7 @@ import java.util.Map;
  * ServerException异常处理
  */
 @Provider
-// @IfBuildProperty(name = "xkyss.server.build.exception-mapper.enabled", stringValue = "true")
+@IfBuildProperty(name = "xkyss.build.rest.exception-mapper.enabled", stringValue = "true")
 public class RestExceptionMapper implements ExceptionMapper<RestException> {
 
     @Inject
