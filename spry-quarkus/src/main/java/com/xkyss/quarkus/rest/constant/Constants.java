@@ -12,6 +12,7 @@ public class Constants {
     public static final String KEY_REQUEST_BODY_HASHCODE = "request-body-hashcode-key";
     public static final String KEY_RESPONSE_BODY = "response-body";
     public static final String KEY_RESPONSE_FUNC = "response-func";
+    public static final String KEY_LOG_ENTITY = "log-entity";
 
     // i18n
     public static final String I18N_ERROR = "i18n/error";

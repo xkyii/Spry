@@ -87,6 +87,11 @@
         <artifactId>quarkus-maven-plugin</artifactId>
         <version>${quarkus.platform.version}</version>
         <extensions>true</extensions>
+        <configuration>
+          <systemProperties>
+            <file.encoding>UTF-8</file.encoding>
+          </systemProperties>
+        </configuration>
         <executions>
           <execution>
             <goals>
