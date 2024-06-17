@@ -68,15 +68,15 @@ public class ResponseFilter {
             // 匹配路径
             boolean matchPath = responseFilterConfig.path().isEmpty()
                 || responseFilterConfig.path().get().equals("/*")
-                || responseFilterConfig.path().get().equals(requestContext.getUriInfo().getPath().toLowerCase(Locale.ROOT));
+                || requestContext.getUriInfo().getPath().toLowerCase(Locale.ROOT).startsWith(responseFilterConfig.path().get());
             if (!matchPath) {
                 return null;
             }
 
             // 匹配方法
             boolean matchMethod = responseFilterConfig.methods().isEmpty()
-             || responseFilterConfig.methods().get().contains("*")
-             || responseFilterConfig.methods().get().contains(requestContext.getMethod().toUpperCase(Locale.ROOT));
+                || responseFilterConfig.methods().get().contains("*")
+                || responseFilterConfig.methods().get().contains(requestContext.getMethod().toUpperCase(Locale.ROOT));
             if (!matchMethod) {
                 return null;
             }
