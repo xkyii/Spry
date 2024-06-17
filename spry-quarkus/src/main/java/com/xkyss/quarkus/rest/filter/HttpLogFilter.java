@@ -52,6 +52,9 @@ public class HttpLogFilter {
                 request.setEntityStream(IOUtils.toInputStream(text, StandardCharsets.UTF_8));
                 le.requestBody = text;
             }
+            else {
+                le.requestBody = "<EMPTY>";
+            }
         } catch (Exception e) {
             logger.warn("获取Request Body失败", e);
         }
@@ -155,15 +158,12 @@ public class HttpLogFilter {
         }
 
         private static String prettyBody(Object body) {
-            if (body instanceof String) {
-                return (String) body;
-            }
-            else if (body instanceof byte[]) {
-                return Json.encodePrettily(Json.decodeValue(Buffer.buffer((byte[]) body)));
-            }
-            else {
-                return Json.encodePrettily(body);
-            }
+            return switch (body) {
+                case null -> "<EMPTY>";
+                case String s -> s;
+                case byte[] bytes -> Json.encodePrettily(Json.decodeValue(Buffer.buffer(bytes)));
+                default -> Json.encodePrettily(body);
+            };
         }
     }
 }

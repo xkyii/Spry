@@ -35,6 +35,10 @@ public class ResponseFilter {
         if (filterConfig == null) {
             return;
         }
+        // not content
+        if (response.getStatus() == 204) {
+            return;
+        }
 
         Response<Object> r = Response.success();
         try {
