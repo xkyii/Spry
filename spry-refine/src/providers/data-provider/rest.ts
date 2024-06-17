@@ -70,9 +70,18 @@ export const dataProvider: DataProvider = {
         } as CreateResponse<any>;
     },
     update: async ({ resource, id, variables, meta }) => {
-        return {
+        const url = `${API_URL}/${resource}/${id}`;
 
-        } as UpdateResponse<any>;
+        const { headers, method } = meta ?? {};
+        const requestMethod = (method as MethodTypesWithBody) ?? "patch";
+
+        const { data } = await httpClient[requestMethod](url, variables, {
+          headers,
+        });
+
+        return {
+          data,
+        };
     },
     deleteOne: async ({ resource, id, variables, meta }) => {
         return {

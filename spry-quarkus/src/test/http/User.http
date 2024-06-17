@@ -1,3 +1,12 @@
 
 ### GetUser
-GET http://localhost:8080/user/1
+GET http://localhost:8080/api/user/1
+
+### Patch
+PUT http://localhost:8080/api/user/2
+
+{
+    "username": "xkyii5",
+    "nickname": "xkyii5",
+    "password": "xk123123"
+}
