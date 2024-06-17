@@ -9,7 +9,6 @@ const http = axios.create({ baseURL: API_URL, timeout: 2000});
 
 http.interceptors.response.use(
   resp => {
-    //const data = resp.data;
     return { ...resp, ...resp.data };
   },
 );
