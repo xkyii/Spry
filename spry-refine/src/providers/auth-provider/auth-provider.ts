@@ -7,6 +7,13 @@ import axios from "axios";
 const API_URL = "http://localhost:8080/api";
 const http = axios.create({ baseURL: API_URL, timeout: 2000});
 
+http.interceptors.response.use(
+  resp => {
+    //const data = resp.data;
+    return { ...resp, ...resp.data };
+  },
+);
+
 export const authProvider: AuthProvider = {
   login: async ({ email, username, password, remember }) => {
     const response = await http.post("/auth/login", { email, username, password });
