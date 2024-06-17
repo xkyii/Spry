@@ -1,6 +1,6 @@
 "use client";
 
-import { DataProvider, CreateResponse, UpdateResponse, DeleteOneResponse } from "@refinedev/core";
+import { DataProvider, CreateResponse, } from "@refinedev/core";
 import type { AxiosInstance } from "axios";
 import axios from "axios";
 import { stringify } from "query-string";
@@ -65,9 +65,18 @@ export const dataProvider: DataProvider = {
         };
     },
     create: async ({ resource, variables, meta }) => {
-        return {
+        const url = `${API_URL}/${resource}`;
 
-        } as CreateResponse<any>;
+        const { headers, method } = meta ?? {};
+        const requestMethod = (method as MethodTypesWithBody) ?? "post";
+
+        const { data } = await httpClient[requestMethod](url, variables, {
+          headers,
+        });
+
+        return {
+          data,
+        };
     },
     update: async ({ resource, id, variables, meta }) => {
         const url = `${API_URL}/${resource}/${id}`;
@@ -84,9 +93,19 @@ export const dataProvider: DataProvider = {
         };
     },
     deleteOne: async ({ resource, id, variables, meta }) => {
-        return {
+        const url = `${API_URL}/${resource}/${id}`;
 
-        } as DeleteOneResponse<any>;
+        const { headers, method } = meta ?? {};
+        const requestMethod = (method as MethodTypesWithBody) ?? "delete";
+
+        const { data } = await httpClient[requestMethod](url, {
+          data: variables,
+          headers,
+        });
+
+        return {
+          data,
+        };
     },
 };
 

@@ -1,5 +1,8 @@
 
-### GetUser
+### List
+GET http://localhost:8080/api/user?page=0&size=1
+
+### Get
 GET http://localhost:8080/api/user/1
 
 ### Patch
