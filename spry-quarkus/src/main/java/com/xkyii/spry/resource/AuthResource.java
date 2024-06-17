@@ -18,7 +18,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
-@Path("/auth")
+@Path("/api/auth")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class AuthResource {
