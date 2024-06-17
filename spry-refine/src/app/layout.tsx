@@ -9,7 +9,7 @@ import React, { Suspense } from "react";
 
 import { ColorModeContextProvider } from "@contexts/color-mode";
 import { authProvider } from "@providers/auth-provider";
-import { dataProvider } from "@providers/data-provider";
+import { dataProvider, fakeDataProvider } from "@providers/data-provider";
 
 export const metadata: Metadata = {
   title: "Spry",
@@ -38,7 +38,7 @@ export default function RootLayout({
                 <DevtoolsProvider>
                   <Refine
                     routerProvider={routerProvider}
-                    dataProvider={dataProvider}
+                    dataProvider={{default: dataProvider, fake: fakeDataProvider }}
                     notificationProvider={notificationProvider}
                     authProvider={authProvider}
                     resources={[
@@ -51,6 +51,7 @@ export default function RootLayout({
                         meta: {
                           canDelete: true,
                           label: "Blog Posts",
+                          dataProviderName: "fake",
                         },
                       },
                       {
@@ -62,6 +63,18 @@ export default function RootLayout({
                         meta: {
                           canDelete: true,
                           label: "Categories",
+                          dataProviderName: "fake",
+                        },
+                      },
+                      {
+                        name: "user",
+                        list: "/user",
+                        create: "/user/create",
+                        edit: "/user/:id",
+                        show: "/user/:id",
+                        meta: {
+                          canDelete: true,
+                          label: "用户",
                         },
                       },
                     ]}
