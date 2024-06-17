@@ -4,7 +4,7 @@ import { AuthProvider } from "@refinedev/core";
 import Cookies from "js-cookie";
 import axios from "axios";
 
-const API_URL = "http://localhost:8080";
+const API_URL = "http://localhost:8080/api";
 const http = axios.create({ baseURL: API_URL, timeout: 2000});
 
 export const authProvider: AuthProvider = {
