@@ -70,8 +70,8 @@ export default function RootLayout({
                         name: "user",
                         list: "/user",
                         create: "/user/create",
-                        edit: "/user/:id",
-                        show: "/user/:id",
+                        edit: "/user/edit/:id",
+                        show: "/user/show/:id",
                         meta: {
                           canDelete: true,
                           label: "用户",

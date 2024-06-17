@@ -24,7 +24,7 @@ export default function UserList() {
       {
         field: "username",
         flex: 1,
-        headerName: "姓名",
+        headerName: "用户名",
         minWidth: 200,
       },
       {
