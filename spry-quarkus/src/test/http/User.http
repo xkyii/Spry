@@ -6,10 +6,11 @@ GET http://localhost:8080/api/user?page=0&size=1
 GET http://localhost:8080/api/user/1
 
 ### Patch
-PUT http://localhost:8080/api/user/2
+PATCH http://localhost:8080/api/user/3
+Content-Type: application/json
 
 {
-    "username": "xkyii5",
-    "nickname": "xkyii5",
-    "password": "xk123123"
+    "username": "xkyii52",
+    "nickname": "xkyii53",
+    "password": "xk1231234"
 }
