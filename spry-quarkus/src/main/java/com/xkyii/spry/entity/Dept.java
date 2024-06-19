@@ -5,32 +5,37 @@ import jakarta.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "t_user")
-public class User {
-
+@Table(name = "t_dept")
+public class Dept {
     @Id
     @Column(name = "id")
     @SequenceGenerator(
-        name = "userSeq",
-        sequenceName = "seq_user_id",
+        name = "deptSeq",
+        sequenceName = "seq_dept_id",
         allocationSize = 1,
         initialValue = 100)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "userSeq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "deptSeq")
     private Long id;
 
-    @Column(name = "username", length = 32, unique = true, nullable = false)
-    private String username;
+    @Column(name = "parent_id")
+    private Long parentId;
 
-    @Column(name = "nickname", length = 32, unique = true)
-    private String nickname;
+    @Column(name = "ancestors", length = 64)
+    private String ancestors;
 
-    @Column(name = "password", length = 255, nullable = false)
-    private String password;
+    @Column(name = "name", length = 64, unique = true)
+    private String name;
+
+    @Column(name = "code", length = 64, unique = true)
+    private String code;
+
+    @Column(name = "leader", length = 32)
+    private String leader;
 
     @Column(name = "email", length = 64)
     private String email;
 
-    @Column(name = "phone", length = 16, unique = true)
+    @Column(name = "phone", length = 16)
     private String phone;
 
     @Column(name = "status")
@@ -62,28 +67,44 @@ public class User {
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
+    public Long getParentId() {
+        return parentId;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setParentId(Long parentId) {
+        this.parentId = parentId;
     }
 
-    public String getNickname() {
-        return nickname;
+    public String getAncestors() {
+        return ancestors;
     }
 
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
+    public void setAncestors(String ancestors) {
+        this.ancestors = ancestors;
     }
 
-    public String getPassword() {
-        return password;
+    public String getName() {
+        return name;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getLeader() {
+        return leader;
+    }
+
+    public void setLeader(String leader) {
+        this.leader = leader;
     }
 
     public String getEmail() {

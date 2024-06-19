@@ -1,0 +1,31 @@
+### Create
+POST {{url}}/api/dept
+Content-Type: application/json
+
+{
+  "parentId": 1,
+  "ancestors": "0/1",
+  "name": "Dept 1",
+  "code": "D1"
+}
+
+### Get
+GET {{url}}/api/dept/1
+
+### List
+GET {{url}}/api/dept
+
+### Update (PUT)
+PUT {{url}}/api/dept/2
+Content-Type: application/json
+
+{
+  "parentId": 1,
+  "ancestors": "0/1",
+  "name": "Dept 222",
+  "code": "D222",
+  "phone": "18877887788"
+}
+
+### Delete
+DELETE {{url}}/api/dept/2
