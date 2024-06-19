@@ -38,7 +38,7 @@ export default function RootLayout({
                 <DevtoolsProvider>
                   <Refine
                     routerProvider={routerProvider}
-                    dataProvider={{default: dataProvider, fake: fakeDataProvider }}
+                    dataProvider={{ default: dataProvider, fake: fakeDataProvider }}
                     notificationProvider={notificationProvider}
                     authProvider={authProvider}
                     resources={[
@@ -75,6 +75,17 @@ export default function RootLayout({
                         meta: {
                           canDelete: true,
                           label: "用户",
+                        },
+                      },
+                      {
+                        name: "dept",
+                        list: "/dept",
+                        create: "/dept/create",
+                        edit: "/dept/edit/:id",
+                        show: "/dept/show/:id",
+                        meta: {
+                          canDelete: true,
+                          label: "部门",
                         },
                       },
                     ]}
