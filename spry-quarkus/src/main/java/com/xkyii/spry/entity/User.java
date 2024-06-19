@@ -33,9 +33,6 @@ public class User {
     @Column(name = "phone", length = 16, unique = true)
     private String phone;
 
-    @Column(name = "status")
-    private Integer status = 0;
-
     @Column(name = "created_by")
     private Long createdBy;
 
@@ -53,6 +50,12 @@ public class User {
 
     @Column(name = "deleted_at")
     private Date deletedAt;
+
+    @Column(name = "status")
+    private Integer status = 0;
+
+    @Column(name = "remark", length = 255)
+    private String remark;
 
     public Long getId() {
         return id;
@@ -102,14 +105,6 @@ public class User {
         this.phone = phone;
     }
 
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
     public Long getCreatedBy() {
         return createdBy;
     }
@@ -156,5 +151,21 @@ public class User {
 
     public void setDeletedAt(Date deletedAt) {
         this.deletedAt = deletedAt;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 }

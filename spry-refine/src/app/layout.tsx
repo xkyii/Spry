@@ -88,6 +88,17 @@ export default function RootLayout({
                           label: "部门",
                         },
                       },
+                      {
+                        name: "role",
+                        list: "/role",
+                        create: "/role/create",
+                        edit: "/role/edit/:id",
+                        show: "/role/show/:id",
+                        meta: {
+                          canDelete: true,
+                          label: "角色",
+                        },
+                      },
                     ]}
                     options={{
                       syncWithLocation: true,

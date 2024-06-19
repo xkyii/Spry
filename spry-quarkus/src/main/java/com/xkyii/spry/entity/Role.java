@@ -1,42 +1,30 @@
 package com.xkyii.spry.entity;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.Comment;
 
 import java.util.Date;
 
 @Entity
-@Table(name = "t_dept")
-public class Dept {
+@Table(name = "t_role")
+@Comment("角色")
+public class Role {
     @Id
     @Column(name = "id")
+    @Comment("主键")
     @SequenceGenerator(
-        name = "deptSeq",
-        sequenceName = "seq_dept_id",
+        name = "roleSeq",
+        sequenceName = "seq_role_id",
         allocationSize = 1,
         initialValue = 100)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "deptSeq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "roleSeq")
     private Long id;
-
-    @Column(name = "parent_id")
-    private Long parentId;
-
-    @Column(name = "ancestors", length = 64)
-    private String ancestors;
 
     @Column(name = "name", length = 64)
     private String name;
 
     @Column(name = "code", length = 64, unique = true)
     private String code;
-
-    @Column(name = "leader", length = 32)
-    private String leader;
-
-    @Column(name = "email", length = 64)
-    private String email;
-
-    @Column(name = "phone", length = 16)
-    private String phone;
 
     @Column(name = "created_by")
     private Long createdBy;
@@ -70,22 +58,6 @@ public class Dept {
         this.id = id;
     }
 
-    public Long getParentId() {
-        return parentId;
-    }
-
-    public void setParentId(Long parentId) {
-        this.parentId = parentId;
-    }
-
-    public String getAncestors() {
-        return ancestors;
-    }
-
-    public void setAncestors(String ancestors) {
-        this.ancestors = ancestors;
-    }
-
     public String getName() {
         return name;
     }
@@ -100,30 +72,6 @@ public class Dept {
 
     public void setCode(String code) {
         this.code = code;
-    }
-
-    public String getLeader() {
-        return leader;
-    }
-
-    public void setLeader(String leader) {
-        this.leader = leader;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
     }
 
     public Long getCreatedBy() {
