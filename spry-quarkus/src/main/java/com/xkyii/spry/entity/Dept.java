@@ -9,12 +9,7 @@ import java.util.Date;
 public class Dept {
     @Id
     @Column(name = "id")
-    @SequenceGenerator(
-        name = "deptSeq",
-        sequenceName = "seq_dept_id",
-        allocationSize = 1,
-        initialValue = 100)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "deptSeq")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "parent_id")

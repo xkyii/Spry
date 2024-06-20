@@ -11,13 +11,7 @@ import java.util.Date;
 public class Role {
     @Id
     @Column(name = "id")
-    @Comment("主键")
-    @SequenceGenerator(
-        name = "roleSeq",
-        sequenceName = "seq_role_id",
-        allocationSize = 1,
-        initialValue = 100)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "roleSeq")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "name", length = 64)

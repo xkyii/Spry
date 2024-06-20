@@ -7,15 +7,9 @@ import java.util.Date;
 @Entity
 @Table(name = "t_user")
 public class User {
-
     @Id
     @Column(name = "id")
-    @SequenceGenerator(
-        name = "userSeq",
-        sequenceName = "seq_user_id",
-        allocationSize = 1,
-        initialValue = 100)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "userSeq")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "username", length = 32, unique = true, nullable = false)
