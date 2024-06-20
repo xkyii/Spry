@@ -9,6 +9,8 @@ import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 
+import java.util.Set;
+
 import static com.xkyii.spry.error.ErrorCode.用户不存在;
 
 @Path("/api/user")
@@ -35,4 +37,12 @@ public class UserResource {
         userRepository.persist(dbUser);
         return dbUser;
     }
+
+    @GET
+    @Path("{id}/roles")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Set<String> queryRoleCodes(@PathParam("id") Long userId) {
+        return userRepository.queryRoleCodes(userId);
+    }
+
 }

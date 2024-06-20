@@ -1,54 +1,70 @@
 package com.xkyii.spry.entity;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.Comment;
 
 import java.util.Date;
 
 @Entity
 @Table(name = "t_user")
+@Comment("用户")
 public class User {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Comment("主键")
     private Long id;
 
+    @Comment("用户名")
     @Column(name = "username", length = 32, unique = true, nullable = false)
     private String username;
 
+    @Comment("昵称")
     @Column(name = "nickname", length = 32, unique = true)
     private String nickname;
 
+    @Comment("密码")
     @Column(name = "password", length = 255, nullable = false)
     private String password;
 
+    @Comment("邮箱")
     @Column(name = "email", length = 64)
     private String email;
 
+    @Comment("手机号码")
     @Column(name = "phone", length = 16, unique = true)
     private String phone;
 
+    @Comment("创建人")
     @Column(name = "created_by")
     private Long createdBy;
 
+    @Comment("创建时间")
     @Column(name = "created_at")
     private Date createdAt;
 
+    @Comment("更新人")
     @Column(name = "updated_by")
     private Long updatedBy;
 
+    @Comment("更新时间")
     @Column(name = "updated_at")
     private Date updatedAt;
 
+    @Comment("更新人")
     @Column(name = "deleted_by")
     private Long deletedBy;
 
+    @Comment("更新时间")
     @Column(name = "deleted_at")
     private Date deletedAt;
 
+    @Comment("状态")
     @Column(name = "status")
     private Integer status = 0;
 
-    @Column(name = "remark", length = 255)
+    @Comment("备注")
+    @Column(name = "remark")
     private String remark;
 
     public Long getId() {

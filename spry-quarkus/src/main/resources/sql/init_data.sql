@@ -27,7 +27,7 @@ ALTER TABLE t_role AUTO_INCREMENT=10000;
 INSERT INTO t_role (id, name, code, created_at, status)
     VALUE (1, 'admin', 'admin', sysdate(), 0);
 INSERT INTO t_role (id, name, code, created_at, status)
-    VALUE (2, 'xkyii', 'xkyii', sysdate(), 0);
+    VALUE (2, 'tester', 'tester', sysdate(), 0);
 
 -- ----------------------------
 -- 4. Permission
@@ -37,3 +37,12 @@ INSERT INTO t_permission (id, name, code, created_at, status)
     VALUE (1, 'admin', 'admin', sysdate(), 0);
 INSERT INTO t_permission (id, name, code, created_at, status)
     VALUE (2, 'xkyii', 'xkyii', sysdate(), 0);
+
+
+-- ----------------------------
+-- 5. UserRole
+-- ----------------------------
+INSERT INTO t_user_role (user_id, role_id) VALUE (1, 1); -- admin - admin
+INSERT INTO t_user_role (user_id, role_id) VALUE (1, 2); -- admin - tester
+INSERT INTO t_user_role (user_id, role_id) VALUE (2, 1); -- xkyii - admin
+INSERT INTO t_user_role (user_id, role_id) VALUE (2, 2); -- xkyii - tester

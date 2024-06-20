@@ -1,8 +1,21 @@
 ### login
-POST http://localhost:8080/api/auth/login
+POST {{url}}/api/auth/login
 Content-Type: application/json
 
 {
   "email": "admin@xkyii.com",
   "password": "admin123"
 }
+
+### hello
+GET {{url}}/api/auth/hello
+Authorization: Bearer {{token}}
+
+### deny (403)
+GET {{url}}/api/auth/deny
+
+### permit
+GET {{url}}/api/auth/permit
+
+### Hello
+GET {{url}}/public/hello

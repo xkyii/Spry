@@ -24,3 +24,8 @@ Content-Type: application/json
     "nickname": "xkyii5",
     "password": "xk1231234"
 }
+
+### Roles
+GET {{url}}/api/user/1/roles
+Content-Type: application/json
+Authorization: Bearer {{token}}

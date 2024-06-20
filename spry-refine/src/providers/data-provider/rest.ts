@@ -4,6 +4,7 @@ import { DataProvider, CreateResponse, } from "@refinedev/core";
 import type { AxiosInstance } from "axios";
 import axios from "axios";
 import { stringify } from "query-string";
+import Cookies from "js-cookie";
 
 type MethodTypes = "get" | "delete" | "head" | "options";
 type MethodTypesWithBody = "post" | "put" | "patch";
@@ -12,100 +13,110 @@ const API_URL = "http://localhost:8080/api";
 const httpClient: AxiosInstance = axios.create({ baseURL: API_URL, timeout: 2000 });
 
 httpClient.interceptors.response.use(
-    resp => {
-      return { ...resp, ...resp.data };
-    },
-  );
+  resp => {
+    return { ...resp, ...resp.data };
+  },
+);
+
+httpClient.interceptors.request.use(
+  request => {
+    const token = Cookies.get("token");
+    if (token) {
+      request.headers["Authorization"] = `Bearer ${token}`;
+    }
+    return request;
+  },
+);
 
 export const dataProvider: DataProvider = {
-    getApiUrl: () => API_URL,
-    getList: async ({ resource, pagination, sorters, filters, meta }) => {
-        const url = `${API_URL}/${resource}`;
+  getApiUrl: () => API_URL,
+  getList: async ({ resource, pagination, sorters, filters, meta }) => {
+    const url = `${API_URL}/${resource}`;
 
-        const { current = 1, pageSize = 10, mode = "server" } = pagination ?? {};
-        const { headers: headersFromMeta, method } = meta ?? {};
-        const requestMethod = (method as MethodTypes) ?? "get";
+    const { current = 1, pageSize = 10, mode = "server" } = pagination ?? {};
+    const { headers: headersFromMeta, method } = meta ?? {};
+    const requestMethod = (method as MethodTypes) ?? "get";
 
-        const query: {
-            page?: number;
-            size?: number;
-        } = {};
+    const query: {
+      page?: number;
+      size?: number;
+    } = {};
 
-        if (mode === "server") {
-            query.page = current - 1;
-            query.size = pageSize;
-        }
+    if (mode === "server") {
+      query.page = current - 1;
+      query.size = pageSize;
+    }
 
-        const combinedQuery = { ...query, /* ...queryFilters */ };
-        const urlWithQuery = Object.keys(combinedQuery).length
-          ? `${url}?${stringify(combinedQuery)}`
-          : url;
+    const combinedQuery = { ...query, /* ...queryFilters */ };
+    const urlWithQuery = Object.keys(combinedQuery).length
+      ? `${url}?${stringify(combinedQuery)}`
+      : url;
 
-        const { data, headers } = await httpClient[requestMethod](urlWithQuery, {
-            headers: headersFromMeta,
-          });
+    const { data, headers } = await httpClient[requestMethod](urlWithQuery, {
+      headers: headersFromMeta,
+    });
 
-          const total = +headers["x-total-count"];
+    const total = +headers["x-total-count"];
 
-          return {
-            data,
-            total: total || data.length,
-          };
-    },
-    getOne: async ({ resource, id, meta }) => {
-        const url = `${API_URL}/${resource}/${id}`;
+    return {
+      data,
+      total: total || data.length,
+    };
+  },
+  getOne: async ({ resource, id, meta }) => {
+    const url = `${API_URL}/${resource}/${id}`;
 
-        const { headers, method } = meta ?? {};
-        const requestMethod = (method as MethodTypes) ?? "get";
+    const { headers, method } = meta ?? {};
+    const requestMethod = (method as MethodTypes) ?? "get";
 
-        const { data } = await httpClient[requestMethod](url, { headers });
+    const { data } = await httpClient[requestMethod](url, { headers });
 
-        return {
-          data,
-        };
-    },
-    create: async ({ resource, variables, meta }) => {
-        const url = `${API_URL}/${resource}`;
+    return {
+      data,
+    };
+  },
+  create: async ({ resource, variables, meta }) => {
+    const url = `${API_URL}/${resource}`;
 
-        const { headers, method } = meta ?? {};
-        const requestMethod = (method as MethodTypesWithBody) ?? "post";
+    const { headers, method } = meta ?? {};
+    const requestMethod = (method as MethodTypesWithBody) ?? "post";
 
-        const { data } = await httpClient[requestMethod](url, variables, {
-          headers,
-        });
+    const { data } = await httpClient[requestMethod](url, variables, {
+      headers,
+    });
 
-        return {
-          data,
-        };
-    },
-    update: async ({ resource, id, variables, meta }) => {
-        const url = `${API_URL}/${resource}/${id}`;
+    return {
+      data,
+    };
+  },
+  update: async ({ resource, id, variables, meta }) => {
+    const url = `${API_URL}/${resource}/${id}`;
 
-        const { headers, method } = meta ?? {};
-        const requestMethod = (method as MethodTypesWithBody) ?? "patch";
+    const { headers, method } = meta ?? {};
+    const requestMethod = (method as MethodTypesWithBody) ?? "patch";
 
-        const { data } = await httpClient[requestMethod](url, variables, {
-          headers,
-        });
+    const { data } = await httpClient[requestMethod](url, variables, {
+      headers,
+    });
 
-        return {
-          data,
-        };
-    },
-    deleteOne: async ({ resource, id, variables, meta }) => {
-        const url = `${API_URL}/${resource}/${id}`;
+    return {
+      data,
+    };
+  },
+  deleteOne: async ({ resource, id, variables, meta }) => {
+    const url = `${API_URL}/${resource}/${id}`;
 
-        const { headers, method } = meta ?? {};
-        const requestMethod = (method as MethodTypesWithBody) ?? "delete";
+    const { headers, method } = meta ?? {};
+    const requestMethod = (method as MethodTypesWithBody) ?? "delete";
 
-        const { data } = await httpClient[requestMethod](url, {
-          data: variables,
-          headers,
-        });
+    const { data } = await httpClient[requestMethod](url, {
+      data: variables,
+      headers,
+    });
 
-        return {
-          data,
-        };
-    },
+    return {
+      data,
+    };
+  },
 };
 

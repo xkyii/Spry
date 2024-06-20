@@ -4,13 +4,14 @@ import com.xkyii.spry.dto.auth.LoginDto;
 import com.xkyii.spry.dto.auth.LoginReq;
 import com.xkyii.spry.entity.User;
 import com.xkyii.spry.repository.UserRepository;
+import io.quarkus.security.Authenticated;
 import io.smallrye.jwt.build.Jwt;
 import io.smallrye.jwt.build.JwtClaimsBuilder;
+import jakarta.annotation.security.DenyAll;
+import jakarta.annotation.security.PermitAll;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import org.eclipse.microprofile.jwt.Claims;
 
@@ -44,14 +45,34 @@ public class AuthResource {
         return null;
     }
 
+    @GET
+    @RolesAllowed("admin")
+    @Path("hello")
+    public String hello() {
+        return "hello";
+    }
+
+    @GET
+    @DenyAll
+    @Path("deny")
+    public String deny() {
+        return "deny";
+    }
+
+    @GET
+    @PermitAll
+    @Path("permit")
+    public String permit() {
+        return "permit";
+    }
+
     String token(User user) {
         JwtClaimsBuilder claims = Jwt.claims();
         claims.issuer("https://xkyii.com/issuer");
         claims.upn(user.getUsername());
         claims.claim(Claims.email, user.getEmail());
         claims.claim(Claims.jti, UUID.randomUUID().toString());
-        // TODO: roles
-        claims.groups(Set.of("permission_1", "permission_2"));
+        claims.groups(userRepository.queryRoleCodes(user.getId()));
         claims.expiresIn(86400);
         return claims.sign();
     }
