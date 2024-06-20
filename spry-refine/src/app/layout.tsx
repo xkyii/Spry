@@ -99,6 +99,17 @@ export default function RootLayout({
                           label: "角色",
                         },
                       },
+                      {
+                        name: "permission",
+                        list: "/permission",
+                        create: "/permission/create",
+                        edit: "/permission/edit/:id",
+                        show: "/permission/show/:id",
+                        meta: {
+                          canDelete: true,
+                          label: "权限",
+                        },
+                      },
                     ]}
                     options={{
                       syncWithLocation: true,
