@@ -11,6 +11,11 @@ Content-Type: application/json
 
 ### Get
 GET {{url}}/api/dept/1
+Authorization: Bearer {{token}}
+
+### Get Tree
+GET {{url}}/api/dept/1/tree
+Authorization: Bearer {{token}}
 
 ### List
 GET {{url}}/api/dept

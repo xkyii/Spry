@@ -15,9 +15,9 @@ INSERT INTO t_user (id, username, nickname, email, password, created_at, status)
 -- ----------------------------
 ALTER TABLE t_dept AUTO_INCREMENT=10000;
 INSERT INTO t_dept (id, parent_id, ancestors, name, code, created_at, status)
-    VALUE (1, 0, '0', 'xky00', 'xky00', sysdate(), 0);
+    VALUE (1, 0, '/', 'xky00', 'xky00', sysdate(), 0);
 INSERT INTO t_dept (id, parent_id, ancestors, name, code, created_at, status)
-    VALUE (2, 1, '0/1', 'xky01', 'xky01', sysdate(), 0);
+    VALUE (2, 1, '/1/', 'xky01', 'xky01', sysdate(), 0);
 
 
 -- ----------------------------

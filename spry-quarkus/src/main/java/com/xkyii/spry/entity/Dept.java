@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.Comment;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "t_dept")

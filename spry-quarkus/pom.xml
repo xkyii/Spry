@@ -16,6 +16,7 @@
     <skipITs>true</skipITs>
     <surefire-plugin.version>3.2.5</surefire-plugin.version>
     <mapstruct.version>1.5.5.Final</mapstruct.version>
+    <xkyss.version>1.24.1</xkyss.version>
   </properties>
   <dependencyManagement>
     <dependencies>
@@ -29,6 +30,7 @@
     </dependencies>
   </dependencyManagement>
   <dependencies>
+    <!-- quarkus -->
     <dependency>
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-arc</artifactId>
@@ -74,6 +76,12 @@
       <groupId>io.rest-assured</groupId>
       <artifactId>rest-assured</artifactId>
       <scope>test</scope>
+    </dependency>
+    <!-- xkyss -->
+    <dependency>
+      <groupId>com.xkyss</groupId>
+      <artifactId>xkyss-core</artifactId>
+      <version>${xkyss.version}</version>
     </dependency>
     <!-- apache commons -->
     <dependency>
