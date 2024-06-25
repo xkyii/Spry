@@ -17,6 +17,11 @@ public interface BuildConfig {
     ResponseFilterConfig responseFilter();
 
     /**
+     * [HttpLogFilterConfig]配置
+     */
+    HttpLogFilterConfig httpLogFilter();
+
+    /**
      * [ExceptionMapper]配置
      */
     ExceptionMapperConfig exceptionMapper();
@@ -26,6 +31,14 @@ public interface BuildConfig {
 
         /**
          * 是否启用[ResponseFilter]
+         */
+        @WithDefault("false")
+        boolean enabled();
+    }
+
+    interface HttpLogFilterConfig {
+        /**
+         * 是否启用[HttpLogFilter]
          */
         @WithDefault("false")
         boolean enabled();

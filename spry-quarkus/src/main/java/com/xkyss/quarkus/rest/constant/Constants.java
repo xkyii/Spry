@@ -2,16 +2,10 @@ package com.xkyss.quarkus.rest.constant;
 
 public class Constants {
     public static final String CONFIG_PREFIX = "xkyss";
-    public static final String CONFIG_BUILD_PREFIX = "xkyss.build";
     public static final String CONFIG_REST_PREFIX = CONFIG_PREFIX + ".rest";
-    public static final String CONFIG_REST_BUILD_PREFIX = CONFIG_BUILD_PREFIX + ".rest";
+    public static final String CONFIG_REST_BUILD_PREFIX = CONFIG_PREFIX + ".rest.build";
 
-
-    public static final String KEY_REQUEST_TIME = "request-time";
-    public static final String KEY_REQUEST_BODY = "request-body";
-    public static final String KEY_REQUEST_BODY_HASHCODE = "request-body-hashcode-key";
-    public static final String KEY_RESPONSE_BODY = "response-body";
-    public static final String KEY_RESPONSE_FUNC = "response-func";
+    // http log filter
     public static final String KEY_LOG_ENTITY = "log-entity";
 
     // i18n

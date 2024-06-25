@@ -4,7 +4,7 @@ import { AuthProvider } from "@refinedev/core";
 import Cookies from "js-cookie";
 import axios from "axios";
 
-const API_URL = "http://localhost:8080/api";
+const API_URL = "http://localhost:5050/api";
 const http = axios.create({ baseURL: API_URL, timeout: 2000});
 
 http.interceptors.response.use(

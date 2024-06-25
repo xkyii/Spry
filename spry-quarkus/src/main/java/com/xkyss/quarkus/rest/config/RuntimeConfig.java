@@ -16,7 +16,23 @@ import static com.xkyss.quarkus.rest.constant.Constants.CONFIG_REST_PREFIX;
 @ConfigRoot(phase = ConfigPhase.RUN_TIME)
 public interface RuntimeConfig {
 
+    Map<String, HttpLogFilterConfig> httpLogFilter();
+
     Map<String, ResponseFilterConfig> responseFilter();
+
+    interface HttpLogFilterConfig {
+
+        @WithDefault("true")
+        boolean enabled();
+
+        @WithDefault("/*")
+        @WithConverter(LowerConverter.class)
+        Optional<String> path();
+
+        @WithDefault("*")
+        @WithConverter(UpperListConverter.class)
+        Optional<List<String>> methods();
+    }
 
     interface ResponseFilterConfig {
 

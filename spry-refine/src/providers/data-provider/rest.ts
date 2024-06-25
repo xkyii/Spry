@@ -9,7 +9,7 @@ import Cookies from "js-cookie";
 type MethodTypes = "get" | "delete" | "head" | "options";
 type MethodTypesWithBody = "post" | "put" | "patch";
 
-const API_URL = "http://localhost:8080/api";
+const API_URL = "http://localhost:5050/api";
 const httpClient: AxiosInstance = axios.create({ baseURL: API_URL, timeout: 2000 });
 
 httpClient.interceptors.response.use(
