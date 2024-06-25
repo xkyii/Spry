@@ -2,6 +2,7 @@ package com.xkyss.quarkus.rest.filter;
 
 import com.xkyss.quarkus.rest.config.RuntimeConfig;
 import com.xkyss.quarkus.rest.constant.Constants;
+import io.quarkus.arc.properties.IfBuildProperty;
 import io.quarkus.runtime.util.StringUtil;
 import io.vertx.core.Handler;
 import io.vertx.core.MultiMap;
@@ -30,15 +31,13 @@ import java.util.Map;
 import java.util.StringJoiner;
 
 @ApplicationScoped
+@IfBuildProperty(name = "xkyss.rest.build.http-log-filter.enabled", stringValue = "true")
 public class HttpLogFilter {
     @Inject
     Logger logger;
 
     @Inject
     RuntimeConfig config;
-
-    @Inject
-    Vertx vertx;
 
     private static final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss SSS");
 
@@ -51,9 +50,6 @@ public class HttpLogFilter {
                 String text = IOUtils.toString(request.getEntityStream(), StandardCharsets.UTF_8);
                 request.setEntityStream(IOUtils.toInputStream(text, StandardCharsets.UTF_8));
                 le.requestBody = text;
-            }
-            else {
-                le.requestBody = "<EMPTY>";
             }
         } catch (Exception e) {
             logger.warn("获取Request Body失败", e);
@@ -73,7 +69,8 @@ public class HttpLogFilter {
     void register(@Observes Router router) {
         LoggerHandler loggerHandler = new LoggerHandler(logger);
 
-        router.route().order(Integer.MIN_VALUE).handler(loggerHandler);
+        // router.route().order(Integer.MIN_VALUE).handler(loggerHandler);
+        router.route("/api/*").order(Integer.MIN_VALUE).handler(loggerHandler);
 
         logger.info("已注册Http日志过滤.");
     }
@@ -104,28 +101,35 @@ public class HttpLogFilter {
                 LogEntity le = rc.get(Constants.KEY_LOG_ENTITY);
 
                 // request
+                HttpServerRequest request = rc.request();
                 {
-                    HttpServerRequest request = rc.request();
                     sb.append("\n\n[Request]:\n");
-                    sb.append("[Request At]: ").append(dateFormat.format(le.requestTime)).append("\n\n");
                     sb.append(request.method()).append(" ").append(request.uri()).append(" ").append(request.version().alpnName()).append("\n");
                     String text = readAttribute(request.headers());
                     sb.append(StringUtil.isNullOrEmpty(text) ? "<Request head is empty>" : text).append("\n\n");
-                    sb.append(le.requestBody);
+                    sb.append(le.requestBody == null ? "<EMPTY>" : le.requestBody);
                 }
 
                 // response
+                HttpServerResponse response = rc.response();
                 {
-                    HttpServerResponse response = rc.response();
-                    Date responseAt = new Date();
                     sb.append("\n\n\n[Response]:\n");
-                    sb.append("[ Request At]: ").append(dateFormat.format(le.requestTime)).append("\n");
-                    sb.append("[Response At]: ").append(dateFormat.format(responseAt)).append("\n");
-                    sb.append("[ Total Cast]: ").append(responseAt.getTime() - le.requestTime.getTime()).append(" ms\n\n");
                     sb.append("Status: ").append(response.getStatusCode()).append(", ").append(response.getStatusMessage()).append("\n");
                     String text = readAttribute(response.headers());
                     sb.append(StringUtil.isNullOrEmpty(text) ? "<Response head is empty>" : text).append("\n\n");
                     sb.append(prettyBody(le.responseBody));
+                }
+
+                // extra
+                {
+                    Date responseAt = new Date();
+                    sb.append("\n\n⇡⇡⇡⇡⇡⇡⇡⇡⇡⇡⇡⇡⇡⇡⇡⇡⇡⇡⇡⇡⇡⇡⇡⇡⇡⇡⇡⇡⇡⇡⇡\n");
+                    sb.append("[ URI Method]: ").append(request.method()).append("\n");
+                    sb.append("[   URI Path]: ").append(request.absoluteURI()).append("\n");
+                    sb.append("[ Request At]: ").append(dateFormat.format(le.requestTime)).append("\n");
+                    sb.append("[Response At]: ").append(dateFormat.format(responseAt)).append("\n");
+                    sb.append("[ Total Cast]: ").append(responseAt.getTime() - le.requestTime.getTime()).append(" ms\n");
+                    sb.append("-------------------------------\n\n");
                 }
 
                 logger.info(sb);
