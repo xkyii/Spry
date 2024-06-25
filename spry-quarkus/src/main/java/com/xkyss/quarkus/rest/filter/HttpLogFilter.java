@@ -95,6 +95,7 @@ public class HttpLogFilter {
             // 匹配路径
             // 空视为全部
             Route route = config.path().isEmpty() ? router.route() : router.route(config.path().get());
+            route.order(Integer.MIN_VALUE);
 
             // 匹配方法
             // 空,'*'都视为全部
