@@ -8,9 +8,11 @@ import io.vertx.core.Handler;
 import io.vertx.core.MultiMap;
 import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
+import io.vertx.core.http.HttpMethod;
 import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.http.HttpServerResponse;
 import io.vertx.core.json.Json;
+import io.vertx.ext.web.Route;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -27,11 +29,14 @@ import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.StringJoiner;
 
+import static com.xkyss.quarkus.rest.constant.Constants.KEY_LOG_ENTITY;
+
 @ApplicationScoped
-@IfBuildProperty(name = "xkyss.rest.build.http-log-filter.enabled", stringValue = "true")
+@IfBuildProperty(name = "xkyss.build.rest.http-log-filter.enabled", stringValue = "true")
 public class HttpLogFilter {
     @Inject
     Logger logger;
@@ -43,8 +48,13 @@ public class HttpLogFilter {
 
     @ServerRequestFilter
     public void mapRequest(ContainerRequestContext request, RoutingContext rc) {
+        LogEntity le = rc.get(KEY_LOG_ENTITY);
+        if (le == null) {
+            // 代表不需要
+            return;
+        }
+
         try {
-            LogEntity le = rc.get(Constants.KEY_LOG_ENTITY);
             boolean isLogBody = request.hasEntity();
             if (isLogBody) {
                 String text = IOUtils.toString(request.getEntityStream(), StandardCharsets.UTF_8);
@@ -59,7 +69,11 @@ public class HttpLogFilter {
 
     @ServerResponseFilter(priority = Constants.PRIORITY_REST_HTTP_LOG)
     public void mapResponse(ContainerResponseContext response, RoutingContext rc) {
-        LogEntity le = rc.get(Constants.KEY_LOG_ENTITY);
+        LogEntity le = rc.get(KEY_LOG_ENTITY);
+        if (le == null) {
+            // 代表不需要
+            return;
+        }
         boolean isLogBody = response.hasEntity();
         if (isLogBody) {
             le.responseBody = response.getEntity();
@@ -69,8 +83,42 @@ public class HttpLogFilter {
     void register(@Observes Router router) {
         LoggerHandler loggerHandler = new LoggerHandler(logger);
 
-        // router.route().order(Integer.MIN_VALUE).handler(loggerHandler);
-        router.route("/api/*").order(Integer.MIN_VALUE).handler(loggerHandler);
+        Map<String, RuntimeConfig.HttpLogFilterConfig> stringHttpLogFilterConfigMap = config.httpLogFilter();
+        if (stringHttpLogFilterConfigMap.isEmpty()) {
+            return;
+        }
+
+        for (RuntimeConfig.HttpLogFilterConfig config: stringHttpLogFilterConfigMap.values()) {
+            if (!config.enabled()) {
+                continue;
+            }
+            // 匹配路径
+            // 空视为全部
+            Route route = config.path().isEmpty() ? router.route() : router.route(config.path().get());
+
+            // 匹配方法
+            // 空,'*'都视为全部
+            do {
+
+                if (config.methods().isEmpty()) {
+                    break;
+                }
+                List<String> methods = config.methods().get();
+                if (methods.isEmpty()) {
+                    break;
+                }
+                if (methods.contains("*")) {
+                    break;
+                }
+
+                for (String method: config.methods().get()) {
+                    route.method(HttpMethod.valueOf(method));
+                }
+            } while (false);
+
+
+            route.handler(loggerHandler);
+        }
 
         logger.info("已注册Http日志过滤.");
     }
@@ -93,12 +141,12 @@ public class HttpLogFilter {
             {
                 LogEntity le = new LogEntity();
                 le.requestTime = new Date();
-                rc.put(Constants.KEY_LOG_ENTITY, le);
+                rc.put(KEY_LOG_ENTITY, le);
             }
 
             Runnable func = () -> {
                 StringBuilder sb = new StringBuilder();
-                LogEntity le = rc.get(Constants.KEY_LOG_ENTITY);
+                LogEntity le = rc.get(KEY_LOG_ENTITY);
 
                 // request
                 HttpServerRequest request = rc.request();

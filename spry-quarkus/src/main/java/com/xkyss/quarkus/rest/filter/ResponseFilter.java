@@ -15,23 +15,23 @@ import java.util.Locale;
 import java.util.Map;
 
 @ApplicationScoped
-@IfBuildProperty(name = "xkyss.rest.build.response-filter.enabled", stringValue = "true")
+@IfBuildProperty(name = "xkyss.build.rest.response-filter.enabled", stringValue = "true")
 public class ResponseFilter {
 
-    private final List<RuntimeConfig.HttpLogFilterConfig> responseFilterConfigs;
+    private final List<RuntimeConfig.ResponseFilterConfig> responseFilterConfigs;
 
     public ResponseFilter(RuntimeConfig runtimeConfig) {
-        Map<String, RuntimeConfig.HttpLogFilterConfig> stringResponseFilterConfigMap = runtimeConfig.httpLogFilter();
+        Map<String, RuntimeConfig.ResponseFilterConfig> stringResponseFilterConfigMap = runtimeConfig.responseFilter();
         responseFilterConfigs = (stringResponseFilterConfigMap == null || stringResponseFilterConfigMap.isEmpty())
             ? null
             : stringResponseFilterConfigMap.values().stream()
-                .filter(RuntimeConfig.HttpLogFilterConfig::enabled)
+                .filter(RuntimeConfig.ResponseFilterConfig::enabled)
                 .toList();
     }
 
     @ServerResponseFilter
     public void mapResponse(ContainerResponseContext response, ContainerRequestContext requestContext) {
-        RuntimeConfig.HttpLogFilterConfig filterConfig = checkFilterConfig(requestContext);
+        RuntimeConfig.ResponseFilterConfig filterConfig = checkFilterConfig(requestContext);
         if (filterConfig == null) {
             return;
         }
@@ -63,12 +63,12 @@ public class ResponseFilter {
         }
     }
 
-    RuntimeConfig.HttpLogFilterConfig checkFilterConfig(ContainerRequestContext requestContext) {
+    RuntimeConfig.ResponseFilterConfig checkFilterConfig(ContainerRequestContext requestContext) {
         if (responseFilterConfigs == null) {
             return null;
         }
 
-        for (RuntimeConfig.HttpLogFilterConfig responseFilterConfig : responseFilterConfigs) {
+        for (RuntimeConfig.ResponseFilterConfig responseFilterConfig : responseFilterConfigs) {
             // 匹配路径
             boolean matchPath = responseFilterConfig.path().isEmpty()
                 || responseFilterConfig.path().get().equals("/*")

@@ -1,5 +1,6 @@
 package com.xkyss.quarkus.rest.config;
 
+import io.vertx.core.http.HttpMethod;
 import org.eclipse.microprofile.config.spi.Converter;
 
 import java.util.ArrayList;

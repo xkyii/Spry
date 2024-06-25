@@ -5,6 +5,7 @@ import io.quarkus.runtime.annotations.ConfigRoot;
 import io.smallrye.config.ConfigMapping;
 import io.smallrye.config.WithConverter;
 import io.smallrye.config.WithDefault;
+import io.vertx.core.http.HttpMethod;
 
 import java.util.List;
 import java.util.Map;
@@ -16,11 +17,11 @@ import static com.xkyss.quarkus.rest.constant.Constants.CONFIG_REST_PREFIX;
 @ConfigRoot(phase = ConfigPhase.RUN_TIME)
 public interface RuntimeConfig {
 
-    Map<String, HttpLogFilterConfig> httpLogFilter();
-
     Map<String, ResponseFilterConfig> responseFilter();
 
-    interface HttpLogFilterConfig {
+    Map<String, HttpLogFilterConfig> httpLogFilter();
+
+    interface ResponseFilterConfig {
 
         @WithDefault("true")
         boolean enabled();
@@ -34,7 +35,7 @@ public interface RuntimeConfig {
         Optional<List<String>> methods();
     }
 
-    interface ResponseFilterConfig {
+    interface HttpLogFilterConfig {
 
         @WithDefault("true")
         boolean enabled();

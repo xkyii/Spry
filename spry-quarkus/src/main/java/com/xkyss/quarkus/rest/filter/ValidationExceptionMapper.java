@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
  * 校验异常统一处理
  */
 @Provider
-@IfBuildProperty(name = "xkyss.rest.build.exception-mapper.enabled", stringValue = "true")
+@IfBuildProperty(name = "xkyss.build.rest.exception-mapper.enabled", stringValue = "true")
 public class ValidationExceptionMapper implements ExceptionMapper<ValidationException> {
 
     @Inject

@@ -5,9 +5,9 @@ import io.quarkus.runtime.annotations.ConfigRoot;
 import io.smallrye.config.ConfigMapping;
 import io.smallrye.config.WithDefault;
 
-import static com.xkyss.quarkus.rest.constant.Constants.CONFIG_REST_BUILD_PREFIX;
+import static com.xkyss.quarkus.rest.constant.Constants.CONFIG_BUILD_REST_PREFIX;
 
-@ConfigMapping(prefix = CONFIG_REST_BUILD_PREFIX)
+@ConfigMapping(prefix = CONFIG_BUILD_REST_PREFIX)
 @ConfigRoot(phase = ConfigPhase.BUILD_AND_RUN_TIME_FIXED)
 public interface BuildConfig {
 
