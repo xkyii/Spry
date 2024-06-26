@@ -28,7 +28,7 @@ export const authProvider: AuthProvider = {
 
     const { token, ...auth } = response.data;
     Cookies.set("token", token);
-    Cookies.set("auth", auth);
+    Cookies.set("auth", JSON.stringify({...auth, name: "xkyii", avatar: "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/841.jpg" }));
 
     return {
       success: true,
