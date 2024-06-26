@@ -1,5 +1,6 @@
 "use client";
 
+import { useCustom, HttpError, useApiUrl } from "@refinedev/core";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import {
   DeleteButton,
@@ -14,37 +15,47 @@ import { RichTreeView } from '@mui/x-tree-view/RichTreeView';
 import React from "react";
 
 
-const depts: TreeViewBaseItem[] = [
-  {
-    id: 'grid',
-    label: 'Data Grid',
-    children: [
-      { id: 'grid-community', label: '@mui/x-data-grid' },
-      { id: 'grid-pro', label: '@mui/x-data-grid-pro' },
-      { id: 'grid-premium', label: '@mui/x-data-grid-premium' },
-    ],
-  },
-  {
-    id: 'pickers',
-    label: 'Date and Time Pickers',
-    children: [
-      { id: 'pickers-community', label: '@mui/x-date-pickers' },
-      { id: 'pickers-pro', label: '@mui/x-date-pickers-pro' },
-    ],
-  },
-  {
-    id: 'charts',
-    label: 'Charts',
-    children: [{ id: 'charts-community', label: '@mui/x-charts' }],
-  },
-  {
-    id: 'tree-view',
-    label: 'Tree View',
-    children: [{ id: 'tree-view-community', label: '@mui/x-tree-view' }],
-  },
-];
+type IDept<R extends {} = {
+  id: string;
+  name: string;
+}> = R & {
+  children?: TreeViewBaseItem<R>[];
+};
+
+// 转换函数
+function convertArrayToArray(dept: IDept[]): TreeViewBaseItem[] {
+  return dept.map(item => {
+    const { id, name, children } = item;
+    const treeViewItem: TreeViewBaseItem<{ id: string; label: string }> = {
+      id,
+      label: name,
+      children: children ? convertArrayToArray(children) : []
+    };
+    return treeViewItem;
+  });
+}
+
+function convertSingleToArray(dept: IDept | undefined): TreeViewBaseItem[] {
+  if (dept == undefined) {
+    return [];
+  }
+
+  const { id, name, children } = dept;
+  const treeViewItem: TreeViewBaseItem<{ id: string; label: string }> = {
+    id,
+    label: name,
+    children: children ? convertArrayToArray(children) : []
+  };
+  return [treeViewItem];
+}
+
 
 export default function UserList() {
+  const apiUrl = useApiUrl();
+  const { data, isLoading, isError } = useCustom<IDept, HttpError>({
+    url: `${apiUrl}/dept/1/tree`,
+    method: "get",
+  });
   const { dataGridProps } = useDataGrid({});
 
   const columns = React.useMemo<GridColDef[]>(
@@ -92,13 +103,12 @@ export default function UserList() {
     <List>
       <Grid container spacing={2}>
         <Grid item xs={3}>
-          <RichTreeView items={depts} />
+          <RichTreeView items={convertSingleToArray(data?.data)} />
         </Grid>
         <Grid item xs={9}>
           <DataGrid {...dataGridProps} columns={columns} autoHeight />
         </Grid>
       </Grid>
-
     </List>
   );
 }
