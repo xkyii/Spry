@@ -1,7 +1,8 @@
 "use client";
 
-import { Header } from "@components/header";
-import { ThemedLayoutV2, ThemedTitleV2 } from "@refinedev/mui";
+import { Header } from "./header";
+import { ThemedLayoutV2 } from "./layout";
+import { ThemedTitleV2 } from "./title";
 import React from "react";
 
 export const ThemedLayout = ({ children }: React.PropsWithChildren) => {

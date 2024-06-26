@@ -1,4 +1,4 @@
-import { ThemedLayout } from "@components/themed-layout";
+import { ThemedLayout } from "@components/layout";
 import { authProviderServer } from "@providers/auth-provider";
 import { redirect } from "next/navigation";
 import React from "react";
