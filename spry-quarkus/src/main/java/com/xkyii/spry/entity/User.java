@@ -15,6 +15,10 @@ public class User {
     @Comment("主键")
     private Long id;
 
+    @Column(name = "dept_id")
+    @Comment("部门主键")
+    private Long deptId;
+
     @Comment("用户名")
     @Column(name = "username", length = 32, unique = true, nullable = false)
     private String username;
@@ -73,6 +77,14 @@ public class User {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getDeptId() {
+        return deptId;
+    }
+
+    public void setDeptId(Long deptId) {
+        this.deptId = deptId;
     }
 
     public String getUsername() {

@@ -14,7 +14,6 @@ import { TreeViewBaseItem } from '@mui/x-tree-view/models';
 import { RichTreeView } from '@mui/x-tree-view/RichTreeView';
 import React from "react";
 
-
 type IDept<R extends {} = {
   id: string;
   name: string;
@@ -22,33 +21,17 @@ type IDept<R extends {} = {
   children?: TreeViewBaseItem<R>[];
 };
 
-// 转换函数
-function convertArrayToArray(dept: IDept[]): TreeViewBaseItem[] {
-  return dept.map(item => {
-    const { id, name, children } = item;
-    const treeViewItem: TreeViewBaseItem<{ id: string; label: string }> = {
-      id,
-      label: name,
-      children: children ? convertArrayToArray(children) : []
-    };
-    return treeViewItem;
-  });
+function getItemLabel(dept: IDept) {
+  return dept.name;
 }
 
-function convertSingleToArray(dept: IDept | undefined): TreeViewBaseItem[] {
+function convert(dept: IDept | undefined): IDept[] {
   if (dept == undefined) {
     return [];
   }
 
-  const { id, name, children } = dept;
-  const treeViewItem: TreeViewBaseItem<{ id: string; label: string }> = {
-    id,
-    label: name,
-    children: children ? convertArrayToArray(children) : []
-  };
-  return [treeViewItem];
+  return [dept];
 }
-
 
 export default function UserList() {
   const apiUrl = useApiUrl();
@@ -57,6 +40,11 @@ export default function UserList() {
     method: "get",
   });
   const { dataGridProps } = useDataGrid({});
+
+  const onItemSelectionToggle = (event: React.SyntheticEvent, itemId: string, isSelected: boolean) => {
+    console.log(event, itemId, isSelected);
+  };
+
 
   const columns = React.useMemo<GridColDef[]>(
     () => [
@@ -103,7 +91,7 @@ export default function UserList() {
     <List>
       <Grid container spacing={2}>
         <Grid item xs={3}>
-          <RichTreeView items={convertSingleToArray(data?.data)} />
+          <RichTreeView items={convert(data?.data)} getItemLabel={getItemLabel} onItemSelectionToggle={onItemSelectionToggle} />
         </Grid>
         <Grid item xs={9}>
           <DataGrid {...dataGridProps} columns={columns} autoHeight />
