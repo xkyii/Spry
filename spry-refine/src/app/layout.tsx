@@ -1,7 +1,7 @@
 import { DevtoolsProvider } from "@providers/devtools";
 import { Refine } from "@refinedev/core";
 import { RefineKbar, RefineKbarProvider } from "@refinedev/kbar";
-import { RefineSnackbarProvider, notificationProvider } from "@refinedev/mui";
+import { RefineSnackbarProvider, useNotificationProvider } from "@refinedev/mui";
 import routerProvider from "@refinedev/nextjs-router";
 import { Metadata } from "next";
 import { cookies } from "next/headers";
@@ -10,6 +10,11 @@ import React, { Suspense } from "react";
 import { ColorModeContextProvider } from "@contexts/color-mode";
 import { authProvider } from "@providers/auth-provider";
 import { dataProvider, fakeDataProvider } from "@providers/data-provider";
+
+import GroupIcon from '@mui/icons-material/Group';
+import PersonIcon from '@mui/icons-material/Person';
+import RowingIcon from '@mui/icons-material/Rowing';
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 
 export const metadata: Metadata = {
   title: "Spry",
@@ -39,31 +44,43 @@ export default function RootLayout({
                   <Refine
                     routerProvider={routerProvider}
                     dataProvider={{ default: dataProvider, fake: fakeDataProvider }}
-                    notificationProvider={notificationProvider}
+                    notificationProvider={useNotificationProvider}
                     authProvider={authProvider}
                     resources={[
+                      // {
+                      //   name: "blog_posts",
+                      //   list: "/blog-posts",
+                      //   create: "/blog-posts/create",
+                      //   edit: "/blog-posts/edit/:id",
+                      //   show: "/blog-posts/show/:id",
+                      //   meta: {
+                      //     canDelete: true,
+                      //     label: "Blog Posts",
+                      //     dataProviderName: "fake",
+                      //   },
+                      // },
+                      // {
+                      //   name: "categories",
+                      //   list: "/categories",
+                      //   create: "/categories/create",
+                      //   edit: "/categories/edit/:id",
+                      //   show: "/categories/show/:id",
+                      //   meta: {
+                      //     canDelete: true,
+                      //     label: "Categories",
+                      //     dataProviderName: "fake",
+                      //   },
+                      // },
                       {
-                        name: "blog_posts",
-                        list: "/blog-posts",
-                        create: "/blog-posts/create",
-                        edit: "/blog-posts/edit/:id",
-                        show: "/blog-posts/show/:id",
+                        name: "dept",
+                        list: "/dept",
+                        create: "/dept/create",
+                        edit: "/dept/edit/:id",
+                        show: "/dept/show/:id",
                         meta: {
                           canDelete: true,
-                          label: "Blog Posts",
-                          dataProviderName: "fake",
-                        },
-                      },
-                      {
-                        name: "categories",
-                        list: "/categories",
-                        create: "/categories/create",
-                        edit: "/categories/edit/:id",
-                        show: "/categories/show/:id",
-                        meta: {
-                          canDelete: true,
-                          label: "Categories",
-                          dataProviderName: "fake",
+                          label: "部门",
+                          icon: <GroupIcon />,
                         },
                       },
                       {
@@ -75,17 +92,7 @@ export default function RootLayout({
                         meta: {
                           canDelete: true,
                           label: "用户",
-                        },
-                      },
-                      {
-                        name: "dept",
-                        list: "/dept",
-                        create: "/dept/create",
-                        edit: "/dept/edit/:id",
-                        show: "/dept/show/:id",
-                        meta: {
-                          canDelete: true,
-                          label: "部门",
+                          icon: <PersonIcon />,
                         },
                       },
                       {
@@ -97,6 +104,7 @@ export default function RootLayout({
                         meta: {
                           canDelete: true,
                           label: "角色",
+                          icon: <RowingIcon />,
                         },
                       },
                       {
@@ -108,6 +116,7 @@ export default function RootLayout({
                         meta: {
                           canDelete: true,
                           label: "权限",
+                          icon: <AdminPanelSettingsIcon />,
                         },
                       },
                     ]}

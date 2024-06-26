@@ -45,6 +45,7 @@ public class DeptResource {
 
     @GET
     @Path("{id}/tree")
+    @Produces(MediaType.APPLICATION_JSON)
     public DeptDto getTree(@PathParam("id") Long id) {
         // 查询部门列表
         List<Dept> depts = deptRepository.findTree(id);
