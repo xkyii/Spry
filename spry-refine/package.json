@@ -19,6 +19,7 @@
     "@mui/lab": "^5.0.0-alpha.85",
     "@mui/material": "^5.8.6",
     "@mui/x-data-grid": "^6.6.0",
+    "@mui/x-tree-view": "^7.7.1",
     "@refinedev/cli": "^2.16.34",
     "@refinedev/core": "^4.51.0",
     "@refinedev/devtools": "^1.2.4",
