@@ -1,6 +1,7 @@
 
 ### List
-GET {{url}}/api/user?page=0&size=1
+GET {{url}}/api/user
+Authorization: Bearer {{token}}
 
 ### Get
 GET {{url}}/api/user/1

@@ -9,7 +9,7 @@ import React, { Suspense } from "react";
 
 import { ColorModeContextProvider } from "@contexts/color-mode";
 import { authProvider } from "@providers/auth-provider";
-import { dataProvider, fakeDataProvider } from "@providers/data-provider";
+import { restDataProvider, fakeDataProvider } from "@providers/data-provider";
 
 import GroupIcon from '@mui/icons-material/Group';
 import PersonIcon from '@mui/icons-material/Person';
@@ -23,6 +23,7 @@ export const metadata: Metadata = {
     icon: "/favicon.ico",
   },
 };
+
 
 export default function RootLayout({
   children,
@@ -43,7 +44,7 @@ export default function RootLayout({
                 <DevtoolsProvider>
                   <Refine
                     routerProvider={routerProvider}
-                    dataProvider={{ default: dataProvider, fake: fakeDataProvider }}
+                    dataProvider={{ default: restDataProvider, fake: fakeDataProvider }}
                     notificationProvider={useNotificationProvider}
                     authProvider={authProvider}
                     resources={[
