@@ -35,14 +35,26 @@ function convert(dept: IDept | undefined): IDept[] {
 
 export default function UserList() {
   const apiUrl = useApiUrl();
+  const [deptId, setDeptId] = React.useState<number>();
   const { data, isLoading, isError } = useCustom<IDept, HttpError>({
     url: `${apiUrl}/dept/1/tree`,
     method: "get",
   });
-  const { dataGridProps } = useDataGrid({});
+  const { dataGridProps } = useDataGrid({
+    filters: {
+      permanent: [
+        {
+          field: "deptId",
+          operator: "eq",
+          value: deptId,
+        }
+      ]
+    }
+  });
 
   const onItemSelectionToggle = (event: React.SyntheticEvent, itemId: string, isSelected: boolean) => {
     console.log(event, itemId, isSelected);
+    setDeptId(+itemId);
   };
 
 

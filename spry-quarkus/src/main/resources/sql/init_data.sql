@@ -2,12 +2,12 @@
 -- 1. User
 -- ----------------------------
 ALTER TABLE t_user AUTO_INCREMENT=10000;
-INSERT INTO t_user (id, username, nickname, email, password, created_at, status)
-    VALUE (1, 'admin', 'admin', 'admin@xkyii.com', 'admin123', sysdate(), 0);
-INSERT INTO t_user (id, username, nickname, email, password, created_at, status)
-    VALUE (2, 'xkyii', 'xkyii', '0@xkyii.com', 'xk123', sysdate(), 0);
-INSERT INTO t_user (id, username, nickname, email, password, created_at, status)
-    VALUE (3, 'demo', 'demo', 'demo@xkyii.com', 'demo123', sysdate(), 0);
+INSERT INTO t_user (id, username, nickname, email, password, dept_id, created_at, status)
+    VALUE (1, 'admin', 'admin', 'admin@xkyii.com', 'admin123', 1, sysdate(), 0);
+INSERT INTO t_user (id, username, nickname, email, password, dept_id, created_at, status)
+    VALUE (2, 'xkyii', 'xkyii', '0@xkyii.com', 'xk123', 1, sysdate(), 0);
+INSERT INTO t_user (id, username, nickname, email, password, dept_id, created_at, status)
+    VALUE (3, 'demo', 'demo', 'demo@xkyii.com', 'demo123', 2, sysdate(), 0);
 
 
 -- ----------------------------
