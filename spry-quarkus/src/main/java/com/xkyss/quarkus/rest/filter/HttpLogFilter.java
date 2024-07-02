@@ -184,7 +184,7 @@ public class HttpLogFilter {
                 logger.info(sb);
             };
 
-            rc.addEndHandler(_ -> {
+            rc.addEndHandler(x -> {
                 rc.vertx().executeBlocking(() -> {
                     func.run();
                     // logger.info("rc: " + rc);

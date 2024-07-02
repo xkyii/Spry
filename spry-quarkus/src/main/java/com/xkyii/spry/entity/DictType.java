@@ -4,12 +4,11 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.Comment;
 
 import java.util.Date;
-import java.util.List;
 
 @Entity
-@Table(name = "t_dept")
-@Comment("部门")
-public class Dept {
+@Table(name = "t_dict_type")
+@Comment("字典类型")
+public class DictType {
     @Id
     @Comment("主键")
     @Column(name = "id")
@@ -23,21 +22,6 @@ public class Dept {
     @Comment("代码")
     @Column(name = "code", length = 64, unique = true)
     private String code;
-
-    @Column(name = "parent_id")
-    private Long parentId;
-
-    @Column(name = "ancestors", length = 64)
-    private String ancestors;
-
-    @Column(name = "leader", length = 32)
-    private String leader;
-
-    @Column(name = "email", length = 64)
-    private String email;
-
-    @Column(name = "phone", length = 16)
-    private String phone;
 
     @Comment("创建人")
     @Column(name = "created_by")
@@ -79,22 +63,6 @@ public class Dept {
         this.id = id;
     }
 
-    public Long getParentId() {
-        return parentId;
-    }
-
-    public void setParentId(Long parentId) {
-        this.parentId = parentId;
-    }
-
-    public String getAncestors() {
-        return ancestors;
-    }
-
-    public void setAncestors(String ancestors) {
-        this.ancestors = ancestors;
-    }
-
     public String getName() {
         return name;
     }
@@ -109,30 +77,6 @@ public class Dept {
 
     public void setCode(String code) {
         this.code = code;
-    }
-
-    public String getLeader() {
-        return leader;
-    }
-
-    public void setLeader(String leader) {
-        this.leader = leader;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
     }
 
     public Long getCreatedBy() {

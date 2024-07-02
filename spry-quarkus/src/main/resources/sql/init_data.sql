@@ -42,7 +42,28 @@ INSERT INTO t_permission (id, name, code, created_at, status)
 -- ----------------------------
 -- 5. UserRole
 -- ----------------------------
-INSERT INTO t_user_role (user_id, role_id) VALUE (1, 1); -- admin - admin
-INSERT INTO t_user_role (user_id, role_id) VALUE (1, 2); -- admin - tester
-INSERT INTO t_user_role (user_id, role_id) VALUE (2, 1); -- xkyii - admin
-INSERT INTO t_user_role (user_id, role_id) VALUE (2, 2); -- xkyii - tester
+INSERT INTO t_user_role (user_id, role_id, remark)
+    VALUE (1, 1, 'admin - admin');
+INSERT INTO t_user_role (user_id, role_id, remark)
+    VALUE (1, 2, 'admin - tester');
+INSERT INTO t_user_role (user_id, role_id, remark)
+    VALUE (2, 1, 'xkyii - admin');
+INSERT INTO t_user_role (user_id, role_id, remark)
+    VALUE (2, 2, 'xkyii - tester');
+
+
+-- ----------------------------
+-- 6. DictType
+-- ----------------------------
+INSERT INTO t_dict_type (id, name, code, created_at, status, remark)
+    VALUE (1, '用户性别', 'sys_user_sex', sysdate(), 0, '用户性别列表');
+
+-- ----------------------------
+-- 7. DictData
+-- ----------------------------
+INSERT INTO t_dict_data (id, name, code, type, created_at, status, remark)
+    VALUE (1, '男', '1', 'sys_user_sex', sysdate(), 0, '性别-男');
+INSERT INTO t_dict_data (id, name, code, type, created_at, status, remark)
+    VALUE (2, '女', '2', 'sys_user_sex', sysdate(), 0, '性别-女');
+INSERT INTO t_dict_data (id, name, code, type, created_at, status, remark)
+    VALUE (3, '未知', '3', 'sys_user_sex', sysdate(), 0, '性别-未知');

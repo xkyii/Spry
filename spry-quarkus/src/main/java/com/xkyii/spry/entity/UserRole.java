@@ -18,6 +18,10 @@ public class UserRole {
     @Comment("角色主键")
     private Long roleId;
 
+    @Comment("备注")
+    @Column(name = "remark")
+    private String remark;
+
     public Long getRoleId() {
         return roleId;
     }
@@ -32,5 +36,13 @@ public class UserRole {
 
     public void setUserId(Long userId) {
         this.userId = userId;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 }

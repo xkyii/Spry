@@ -5,6 +5,7 @@ Authorization: Bearer {{token}}
 
 ### Get
 GET {{url}}/api/user/1
+Authorization: Bearer {{token}}
 
 ### Patch
 PATCH {{url}}/api/user/3
