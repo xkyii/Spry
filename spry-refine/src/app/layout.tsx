@@ -15,6 +15,8 @@ import GroupIcon from '@mui/icons-material/Group';
 import PersonIcon from '@mui/icons-material/Person';
 import RowingIcon from '@mui/icons-material/Rowing';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
+import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
+import MenuBookIcon from '@mui/icons-material/MenuBook';
 
 export const metadata: Metadata = {
   title: "Spry",
@@ -104,8 +106,8 @@ export default function RootLayout({
                         show: "/dict-type/show/:id",
                         meta: {
                           canDelete: true,
-                          label: "字典类型",
-                          icon: <AdminPanelSettingsIcon />,
+                          label: "字典",
+                          icon: <LibraryBooksIcon />,
                         },
                       },
                       {
@@ -116,8 +118,9 @@ export default function RootLayout({
                         show: "/dict-data/show/:id",
                         meta: {
                           canDelete: true,
+                          hide: true,
                           label: "字典数据",
-                          icon: <AdminPanelSettingsIcon />,
+                          icon: <MenuBookIcon />,
                         },
                       },
                     ]}
