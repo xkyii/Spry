@@ -96,6 +96,30 @@ export default function RootLayout({
                           icon: <AdminPanelSettingsIcon />,
                         },
                       },
+                      {
+                        name: "dict-type",
+                        list: "/dict-type",
+                        create: "/dict-type/create",
+                        edit: "/dict-type/edit/:id",
+                        show: "/dict-type/show/:id",
+                        meta: {
+                          canDelete: true,
+                          label: "字典类型",
+                          icon: <AdminPanelSettingsIcon />,
+                        },
+                      },
+                      {
+                        name: "dict-data",
+                        list: "/dict-data",
+                        create: "/dict-data/create",
+                        edit: "/dict-data/edit/:id",
+                        show: "/dict-data/show/:id",
+                        meta: {
+                          canDelete: true,
+                          label: "字典数据",
+                          icon: <AdminPanelSettingsIcon />,
+                        },
+                      },
                     ]}
                     options={{
                       syncWithLocation: true,
